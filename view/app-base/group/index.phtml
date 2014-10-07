@@ -1,0 +1,59 @@
+<h3><?php echo $this->translate('view.user.group.index.heading'); ?></h3>
+<p>
+    <?php echo $this->translate('view.user.group.index.intro'); ?>
+</p>
+<div class="flash-messenger">
+    <?php $this->flashMessenger()->renderAll(); ?>
+</div>
+<a href="<?php echo $this->url('user/group/create'); ?>" title="<?php echo $this->translate('view.user.group.gotoCreate'); ?>">
+    <?php echo $this->translate('view.user.group.gotoCreate'); ?>
+</a>
+<br />
+
+<?php if (count($this->groups)) : ?>
+<table id="user-groups-list">
+    <thead>
+        <tr>
+            <th>
+                <?php echo $this->translate('view.user.group.name'); ?>
+            </th>
+            <th>
+                <?php echo $this->translate('view.user.group.parent'); ?>
+            </th>
+            <th>
+                <?php echo $this->translate('view.user.group.members'); ?>
+            </th>
+            <th>
+                <?php echo $this->translate('view.actions'); ?>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php foreach($this->groups as $group) : ?>
+        <tr>
+            <td><?php echo $group->getName(); ?></td>
+            <td><?php echo $group->getParent() ? $group->getParent()->getName() : ''; ?></td>
+            <td>
+                <a href="<?php echo $this->url('user', array('id' => $group->getId()), array('query' => array('group' => $group->getName()))); ?>" title="<?php echo $this->translate('view.user.group.showUsers'); ?>">
+                    <?php echo count($group->getMembers()); ?></td>
+                </a>
+            <td>
+                <a href="<?php echo $this->url('user/group/edit', array('id' => $group->getId())); ?>" title="<?php echo $this->translate('view.user.group.gotoEdit'); ?>">
+                    <?php echo $this->translate('view.user.group.gotoEdit'); ?>
+                </a>
+                <?php if (!$group->getChildren()->count()) : ?>
+                <br />
+                <a href="<?php echo $this->url('user/group/delete', array('id' => $group->getId())); ?>" title="<?php echo $this->translate('view.user.group.gotoDelete'); ?>">
+                    <?php echo $this->translate('view.user.group.gotoDelete'); ?>
+                </a>
+                <?php endif; ?>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
+<?php else : ?>
+<p>
+    <?php echo $this->translate('message.user.noGroupsFound'); ?>
+</p>
+<?php endif;

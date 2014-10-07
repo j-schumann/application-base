@@ -1,0 +1,11 @@
+<h3><?php echo $this->translate('view.user.create.heading'); ?></h3>
+<p>
+    <?php echo $this->translate('view.user.create.intro'); ?>
+</p>
+<div class="flash-messenger">
+    <?php echo $this->flashMessenger()->renderAll(); ?>
+</div>
+<?php
+    $this->form->setAttribute('action', $this->url('user/create'));
+    echo $this->formDecorator($this->form);
+?>

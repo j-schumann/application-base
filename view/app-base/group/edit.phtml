@@ -1,0 +1,12 @@
+<h3><?php echo $this->translate('view.user.group.edit.heading'); ?></h3>
+<p>
+    <?php echo $this->translate('view.user.group.edit.intro'); ?>
+</p>
+<div class="flash-messenger">
+    <?php echo $this->flashMessenger()->renderAll(); ?>
+</div>
+<?php
+    $this->form->setAttribute('action', $this->url('user/group/edit', array(
+        'id' => $this->group->getId(),
+    )));
+    echo $this->formDecorator($this->form);

@@ -1,0 +1,30 @@
+<h3><?php echo $this->translate(array('view.account.index.heading', $this->currentUser()->getDisplayName())); ?></h3>
+<p>
+    <?php echo $this->translate('view.account.index.intro'); ?>
+</p>
+<div class="flash-messenger">
+    <?php $this->flashMessenger()->renderAll(); ?>
+</div>
+<div class="row">
+    <ul>
+        <li>
+            <?php echo $this->translate('view.user.username').': '.$this->currentUser()->getUserName(); ?>
+        </li>
+        <li>
+            <?php echo $this->translate('view.user.displayName').': '.$this->currentUser()->getDisplayName(); ?>
+        </li>
+        <li>
+            <?php echo $this->translate('view.user.email').': '.$this->currentUser()->getEmail(); ?>
+        </li>
+    </ul>
+    <div class="fourteen columns">
+        <a href="<?php echo $this->url('account/logout'); ?>" title="<?php echo $this->translate('view.user.gotoLogout'); ?>">
+            <?php echo $this->translate('view.user.gotoLogout'); ?>
+        </a>
+        <br />
+        <a href="<?php echo $this->url('account/change-password'); ?>" title="<?php echo $this->translate('view.user.gotoPasswordChange'); ?>">
+            <?php echo $this->translate('view.user.gotoPasswordChange'); ?>
+        </a>
+
+    </div>
+</div>

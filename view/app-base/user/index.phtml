@@ -1,0 +1,103 @@
+<h3><?php echo $this->translate('view.user.index.heading'); ?></h3>
+<p>
+    <?php echo $this->translate('view.user.index.intro'); ?>
+</p>
+<div class="flash-messenger">
+    <?php $this->flashMessenger()->renderAll(); ?>
+</div>
+<a href="<?php echo $this->url('user/create'); ?>" title="<?php echo $this->translate('view.user.gotoCreate'); ?>">
+    <?php echo $this->translate('view.user.gotoCreate'); ?>
+</a>
+<br />
+<?php
+    $this->form->setAttribute('action', $this->url('user'));
+    echo $this->formDecorator($this->form);
+?>
+<?php if ($this->paginator->count()) : ?>
+<table id="users-list">
+    <thead>
+        <tr>
+            <th>
+                <a href="?orderBy=username&order=<?php echo ($this->orderBy === 'username' && $this->order === 'asc') ? 'desc' : 'asc'; ?>#user-filter" class="no-text-deco" title="<?php echo $this->translate('view.sort.'.($this->orderBy === 'username' && $this->order === 'asc' ? 'desc' : 'asc')); ?>">
+                    <?php echo $this->translate('view.user.username'); ?>
+                    <?php if ($this->orderBy == 'username') : ?>
+                        <span class="icon-<?php echo $this->order; ?>"></span>
+                    <?php endif; ?>
+                </a>
+                <br />
+                <?php echo $this->translate('view.user.displayName'); ?>
+            </th>
+            <th>
+                <a href="?orderBy=email&order=<?php echo ($this->orderBy === 'email' && $this->order === 'asc') ? 'desc' : 'asc'; ?>#user-filter" class="no-text-deco" title="<?php echo $this->translate('view.sort.'.($this->orderBy === 'email' && $this->order === 'asc' ? 'desc' : 'asc')); ?>">
+                    <?php echo $this->translate('view.user.email'); ?>
+                    <?php if ($this->orderBy == 'email') : ?>
+                        <span class="icon-<?php echo $this->order; ?>"></span>
+                    <?php endif; ?>
+                </a>
+            </th>
+            <th>
+                <?php echo $this->translate('view.user.groups'); ?>
+            </th>
+            <th>
+                <?php echo $this->translate('view.user.isActive'); ?> /
+                <?php echo $this->translate('view.user.isValidated'); ?>
+            </th>
+            <th>
+                <?php echo $this->translate('view.actions'); ?>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php foreach($this->paginator as $user) : ?>
+        <tr>
+            <td>
+                <?php echo $user->getUserName(); ?><br />
+                <?php echo $user->getDisplayName(); ?>
+            </td>
+            <td>
+                <?php echo $user->getEmail(); ?>
+            </td>
+            <td>
+                <?php
+                    foreach($user->getGroups() as $group) {
+                        echo $group->getName().'<br />';
+                    }
+                ?>
+            </td>
+            <td>
+                <?php echo $this->translate($user->getIsActive() ?
+                        'view.yes' : 'view.no'); ?> /
+                <?php echo $this->translate($user->getIsValidated() ?
+                        'view.yes' : 'view.no'); ?>
+            </td>
+            <td>
+                <a href="<?php echo $this->url('user/edit', array('id' => $user->getId())); ?>" title="<?php echo $this->translate('view.user.gotoEdit'); ?>">
+                    <?php echo $this->translate('view.user.gotoEdit'); ?>
+                </a>
+                <br />
+                <a href="<?php echo $this->url('user/delete', array('id' => $user->getId())); ?>" title="<?php echo $this->translate('view.user.gotoDelete'); ?>">
+                    <?php echo $this->translate('view.user.gotoDelete'); ?>
+                </a>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>
+<?php
+
+echo $this->paginationControl(
+    // the paginator object
+    $this->paginator,
+    'sliding',
+    'app-base/partials/paginator.phtml',
+    array(
+        'route'    => 'user',
+        'fragment' => 'users-list',
+    )
+);
+
+else : ?>
+<p>
+    <?php echo $this->translate('message.user.noUsersFound'); ?>
+</p>
+<?php endif;
