@@ -1,0 +1,20 @@
+{
+    "name": "vrok/application-base",
+    "description": "Basic application sceleton",
+    "license": "private",
+    "homepage": "http://www.vrok.de/",
+    "minimum-stability": "dev",
+
+    "require": {
+        "php": ">=5.4",
+        "bjyoungblood/bjy-authorize": "~1.4",
+        "doctrine/doctrine-orm-module": "dev-master@dev",
+        "gedmo/doctrine-extensions": "~2.3.9",
+        "zendframework/zendframework": "~2.3.1"
+    },
+    "autoload": {
+        "psr-0": {
+            "AppBase": "src/"
+        }
+    }
+}
