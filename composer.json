@@ -6,11 +6,12 @@
     "minimum-stability": "dev",
 
     "require": {
-        "php": ">=5.4",
-        "bjyoungblood/bjy-authorize": "~1.4",
-        "doctrine/doctrine-orm-module": "dev-master@dev",
+        "php": ">=5.5",
+        "bjyoungblood/bjy-authorize": "~1.4.1",
+        "doctrine/doctrine-orm-module": "~0.8.0",
         "gedmo/doctrine-extensions": "~2.3.9",
-        "zendframework/zendframework": "~2.3.1"
+        "slm/queue-doctrine": "~0.3.0",
+        "vrok/vrok-lib": "dev-master@dev"
     },
     "autoload": {
         "psr-0": {
