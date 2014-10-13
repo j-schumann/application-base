@@ -310,8 +310,7 @@ return array(
                 'options' => array(
                     'route'    => '/account/',
                     'defaults' => array(
-                        '__NAMESPACE__' => 'AppBase\Controller',
-                        'controller'    => 'Account',
+                        'controller'    => 'AppBase\Controller\Account',
                         'action'        => 'index',
                     ),
                 ),
@@ -370,8 +369,7 @@ return array(
                 'options' => array(
                     'route' => '/slm-queue/',
                     'defaults' => array(
-                        '__NAMESPACE__' => 'AppBase\Controller',
-                        'controller' => 'SlmQueue',
+                        'controller' => 'AppBase\Controller\SlmQueue',
                         'action' => 'index',
                     ),
                 ),
@@ -459,8 +457,7 @@ return array(
                 'options' => array(
                     'route' => '/user/',
                     'defaults' => array(
-                        '__NAMESPACE__' => 'AppBase\Controller',
-                        'controller' => 'User',
+                        'controller' => 'AppBase\Controller\User',
                         'action' => 'index',
                     ),
                 ),
@@ -513,7 +510,7 @@ return array(
                         'options' => array(
                             'route' => 'group/',
                             'defaults' => array(
-                                'controller' => 'Group',
+                                'controller' => 'AppBase\Controller\Group',
                                 'action' => 'index',
                             ),
                         ),
@@ -561,8 +558,7 @@ return array(
                 'options' => array(
                     'route' => '/validation/',
                     'defaults' => array(
-                        '__NAMESPACE__' => 'AppBase\Controller',
-                        'controller' => 'Validation',
+                        'controller' => 'AppBase\Controller\Validation',
                         'action' => 'index',
                     ),
                 ),

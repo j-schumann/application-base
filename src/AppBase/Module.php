@@ -11,6 +11,11 @@ use Zend\EventManager\EventInterface;
 use Zend\ModuleManager\Feature\BootstrapListenerInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
+use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
+use Zend\Mvc\ModuleRouteListener;
+use Zend\Session\Config\SessionConfig;
+use Zend\Session\Container;
+use Zend\Session\SessionManager;
 
 /**
  * Module bootstrapping.
@@ -18,7 +23,8 @@ use Zend\ModuleManager\Feature\ServiceProviderInterface;
 class Module implements
     BootstrapListenerInterface,
     ConfigProviderInterface,
-    ServiceProviderInterface
+    ServiceProviderInterface,
+    ViewHelperProviderInterface
 {
     /**
      * Returns the modules default configuration.
@@ -40,6 +46,11 @@ class Module implements
     {
         return array(
             'factories' => array(
+                'doctrine.cache.zend_storage' => function($sm) {
+                    return new \DoctrineModule\Cache\ZendStorageCache(
+                            $sm->get('defaultCache'));
+                },
+
                 'Zend\Mail\Transport' => function($sm) {
                     $spec = array();
                     $config = $sm->get('Config');
@@ -65,6 +76,29 @@ class Module implements
     }
 
     /**
+     * Retrieve additional view helpers using factories that are not set in the config.
+     *
+     * @return array
+     */
+    public function getViewHelperConfig()
+    {
+        return array(
+            'factories' => array(
+                'navigation' => function($sm) {
+                    $auth = $sm->getServiceLocator()->get('BjyAuthorize\Service\Authorize');
+                    $role = $auth->getIdentity();
+
+                    $navigation = $sm->get('Zend\View\Helper\Navigation');
+                    $navigation->setAcl($auth->getAcl())->setRole($role);
+
+                    return $navigation;
+                },
+            ),
+        );
+    }
+
+
+    /**
      * Attach some listeners to the shared eventmanager.
      *
      * @param EventInterface $e
@@ -73,6 +107,20 @@ class Module implements
     {
         /* @var $e \Zend\Mvc\MvcEvent */
         $application = $e->getApplication();
+
+        $this->initSession($application->getServiceManager()->get('Config'));
+
+        $eventManager        = $e->getApplication()->getEventManager();
+        $moduleRouteListener = new ModuleRouteListener();
+        $moduleRouteListener->attach($eventManager);
+
+        // @todo konfigurierbar machen
+        // ist ausserdem auch nur die default-timezone für anzeigen
+        date_default_timezone_set('Europe/Berlin');
+
+        // @todo ersetzen mit locale detection aktueller User + Translator setzen
+        \Locale::setDefault('de_DE');
+
         $sharedEvents = $application->getEventManager()->getSharedManager();
 
         // Listen to the CRON events, they are rare, don't instantiate any objects yet
@@ -82,5 +130,21 @@ class Module implements
         $sharedEvents->attach('AppBase\Controller\CronController', 'cronDaily', function($e) {
             return \Vrok\SlmQueue\Job\CheckTodos::onCronDaily($e);
         });
+    }
+
+    /**
+     * Starts the session with the configuration from the application config.
+     *
+     * @param array $config
+     */
+    protected function initSession($config)
+    {
+        $sessionConfig = new SessionConfig();
+        if (isset($config['session'])) {
+            $sessionConfig->setOptions($config['session']);
+        }
+        $sessionManager = new SessionManager($sessionConfig);
+        $sessionManager->start();
+        Container::setDefaultManager($sessionManager);
     }
 }
