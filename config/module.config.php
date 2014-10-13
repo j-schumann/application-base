@@ -510,7 +510,7 @@ return array(
                         'options' => array(
                             'route' => 'group/',
                             'defaults' => array(
-                                'controller' => 'Group',
+                                'controller' => 'AppBase\Controller\Group',
                                 'action' => 'index',
                             ),
                         ),

@@ -50,6 +50,7 @@ class Module implements
                     return new \DoctrineModule\Cache\ZendStorageCache(
                             $sm->get('defaultCache'));
                 },
+
                 'ZendLog' => function ($sm) {
                     $filename = 'log_' . date('F') . '.txt';
                     $log = new \Zend\Log\Logger();
@@ -58,6 +59,7 @@ class Module implements
 
                     return $log;
                 },
+
                 'Zend\Mail\Transport' => function($sm) {
                     $spec = array();
                     $config = $sm->get('Config');
@@ -97,6 +99,7 @@ class Module implements
 
                     $navigation = $sm->get('Zend\View\Helper\Navigation');
                     $navigation->setAcl($auth->getAcl())->setRole($role);
+
                     return $navigation;
                 },
             ),
