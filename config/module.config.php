@@ -295,6 +295,13 @@ return array(
                                 'privilege' => 'index',
                                 'order'     => 1000,
                             ),
+                            array(
+                                'label'     => 'navigation.caches',
+                                'route'     => 'admin/caches',
+                                'resource'  => 'controller/AppBase\Controller\Admin',
+                                'privilege' => 'caches',
+                                'order'     => 1000,
+                            ),
                         ),
                     ),
                 ),
@@ -361,6 +368,18 @@ return array(
                     'defaults' => array(
                         'controller' => 'AppBase\Controller\Admin',
                         'action'     => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'caches' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => 'caches[/]',
+                            'defaults' => array(
+                                'action' => 'caches',
+                            ),
+                        ),
                     ),
                 ),
             ),

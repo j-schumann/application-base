@@ -1,0 +1,52 @@
+<br />
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <?php echo $this->translate('view.cache.name'); ?>
+            </th>
+            <th>
+                <?php echo $this->translate('view.cache.type'); ?>
+            </th>
+            <th>
+                <?php echo $this->translate('view.cache.status'); ?>
+            </th>
+            <th>
+                <?php echo $this->translate('view.actions'); ?>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($this->caches as $name => $cache) : ?>
+        <tr>
+            <td><?php echo $name; ?></td>
+            <td><?php echo str_replace('Zend\Cache\Storage\Adapter\\', '', get_class($cache)); ?></td>
+            <td><?php
+                //$cache->setItem('12', 12);
+                var_dump($cache->getItem('12'));
+
+                if ($cache instanceof \Zend\Cache\Storage\TotalSpaceCapableInterface) {
+                    $totalSpace = $cache->getTotalSpace();
+                    if ($totalSpace) {
+                        echo $totalSpace;
+
+                        if (0 && $cache instanceof \Zend\Cache\Storage\AvailableSpaceCapableInterface) {
+                            echo $cache->getAvailableSpace();
+                        }
+                    } else {
+                        echo $this->translate('view.cache.probablyOffline');
+                    }
+                }
+
+            ?></td>
+            <td><?php
+                if ($cache instanceof \Zend\Cache\Storage\FlushableInterface) {
+                    echo 'flush';
+                }
+            ?></td>
+        </tr>
+    <?php endforeach; ?>
+    </tbody>
+</table>

@@ -37,22 +37,7 @@ class AccountController extends AbstractActionController
         $form->setData($this->request->getPost());
 
         if ($this->request->isPost() && $form->isValid()) {
-            $user = $this->currentUser();
-            $defaultRoute = 'account';
-            if ($user->inGroup('mother')) {
-                $defaultRoute = 'mother';
-            }
-            elseif ($user->inGroup('attendant')) {
-                $defaultRoute = 'attendant';
-            }
-            elseif ($user->inGroup('staff')) {
-                $defaultRoute = 'staff';
-            }
-            elseif ($user->inGroup('executiveStaff')) {
-                // 'staff' enthält die Liste der Aufgaben -> auch für EES als erstes
-                // zeigen
-                $defaultRoute = 'staff';
-            }
+
 
             return $this->loginRedirector()->goBack($defaultRoute);
         }

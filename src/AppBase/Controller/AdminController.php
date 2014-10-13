@@ -15,4 +15,18 @@ class AdminController extends AbstractActionController
     public function indexAction()
     {
     }
+
+    public function cachesAction()
+    {
+        $config = $this->getServiceLocator()->get('config');
+        $cacheNames = isset($config['caches'])
+            ? array_keys($config['caches'])
+            : [];
+
+        $caches = [];
+        foreach($cacheNames as $name) {
+            $caches[$name] = $this->getServiceLocator()->get($name);
+        }
+        return $this->createViewModel(['caches' => $caches]);
+    }
 }
