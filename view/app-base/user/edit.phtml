@@ -6,7 +6,10 @@
     <?php echo $this->translate('view.user.edit.intro'); ?>
 </p>
 
-<?php
+<div class="col-md-5">
+    <?php
     $this->form->setAttribute('action', $this->url('user/edit',
             array('id' => $this->user->getId())));
     echo $this->formDecorator($this->form);
+    ?>
+</div>

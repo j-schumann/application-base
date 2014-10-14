@@ -29,4 +29,47 @@ class AdminController extends AbstractActionController
         }
         return $this->createViewModel(['caches' => $caches]);
     }
+
+    public function flushCacheAction()
+    {
+        $name = $this->params('name');
+        $config = $this->getServiceLocator()->get('config');
+        if (!isset($config['caches'][$name])) {
+            $this->flashMessenger()
+                ->addErrorMessage('message.cache.notFound');
+            return $this->redirect()->toRoute('admin/caches');
+        }
+
+        $cache = $this->getServiceLocator()->get($name);
+        if (! $cache instanceof \Zend\Cache\Storage\FlushableInterface) {
+            $this->flashMessenger()
+                ->addErrorMessage('message.cache.notFlushable');
+            return $this->redirect()->toRoute('admin/caches');
+        }
+
+        $form = $this->getServiceLocator()->get('FormElementManager')
+                ->get('Vrok\Form\ConfirmationForm');
+        $form->setConfirmationMessage(
+            array('message.cache.confirmFlush', array('name' => $name))
+        );
+
+        $viewModel = $this->createViewModel(array(
+            'name' => $name,
+            'form' => $form,
+        ));
+
+        if (!$this->request->isPost()) {
+            return $viewModel;
+        }
+
+        $isValid = $form->setData($this->request->getPost())->isValid();
+        if (!$isValid) {
+            return $viewModel;
+        }
+
+        $cache->flush();
+        $this->flashMessenger()
+            ->addSuccessMessage('message.cache.flushed');
+        return $this->redirect()->toRoute('admin/caches');
+    }
 }

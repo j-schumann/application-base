@@ -12,7 +12,8 @@ use Zend\ModuleManager\Feature\BootstrapListenerInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
 use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
-use Zend\Mvc\ModuleRouteListener;
+use Zend\Mvc\ApplicationInterface;
+use Zend\Mvc\MvcEvent;
 use Zend\Session\Config\SessionConfig;
 use Zend\Session\Container;
 use Zend\Session\SessionManager;
@@ -113,14 +114,21 @@ class Module implements
      */
     public function onBootstrap(EventInterface $e)
     {
-        /* @var $e \Zend\Mvc\MvcEvent */
         $application = $e->getApplication();
+        /* @var $application ApplicationInterface */
+        $eventManager = $application->getEventManager();
+        $config = $application->getServiceManager()->get('config');
 
-        $this->initSession($application->getServiceManager()->get('Config'));
+        $this->initSession($config);
 
-        $eventManager        = $e->getApplication()->getEventManager();
-        $moduleRouteListener = new ModuleRouteListener();
-        $moduleRouteListener->attach($eventManager);
+      /*  if (isset($config['theme'])) {
+            $eventManager->attach(
+                MvcEvent::EVENT_RENDER,
+                [$this, 'prepareTheme'],
+                100
+            );
+        }*/
+
 
         // @todo konfigurierbar machen
         // ist ausserdem auch nur die default-timezone für anzeigen
@@ -129,7 +137,7 @@ class Module implements
         // @todo ersetzen mit locale detection aktueller User + Translator setzen
         \Locale::setDefault('de_DE');
 
-        $sharedEvents = $application->getEventManager()->getSharedManager();
+        $sharedEvents = $eventManager->getSharedManager();
 
         // Listen to the CRON events, they are rare, don't instantiate any objects yet
         $sharedEvents->attach('AppBase\Controller\CronController', 'cronDaily', function($e) {
@@ -154,5 +162,25 @@ class Module implements
         $sessionManager = new SessionManager($sessionConfig);
         $sessionManager->start();
         Container::setDefaultManager($sessionManager);
+    }
+
+    protected function prepareTheme(ApplicationInterface $application)
+    {
+        $sm = $application->getServiceManager();
+
+        $config = $sm->get('Config');
+        if (!empty($config['theme'])) {
+            return;
+        }
+
+        if (isset($config['theme']['template_map'])) {
+            $map = $sm->get('ViewTemplateMapResolver');
+            $map->merge($config['theme']['template_map']);
+        }
+
+        if (isset($config['theme']['template_path_stack'])) {
+            $stack = $sm->get('ViewTemplatePathStack');
+            $stack->addPaths($config['theme']['template_path_stack']);
+        }
     }
 }

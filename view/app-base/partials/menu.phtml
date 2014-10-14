@@ -1,0 +1,53 @@
+<ul class="nav navbar-nav">
+    <?php
+    foreach ($this->container as $page) :
+        if (!$this->navigation()->accept($page, false)) {
+            continue;
+        }
+        $pageclasses = [];
+        if ($page->isActive()) {
+            $pageclasses[] = 'active';
+        }
+        if (count($page)) {
+            $pageclasses[] = 'dropdown';
+        }
+    ?>
+        <li class="<?php echo implode(' ', $pageclasses) ?>">
+            <?php if (count($page)) :
+                $pagelabel = $this->translate($page->getLabel(), $page->getTextDomain());
+                ?>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $pagelabel; ?><span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                    <?php foreach($page as $subPage) :
+                        if (!$this->navigation()->accept($subPage, false)) {
+                            continue;
+                        }
+
+                        if (count($subPage)) : ?>
+                            <li class="divider"></li>
+                            <li>
+                                <?php echo $this->navigation()->menu()->htmlify($subPage, $this); ?>
+                            </li>
+                            <?php foreach($subPage as $subSubPage) :
+                                if (!$this->navigation()->accept($subSubPage, false)) {
+                                    continue;
+                                }
+                                ?>
+                            <li>
+                                <?php echo $this->navigation()->menu()->htmlify($subSubPage, $this); ?>
+                            </li>
+                            <?php endforeach; ?>
+                        <?php else : ?>
+                        <li>
+                            <?php echo $this->navigation()->menu()->htmlify($subPage, $this); ?>
+                        </li>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </ul>
+            <?php else : ?>
+                <?php echo $this->navigation()->menu()->htmlify($page, $this); ?>
+            <?php endif; ?>
+        </li>
+    <?php endforeach; ?>
+    </ul>
+</div>

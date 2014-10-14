@@ -6,12 +6,14 @@
     <?php $this->flashMessenger()->renderAll(); ?>
 </div>
 
-<?php
+<div class="col-md-5">
+    <?php
     $this->form->setAttribute('action', $this->url('slm-queue/recover', array(
         'name' => $this->name,
     )));
     echo $this->formDecorator($this->form);
-?>
+    ?>
+</div>
 
 <a href="<?php echo $this->url('slm-queue'); ?>" title="<?php echo $this->translate('view.slmQueue.gotoOverview'); ?>">
     <?php echo $this->translate('view.slmQueue.gotoOverview'); ?>

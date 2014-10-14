@@ -24,7 +24,20 @@ return array(
         ),
         'resource_providers' => array(
             'BjyAuthorize\Provider\Resource\Config' => array(
-                'admin' => array(),
+                // primitive resources for the navigation where a controller
+                // cannot be used as it is allowed for everyone
+                'admin' => [],
+                'guest' => [],
+                'user'  => [],
+            ),
+        ),
+        'rule_providers' => array(
+            'BjyAuthorize\Provider\Rule\Config' => array(
+                'allow' => array(
+                    ['admin', 'admin'],
+                    ['guest', 'guest'],
+                    ['user', 'user'],
+                ),
             ),
         ),
 
@@ -236,16 +249,25 @@ return array(
      */
     'navigation' => array(
         'default' => array(
-            array(
-                'label' => 'navigation.account',
-                'route' => 'account',
-                'resource' => 'controller/AppBase\Controller\Account:index',
-                'order' => -100,
-                'pages' => array(
+            'account' => array(
+                'label'    => 'navigation.account',
+                'uri'      => '#', // we need either a route or an URI to avoid fatal error
+                'order'    => -100,
+                'pages'    => array(
                     array(
-                        'label' => 'navigation.account.logout',
-                        'route' => 'account/logout',
-                        'resource' => 'controller/AppBase\Controller\Account:logout',
+                        'label'    => 'navigation.account.login',
+                        'route'    => 'account/login',
+                        'resource' => 'guest',
+                    ),
+                    array(
+                        'label'    => 'navigation.account.index',
+                        'route'    => 'account',
+                        'resource' => 'user',
+                    ),
+                    array(
+                        'label'    => 'navigation.account.logout',
+                        'route'    => 'account/logout',
+                        'resource' => 'user',
                     ),
                 ),
             ),
@@ -259,27 +281,21 @@ return array(
                         'label'    => 'navigation.user',
                         'route'    => 'user',
                         'resource' => 'controller/AppBase\Controller\User',
-                        'pages' => array(
+                        'pages'    => array(
                             array(
-                                'label' => 'navigation.user',
-                                'route' => 'user',
-                                'pages' => array(
-                                    array(
-                                        'label' => 'navigation.user.create',
-                                        'route' => 'user/create',
-                                    ),
-                                ),
+                                'label' => 'navigation.user.create',
+                                'route' => 'user/create',
                             ),
+                        ),
+                    ),
+                    array(
+                        'label'    => 'navigation.user.group',
+                        'route'    => 'user/group',
+                        'resource' => 'controller/AppBase\Controller\Group',
+                        'pages'    => array(
                             array(
-                                'label' => 'navigation.user.group',
-                                'route' => 'user/group',
-                                'resource' => 'controller/AppBase\Controller\Group',
-                                'pages' => array(
-                                    array(
-                                        'label' => 'navigation.user.group.create',
-                                        'route' => 'user/group/create',
-                                    ),
-                                ),
+                                'label' => 'navigation.user.group.create',
+                                'route' => 'user/group/create',
                             ),
                         ),
                     ),
@@ -378,6 +394,18 @@ return array(
                             'route' => 'caches[/]',
                             'defaults' => array(
                                 'action' => 'caches',
+                            ),
+                        ),
+                    ),
+                    'flush-cache' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => 'flush-cache/[:name][/]',
+                            'constraints' => array(
+                                'name' => '[a-zA-Z0-9_-]+',
+                            ),
+                            'defaults' => array(
+                                'action' => 'flush-cache',
                             ),
                         ),
                     ),
