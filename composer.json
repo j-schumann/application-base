@@ -10,7 +10,7 @@
         "bjyoungblood/bjy-authorize": "~1.4.0",
         "doctrine/doctrine-orm-module": "dev-master",
         "gedmo/doctrine-extensions": "~2.3.9",
-        "slm/queue-doctrine": "~0.3.0",
+        "slm/queue-doctrine": "~0.4.0",
         "vrok/vrok-lib": "dev-master@dev"
     },
     "autoload": {
