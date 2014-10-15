@@ -121,15 +121,6 @@ class Module implements
 
         $this->initSession($config);
 
-      /*  if (isset($config['theme'])) {
-            $eventManager->attach(
-                MvcEvent::EVENT_RENDER,
-                [$this, 'prepareTheme'],
-                100
-            );
-        }*/
-
-
         // @todo konfigurierbar machen
         // ist ausserdem auch nur die default-timezone für anzeigen
         date_default_timezone_set('Europe/Berlin');
@@ -164,6 +155,12 @@ class Module implements
         Container::setDefaultManager($sessionManager);
     }
 
+    /**
+     * @todo necessary?
+     *
+     * @param ApplicationInterface $application
+     * @return type
+     */
     protected function prepareTheme(ApplicationInterface $application)
     {
         $sm = $application->getServiceManager();

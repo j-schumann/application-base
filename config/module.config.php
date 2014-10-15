@@ -225,11 +225,21 @@ return array(
             ),
         ),
         'driver' => array(
+            'queue_entities' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'zend_storage',
+                'paths' => array(__DIR__ . '/../../../slm/queue-doctrine/data')
+            ),
             'translation_entities' => array(
                 'cache' => 'zend_storage',
             ),
             'vrok_entities' => array(
                 'cache' => 'zend_storage',
+            ),
+            'orm_default' => array(
+                'drivers' => array(
+                    'Application\Entity' => 'queue_entities'
+                ),
             ),
         ),
     ),
@@ -273,8 +283,8 @@ return array(
             ),
             'administration' => array(
                 'label'    => 'navigation.administration', // default label or none is rendered
-                'route'    => 'admin', // we need either a route or an URI to avoid fatal error
-                'resource' => 'controller/AppBase\Controller\Admin',
+                'uri'      => '#', // we need either a route or an URI to avoid fatal error
+                'resource' => 'admin',
                 'order'    => 1000,
                 'pages'    => array(
                     array(
@@ -300,10 +310,11 @@ return array(
                         ),
                     ),
                     'server' => array(
-                        'label' => 'navigation.administration.server', // default label or none is rendered
-                        'uri'   => '#', // we need either a route or an URI to avoid fatal error
-                        'order' => 1000,
-                        'pages' => array(
+                        'label'    => 'navigation.administration.server', // default label or none is rendered
+                        'route'    => 'admin', // we need either a route or an URI to avoid fatal error
+                        'resource' => 'controller/AppBase\Controller\Admin',
+                        'order'    => 1000,
+                        'pages'    => array(
                             array(
                                 'label'     => 'navigation.slmQueue',
                                 'route'     => 'slm-queue',
@@ -406,6 +417,15 @@ return array(
                             ),
                             'defaults' => array(
                                 'action' => 'flush-cache',
+                            ),
+                        ),
+                    ),
+                    'phpinfo' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => 'phpinfo[/]',
+                            'defaults' => array(
+                                'action' => 'phpinfo',
                             ),
                         ),
                     ),
@@ -694,23 +714,33 @@ return array(
     'slm_queue' => array(
         'queues' => array(
             'jobs' => array(
-                // look for new jobs every 10 seconds
-                'sleep_when_idle' => 10,
                 // keep processed jobs in the queue for 30min
                 'deleted_lifetime' => 30,
+
                 // keep failed jobs in the queue forever, they need to be processed later
                 'buried_lifetime' => -1, // DoctrineQueue::LIFETIME_UNLIMITED
             ),
-        ),
-        'worker' => array(
-            'max_runs' => 100, // restart after 100 processed jobs
-            'max_memory' => 200 * 1024 * 1024, // restart if memory usage reaches 200 MB
         ),
         'queue_manager' => array(
             'factories' => array(
                 'jobs' => 'SlmQueueDoctrine\Factory\DoctrineQueueFactory',
             ),
         ),
+        'worker_strategies' => array(
+            'queues' => array(
+                'jobs' => array(
+                    // restart after 100 processed jobs
+                    'SlmQueue\Strategy\MaxRunsStrategy' => array('max_runs' => 100),
+
+                    // restart if memory usage reaches 200 MB
+                    'SlmQueue\Strategy\MaxMemoryStrategy' => array('max_memory' => 200 * 1024 * 1024),
+
+                    // look for new jobs every 10 seconds
+                    'SlmQueueDoctrine\Strategy\IdleNapStrategy' => array('nap_duration' => 10),
+                ),
+            ),
+        ),
+
         // after how many seconds are jobs reported as long running by
         // SlmQueueController::checkJobsAction?
         'runtime_threshold' => 3600, // 60 * 60

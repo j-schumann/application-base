@@ -7,6 +7,7 @@
 </div>
 <div class="row">
     <div class="fourteen columns">
+        <div class="col-md-5">
         <?php
             $this->form->setAttribute('action', $this->url('account/login'));
             echo $this->formDecorator($this->form);
@@ -15,5 +16,6 @@
         <a href="<?php echo $this->url('account/request-password'); ?>" title="<?php echo $this->translate('view.user.gotoPasswordRequest'); ?>">
             <?php echo $this->translate('view.user.gotoPasswordRequest'); ?>
         </a>
+        </div>
     </div>
 </div>

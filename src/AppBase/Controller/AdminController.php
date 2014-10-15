@@ -16,6 +16,11 @@ class AdminController extends AbstractActionController
     {
     }
 
+    /**
+     * Lists all configured caches and their status information.
+     *
+     * @return ViewModel
+     */
     public function cachesAction()
     {
         $config = $this->getServiceLocator()->get('config');
@@ -30,6 +35,11 @@ class AdminController extends AbstractActionController
         return $this->createViewModel(['caches' => $caches]);
     }
 
+    /**
+     * Allows to flush the given cache.
+     *
+     * @return ViewModel|Response
+     */
     public function flushCacheAction()
     {
         $name = $this->params('name');
@@ -71,5 +81,14 @@ class AdminController extends AbstractActionController
         $this->flashMessenger()
             ->addSuccessMessage('message.cache.flushed');
         return $this->redirect()->toRoute('admin/caches');
+    }
+
+    /**
+     * Just output the phpinfo(), do not use the layout, it would be corrupted.
+     */
+    public function phpinfoAction()
+    {
+        phpinfo();
+        exit;
     }
 }

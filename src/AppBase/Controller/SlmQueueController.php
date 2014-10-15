@@ -42,7 +42,6 @@ class SlmQueueController extends AbstractActionController
         // each queue must have an entry in [slm_queue][queue_manager][factories]
         // -> get those
         $services = $qm->getRegisteredServices();
-
         $queues = array();
         foreach($services['factories'] as $name) {
             $queue = $qm->get($name);
