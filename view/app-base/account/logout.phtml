@@ -5,11 +5,10 @@
 <div class="flash-messenger">
     <?php $this->flashMessenger()->renderAll(); ?>
 </div>
-<div class="row">
-    <div class="fourteen columns">
-        <?php
-            $this->form->setAttribute('action', $this->url('account/logout'));
-            echo $this->formDecorator($this->form);
-        ?>
-    </div>
+
+<div class="col-md-5">
+    <?php
+        $this->form->setAttribute('action', $this->url('account/logout'));
+        echo $this->formDecorator($this->form);
+    ?>
 </div>

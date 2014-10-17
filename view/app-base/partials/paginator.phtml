@@ -1,31 +1,32 @@
 <?php if ($this->pageCount > 1): ?>
-<dl class="pagination cf">
-    <dt>Seite:</dt>
-
+<ul class="pagination">
+    <li class="active">
+        <span><?php echo $this->translate('view.pages'); ?></span>
+    </li>
     <?php if ($this->current > 2): ?>
-        <dd><a href="<?php echo $this->url($this->route);?>?page=1#<?php echo $this->fragment; ?>">&lt;&lt;</a></dd>
+        <li><a href="<?php echo $this->url($this->route, $this->params);?>?page=1#<?php echo $this->fragment; ?>">&lt;&lt;</a></li>
     <?php endif; ?>
 
     <?php if (isset($this->previous)): ?>
-        <dd><a href="<?php echo $this->url($this->route);?>?page=<?php echo $this->previous; ?>#<?php echo $this->fragment; ?>">&lt;</a></dd>
+        <li><a href="<?php echo $this->url($this->route, $this->params);?>?page=<?php echo $this->previous; ?>#<?php echo $this->fragment; ?>">&lt;</a></li>
     <?php endif; ?>
 
     <?php foreach ($this->pagesInRange as $page): ?>
         <?php if ($page != $this->current): ?>
-            <dd><a href="<?php echo $this->url($this->route);?>?page=<?php echo $page; ?>#<?php echo $this->fragment; ?>">
+            <li><a href="<?php echo $this->url($this->route, $this->params);?>?page=<?php echo $page; ?>#<?php echo $this->fragment; ?>">
                     <?php echo $page; ?>
-            </a></dd>
+            </a></li>
         <?php else: ?>
-            <dd><a href="#<?php echo $this->fragment; ?>" class="current"><?php echo $page; ?></a></dd>
+            <li class="active"><a href="#<?php echo $this->fragment; ?>"><?php echo $page; ?></a></li>
         <?php endif; ?>
     <?php endforeach; ?>
 
     <?php if (isset($this->next)): ?>
-        <dd><a href="<?php echo $this->url($this->route);?>?page=<?php echo $this->next; ?>#<?php echo $this->fragment; ?>">&gt;</a></dd>
+        <li><a href="<?php echo $this->url($this->route, $this->params);?>?page=<?php echo $this->next; ?>#<?php echo $this->fragment; ?>">&gt;</a></li>
     <?php endif; ?>
 
     <?php if ($this->current < $this->pageCount - 1): ?>
-        <dd><a href="<?php echo $this->url($this->route);?>?page=<?php echo $this->pageCount; ?>#<?php echo $this->fragment; ?>">&gt;&gt;</a></dd>
+        <li><a href="<?php echo $this->url($this->route, $this->params);?>?page=<?php echo $this->pageCount; ?>#<?php echo $this->fragment; ?>">&gt;&gt;</a></li>
     <?php endif; ?>
 </dl>
 <?php endif;
