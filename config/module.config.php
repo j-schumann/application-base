@@ -738,7 +738,7 @@ return array(
                     // look for new jobs every 10 seconds
                     'SlmQueueDoctrine\Strategy\IdleNapStrategy' => array('nap_duration' => 10),
 
-                    // process the jobs
+                    // This actually starts the job processing
                     'SlmQueue\Strategy\ProcessQueueStrategy',
                 ),
             ),
