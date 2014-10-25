@@ -58,7 +58,7 @@ class UserController extends AbstractActionController
             }
         }
 
-        $filter = $userManager->getUserFilter()->joinGroups()->areNotDeleted();
+        $filter = $userManager->getUserFilter()->areNotDeleted();
 
         if ($sessionContainer['userFilter']
             && !empty($sessionContainer['userFilter']['nameSearch'])
@@ -69,10 +69,11 @@ class UserController extends AbstractActionController
         if ($sessionContainer['userFilter']
             && !empty($sessionContainer['userFilter']['groupFilter'])
         ) {
-            $filter->byGroupId($sessionContainer['userFilter']['groupFilter']);
+            $filter->joinGroups()->byGroupId($sessionContainer['userFilter']['groupFilter']);
         }
 
         $filter->orderByField($sessionContainer['orderBy'], $sessionContainer['order']);
+
         $paginator = $filter->getPaginator();
         $paginator->setItemCountPerPage(15);
         $paginator->setCurrentPageNumber((int)$this->params()->fromQuery('page', 1));

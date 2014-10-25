@@ -11,7 +11,9 @@
         "doctrine/doctrine-orm-module": "dev-master",
         "gedmo/doctrine-extensions": "~2.3.9",
         "slm/queue-doctrine": "~0.4.0",
-        "vrok/vrok-lib": "dev-master@dev"
+        "vrok/vrok-lib": "dev-master@dev",
+        "vrok/translation-module": "dev-master@dev",
+        "vrok/supervisor-control": "dev-master@dev"
     },
     "autoload": {
         "psr-0": {

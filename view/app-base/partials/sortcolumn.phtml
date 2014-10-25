@@ -1,0 +1,12 @@
+<a href="?orderBy=<?php echo $this->field; ?>&order=<?php echo ($this->orderBy === $this->field && $this->order === 'asc') ? 'desc' : 'asc'; ?>#<?php echo $this->fragment; ?>" class="no-text-deco" title="<?php echo $this->translate('view.sort.'.($this->orderBy === $this->field && $this->order === 'asc' ? 'desc' : 'asc')); ?>">
+    <?php echo $this->label ?>
+    <?php if ($this->orderBy == $this->field) :
+        if ($this->order == 'asc') : ?>
+            <span class="glyphicon glyphicon-sort-by-attributes">
+        <?php else : ?>
+            <span class="glyphicon glyphicon-sort-by-attributes-alt">
+        <?php endif;
+    else : ?>
+        <span class="glyphicon glyphicon-sort">
+    <?php endif; ?>
+</a>

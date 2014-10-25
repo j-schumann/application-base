@@ -225,21 +225,27 @@ return array(
             ),
         ),
         'driver' => array(
+            // load the DoctrineQueue entity from the slm-queue folder so it
+            // is automatically created by doctrine orm:schema-tool:update
             'queue_entities' => array(
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'zend_storage',
                 'paths' => array(__DIR__ . '/../../../slm/queue-doctrine/data')
             ),
+
+            // include the DoctrineQueue
+            'orm_default' => array(
+                'drivers' => array(
+                    'Application\Entity' => 'queue_entities'
+                ),
+            ),
+
+            // the libraries don't configure caches themself
             'translation_entities' => array(
                 'cache' => 'zend_storage',
             ),
             'vrok_entities' => array(
                 'cache' => 'zend_storage',
-            ),
-            'orm_default' => array(
-                'drivers' => array(
-                    'Application\Entity' => 'queue_entities'
-                ),
             ),
         ),
     ),
@@ -261,7 +267,7 @@ return array(
         'default' => array(
             'account' => array(
                 'label'    => 'navigation.account',
-                'uri'      => '#', // we need either a route or an URI to avoid fatal error
+                'route'    => 'account',
                 'order'    => -100,
                 'pages'    => array(
                     array(

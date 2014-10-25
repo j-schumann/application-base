@@ -5,7 +5,8 @@
 <div class="flash-messenger">
     <?php $this->flashMessenger()->renderAll(); ?>
 </div>
-<div class="row">
+
+<p>
     <ul>
         <li>
             <?php echo $this->translate('view.user.username').': '.$this->currentUser()->getUserName(); ?>
@@ -17,14 +18,14 @@
             <?php echo $this->translate('view.user.email').': '.$this->currentUser()->getEmail(); ?>
         </li>
     </ul>
-    <div class="fourteen columns">
-        <a href="<?php echo $this->url('account/logout'); ?>" title="<?php echo $this->translate('view.user.gotoLogout'); ?>">
-            <?php echo $this->translate('view.user.gotoLogout'); ?>
-        </a>
-        <br />
-        <a href="<?php echo $this->url('account/change-password'); ?>" title="<?php echo $this->translate('view.user.gotoPasswordChange'); ?>">
-            <?php echo $this->translate('view.user.gotoPasswordChange'); ?>
-        </a>
+</p>
 
-    </div>
-</div>
+<p>
+    <a href="<?php echo $this->url('account/logout'); ?>" title="<?php echo $this->translate('view.user.gotoLogout'); ?>">
+        <?php echo $this->translate('view.user.gotoLogout'); ?>
+    </a>
+    <br />
+    <a href="<?php echo $this->url('account/change-password'); ?>" title="<?php echo $this->translate('view.user.gotoPasswordChange'); ?>">
+        <?php echo $this->translate('view.user.gotoPasswordChange'); ?>
+    </a>
+</p>
