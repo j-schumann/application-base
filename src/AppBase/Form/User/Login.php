@@ -1,4 +1,9 @@
 <?php
+/**
+ * @copyright   (c) 2014, Vrok
+ * @license     http://customlicense CustomLicense
+ * @author      Jakob Schumann <schumann@vrok.de>
+ */
 
 namespace AppBase\Form\User;
 
@@ -40,15 +45,17 @@ class Login extends Form implements InputFilterProviderInterface
     {
         $ur = $this->getEntityManager()
                 ->getRepository('Vrok\Entity\User');
-        $userManager = $this->getServiceLocator()->getServiceLocator()
-                ->get('UserManager');
 
-        $passwordSpec = $ur->getInputSpecification('password');
-        $passwordSpec['validators']['auth'] = $userManager->getAuthValidator();
+        // do not use the authValidator here as he logs the user in even if the
+        // form is not valid, e.g. the CSRF fails
+        //$userManager = $this->getServiceLocator()->getServiceLocator()
+        //        ->get('UserManager');
+        //$passwordSpec = $ur->getInputSpecification('password');
+        //$passwordSpec['validators']['auth'] = $userManager->getAuthValidator();
 
         return array(
             $ur->getInputSpecification('username'),
-            $passwordSpec,
+            $ur->getInputSpecification('password'),
         );
     }
 }

@@ -1,12 +1,18 @@
 <?php
+/**
+ * @copyright   (c) 2014, Vrok
+ * @license     http://customlicense CustomLicense
+ * @author      Jakob Schumann <schumann@vrok.de>
+ */
 
 namespace AppBase\Controller;
 
+use Vrok\Entity\User;
 use Vrok\Mvc\Controller\AbstractActionController;
 use Zend\Session\Container as SessionContainer;
 
 /**
- * Allows the administrator to edit/create/delete users.
+ * Allows the userAdmin to list and CRUD users.
  */
 class UserController extends AbstractActionController
 {
@@ -88,6 +94,8 @@ class UserController extends AbstractActionController
 
     /**
      * Allows userAdmins to create new users.
+     *
+     * @return ViewModel|Response
      */
     public function createAction()
     {
@@ -113,7 +121,7 @@ class UserController extends AbstractActionController
 
         $userManager = $this->getServiceLocator()->get('UserManager');
         $user = $userManager->createUser($data['user']);
-        if (!$user instanceof \Vrok\Entity\User) {
+        if (!$user instanceof User) {
             $form->get('user')->setUntranslatedMessages($user);
             return $viewModel;
         }
@@ -130,12 +138,12 @@ class UserController extends AbstractActionController
     /**
      * Allows userAdmins to edit an user record.
      *
-     * @return ViewModel
+     * @return ViewModel|Response
      */
     public function editAction()
     {
         $user = $this->getEntityFromParam('Vrok\Entity\User');
-        if (!$user instanceof \Vrok\Entity\User) {
+        if (!$user instanceof User) {
             $this->getResponse()->setStatusCode(404);
             return $this->createViewModel(array('message' => $user));
         }
@@ -188,8 +196,10 @@ class UserController extends AbstractActionController
     }
 
     /**
+     * Allows the userAdmin to delete the selected user.
      *
-     * @return ViewModel
+     * @todo softdelete nutzen/implementieren
+     * @return ViewModel|Response
      */
     public function deleteAction()
     {

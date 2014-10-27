@@ -1,11 +1,25 @@
 <?php
+/**
+ * @copyright   (c) 2014, Vrok
+ * @license     http://customlicense CustomLicense
+ * @author      Jakob Schumann <schumann@vrok.de>
+ */
 
 namespace AppBase\Controller;
 
+use Vrok\Entity\Group;
 use Vrok\Mvc\Controller\AbstractActionController;
 
+/**
+ * Allows userAdmins to list and CRUD goups.
+ */
 class GroupController extends AbstractActionController
 {
+    /**
+     * Lists all existing user groups.
+     *
+     * @return ViewModel
+     */
     public function indexAction()
     {
         $em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
@@ -15,6 +29,11 @@ class GroupController extends AbstractActionController
         return $this->createViewModel(array('groups' => $groups));
     }
 
+    /**
+     * Allows the userAdmin to create a new group.
+     *
+     * @return ViewModel|Response
+     */
     public function createAction()
     {
         $form = $this->getServiceLocator()->get('FormElementManager')
@@ -42,10 +61,15 @@ class GroupController extends AbstractActionController
         return $this->redirect()->toRoute('user/group');
     }
 
+    /**
+     * Allows the userAdmin to edit the selected Group.
+     *
+     * @return ViewModel|Response
+     */
     public function editAction()
     {
         $group = $this->getEntityFromParam('Vrok\Entity\Group');
-        if (!$group instanceof \Vrok\Entity\Group) {
+        if (!$group instanceof Group) {
             $this->getResponse()->setStatusCode(404);
             return $this->createViewModel(array('message' => $group));
         }
@@ -80,10 +104,15 @@ class GroupController extends AbstractActionController
         return $this->redirect()->toRoute('user/group');
     }
 
+    /**
+     * Allows the userAdmin to delete the selected group.
+     *
+     * @return ViewModel|Response
+     */
     public function deleteAction()
     {
         $group = $this->getEntityFromParam('Vrok\Entity\Group');
-        if (!$group instanceof \Vrok\Entity\Group) {
+        if (!$group instanceof Group) {
             $this->getResponse()->setStatusCode(404);
             return $this->createViewModel(array('message' => $group));
         }

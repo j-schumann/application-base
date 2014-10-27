@@ -1,12 +1,20 @@
 <?php
+/**
+ * @copyright   (c) 2014, Vrok
+ * @license     http://customlicense CustomLicense
+ * @author      Jakob Schumann <schumann@vrok.de>
+ */
 
 namespace AppBase\Form\Validation;
+
+use Vrok\Form\Form;
+use Zend\InputFilter\InputFilterProviderInterface;
 
 /**
  * Shows inputs for validation ID and token, used if the confirmation via URL failed,
  * e.g. parameters were incomplete
  */
-class ConfirmationForm extends \Vrok\Form\Form implements \Zend\InputFilter\InputFilterProviderInterface
+class ConfirmationForm extends Form implements InputFilterProviderInterface
 {
     /**
      * {@inheritDoc}

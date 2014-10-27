@@ -13,7 +13,6 @@ use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
 use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
 use Zend\Mvc\ApplicationInterface;
-use Zend\Mvc\MvcEvent;
 use Zend\Session\Config\SessionConfig;
 use Zend\Session\Container;
 use Zend\Session\SessionManager;
@@ -120,6 +119,11 @@ class Module implements
         $config = $application->getServiceManager()->get('config');
 
         $this->initSession($config);
+
+        // Allow caching of assertions by not using dependencies via constructor
+        // or ServiceLocatorAware but retrieving them from the static helper.
+        $sm = $application->getServiceManager();
+        \Vrok\Acl\Assertion\AssertionHelper::setServiceLocator($sm);
 
         // @todo konfigurierbar machen
         // ist ausserdem auch nur die default-timezone für anzeigen

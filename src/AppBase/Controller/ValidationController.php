@@ -8,12 +8,22 @@
 namespace AppBase\Controller;
 
 use Vrok\Mvc\Controller\AbstractActionController;
+use Zend\Http\Response;
 
 /**
  * Holds validation management functions.
  */
 class ValidationController extends AbstractActionController
 {
+    /**
+     * Entry point for users to confirm a validation request. Accessed by opening
+     * the link sent via email, either without parameters (no direct validation)
+     * or with parameters in the URL (direct validation).
+     * Redirects the user to the page the validation event returned if the
+     * confirmation was successful.
+     *
+     * @return ViewModel|Response
+     */
     public function confirmAction()
     {
         $form = $this->getServiceLocator()->get('FormElementManager')

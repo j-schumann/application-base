@@ -2,6 +2,7 @@
 
 namespace AppBase\Controller;
 
+use Vrok\Entity\User;
 use Vrok\Mvc\Controller\AbstractActionController;
 
 /**
@@ -35,14 +36,24 @@ class AccountController extends AbstractActionController
         $form = $this->getServiceLocator()->get('FormElementManager')
                 ->get('AppBase\Form\User\Login');
         $form->setData($this->request->getPost());
+        $viewModel = ['form' => $form];
 
-        if ($this->request->isPost() && $form->isValid()) {
-
-
-            return $this->loginRedirector()->goBack($defaultRoute);
+        if (!$this->request->isPost() || !$form->isValid()) {
+            return $this->createViewModel($viewModel);
         }
 
-        return $this->createViewModel(array('form' => $form));
+        $data = $form->getData();
+        $um = $this->getServiceLocator()->get('UserManager');
+
+        // we do not use the Zend\Authentication\Validator directly in the form
+        // as this would lead to a successful login even when the CSRF failed
+        $result = $um->login($data['username'], $data['password']);
+        if (! $result instanceof User) {
+            $form->get('password')->setMessages($result);
+            return $this->createViewModel($viewModel);
+        }
+
+        return $this->loginRedirector()->goBack($um->getPostLoginRoute());
     }
 
     /**

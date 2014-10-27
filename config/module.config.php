@@ -142,7 +142,7 @@ return array(
                         'route' => 'cron-hourly',
                         'defaults' => array(
                             'controller' => 'AppBase\Controller\Cron',
-                            'action' => 'cron-hourly',
+                            'action'     => 'cron-hourly',
                         ),
                     ),
                 ),
@@ -151,7 +151,7 @@ return array(
                         'route' => 'cron-daily',
                         'defaults' => array(
                             'controller' => 'AppBase\Controller\Cron',
-                            'action' => 'cron-daily',
+                            'action'     => 'cron-daily',
                         ),
                     ),
                 ),
@@ -160,7 +160,7 @@ return array(
                         'route' => 'cron-monthly',
                         'defaults' => array(
                             'controller' => 'AppBase\Controller\Cron',
-                            'action' => 'cron-monthly',
+                            'action'     => 'cron-monthly',
                         ),
                     ),
                 ),
@@ -169,7 +169,7 @@ return array(
                         'route' => 'purge-validations',
                         'defaults' => array(
                             'controller' => 'AppBase\Controller\Validation',
-                            'action' => 'purge',
+                            'action'     => 'purge',
                         ),
                     ),
                 ),
@@ -178,7 +178,7 @@ return array(
                         'route' => 'check-jobs',
                         'defaults' => array(
                             'controller' => 'AppBase\Controller\SlmQueue',
-                            'action' => 'check-jobs',
+                            'action'     => 'check-jobs',
                         ),
                     ),
                 ),
@@ -285,11 +285,21 @@ return array(
                         'route'    => 'account/logout',
                         'resource' => 'user',
                     ),
+                    array(
+                        'label'   => 'navigation.account.changePassword',
+                        'route'   => 'account/change-password',
+                        'visible' => false,
+                    ),
+                    array(
+                        'label'   => 'navigation.account.requestPassword',
+                        'route'   => 'account/request-password',
+                        'visible' => false,
+                    ),
                 ),
             ),
             'administration' => array(
                 'label'    => 'navigation.administration', // default label or none is rendered
-                'uri'      => '#', // we need either a route or an URI to avoid fatal error
+                'route'    => 'admin', // we need either a route or an URI to avoid fatal error
                 'resource' => 'admin',
                 'order'    => 1000,
                 'pages'    => array(
@@ -302,6 +312,16 @@ return array(
                                 'label' => 'navigation.user.create',
                                 'route' => 'user/create',
                             ),
+                            array(
+                                'label'   => 'navigation.user.edit',
+                                'route'   => 'user/edit',
+                                'visible' => false,
+                            ),
+                            array(
+                                'label'   => 'navigation.user.delete',
+                                'route'   => 'user/delete',
+                                'visible' => false,
+                            ),
                         ),
                     ),
                     array(
@@ -312,6 +332,16 @@ return array(
                             array(
                                 'label' => 'navigation.user.group.create',
                                 'route' => 'user/group/create',
+                            ),
+                            array(
+                                'label'     => 'navigation.user.group.edit',
+                                'route'   => 'user/group/edit',
+                                'visible' => false,
+                            ),
+                            array(
+                                'label'   => 'navigation.user.group.delete',
+                                'route'   => 'user/group/delete',
+                                'visible' => false,
                             ),
                         ),
                     ),
@@ -327,6 +357,38 @@ return array(
                                 'resource'  => 'controller/AppBase\Controller\SlmQueue',
                                 'privilege' => 'index',
                                 'order'     => 1000,
+                                'pages'     => array(
+                                    array(
+                                        'label'   => 'navigation.slmQueue.recover',
+                                        'route'   => 'slm-queue/recover',
+                                        'visible' => false,
+                                    ),
+                                    array(
+                                        'label'   => 'navigation.slmQueue.listBuried',
+                                        'route'   => 'slm-queue/list-buried',
+                                        'visible' => false,
+                                    ),
+                                    array(
+                                        'label'   => 'navigation.slmQueue.listRunning',
+                                        'route'   => 'slm-queue/list-running',
+                                        'visible' => false,
+                                    ),
+                                    array(
+                                        'label'   => 'navigation.slmQueue.delete',
+                                        'route'   => 'slm-queue/delete',
+                                        'visible' => false,
+                                    ),
+                                    array(
+                                        'label'   => 'navigation.slmQueue.release',
+                                        'route'   => 'slm-queue/release',
+                                        'visible' => false,
+                                    ),
+                                    array(
+                                        'label'   => 'navigation.slmQueue.unbury',
+                                        'route'   => 'slm-queue/unbury',
+                                        'visible' => false,
+                                    ),
+                                ),
                             ),
                             array(
                                 'label'     => 'navigation.caches',
@@ -334,6 +396,13 @@ return array(
                                 'resource'  => 'controller/AppBase\Controller\Admin',
                                 'privilege' => 'caches',
                                 'order'     => 1000,
+                                'pages'     => array(
+                                    array(
+                                        'label'   => 'navigation.flushCache',
+                                        'route'   => 'admin/flush-cache',
+                                        'visible' => false,
+                                    ),
+                                ),
                             ),
                         ),
                     ),
@@ -440,18 +509,18 @@ return array(
             'slm-queue' => array(
                 'type' => 'Literal',
                 'options' => array(
-                    'route' => '/slm-queue/',
+                    'route'    => '/slm-queue/',
                     'defaults' => array(
                         'controller' => 'AppBase\Controller\SlmQueue',
-                        'action' => 'index',
+                        'action'     => 'index',
                     ),
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
                     'recover' => array(
-                        'type' => 'Segment',
+                        'type'    => 'Segment',
                         'options' => array(
-                            'route' => 'recover/[:name][/]',
+                            'route'       => 'recover/[:name][/]',
                             'constraints' => array(
                                 'name' => '[a-zA-Z0-9_-]+',
                             ),
@@ -461,9 +530,9 @@ return array(
                         ),
                     ),
                     'list-buried' => array(
-                        'type' => 'Segment',
+                        'type'     => 'Segment',
                         'options' => array(
-                            'route' => 'list-buried/[:name][/]',
+                            'route'       => 'list-buried/[:name][/]',
                             'constraints' => array(
                                 'name' => '[a-zA-Z0-9_-]+',
                             ),
@@ -475,7 +544,7 @@ return array(
                     'list-running' => array(
                         'type' => 'Segment',
                         'options' => array(
-                            'route' => 'list-running/[:name][/]',
+                            'route'       => 'list-running/[:name][/]',
                             'constraints' => array(
                                 'name' => '[a-zA-Z0-9_-]+',
                             ),
