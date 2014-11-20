@@ -768,6 +768,8 @@ return array(
         ),
 
         'factories' => array(
+            'Navigation' => 'Zend\Navigation\Service\DefaultNavigationFactory',
+
             // replace the default translator with our custom extension
             'Zend\I18n\Translator\TranslatorInterface'
                     => 'Vrok\I18n\Translator\TranslatorServiceFactory',
