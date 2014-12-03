@@ -334,7 +334,7 @@ return array(
                                 'route' => 'user/group/create',
                             ),
                             array(
-                                'label'     => 'navigation.user.group.edit',
+                                'label'   => 'navigation.user.group.edit',
                                 'route'   => 'user/group/edit',
                                 'visible' => false,
                             ),
@@ -473,11 +473,11 @@ return array(
                     ),
                 ),
                 'may_terminate' => true,
-                'child_routes' => array(
+                'child_routes'  => array(
                     'caches' => array(
-                        'type' => 'Segment',
+                        'type'    => 'Segment',
                         'options' => array(
-                            'route' => 'caches[/]',
+                            'route'    => 'caches[/]',
                             'defaults' => array(
                                 'action' => 'caches',
                             ),
@@ -768,6 +768,8 @@ return array(
         ),
 
         'factories' => array(
+            'Navigation' => 'Zend\Navigation\Service\DefaultNavigationFactory',
+
             // replace the default translator with our custom extension
             'Zend\I18n\Translator\TranslatorInterface'
                     => 'Vrok\I18n\Translator\TranslatorServiceFactory',

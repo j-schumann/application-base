@@ -29,6 +29,7 @@
             <td><?php echo $name; ?></td>
             <td><?php echo str_replace('Zend\Cache\Storage\Adapter\\', '', get_class($cache)); ?></td>
             <td><?php
+            if ($cache instanceof Zend\Cache\Storage\Adapter\Memcached) {
                 /* @var $cache \Zend\Cache\Storage\StorageInterface */
                 $o = $cache->getOptions();
                 /* @var $o Zend\Cache\Storage\Adapter\MemcachedOptions */
@@ -39,7 +40,7 @@
                 echo round($stats['bytes']/1024).' / '.round($stats['limit_maxbytes']/1024).' kiB belegt<br />';
                 echo round($stats['get_hits'] * 100 / $stats['cmd_get']).'% Hit-Ratio<br />';
                 echo $stats['curr_items'].' Einträge aktuell, '.$stats['evictions'].' Evictions';
-
+            }
                 // @todo wenn (lib)memcached benutzt wird lassen sich die Stats nicht abrufen
                 // sie sind entweder leer als wäre der Server nicht erreichbar oder es gibt einen TImeout
                 /*if ($cache instanceof \Zend\Cache\Storage\TotalSpaceCapableInterface) {

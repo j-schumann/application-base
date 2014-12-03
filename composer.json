@@ -19,5 +19,9 @@
         "psr-0": {
             "AppBase": "src/"
         }
-    }
+    },
+    "bin": [
+        "bin/add-admin.sh",
+        "bin/add-group.sh"
+    ]
 }
