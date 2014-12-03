@@ -179,7 +179,6 @@ class UserController extends AbstractActionController
         if (empty($data['user']['password'])) {
             unset($data['user']['password']);
         }
-
         $repository->updateInstance($user, $data['user']);
 
         // send the email after updating the record, maybe we set a new email...
