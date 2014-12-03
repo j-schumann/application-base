@@ -36,7 +36,7 @@
         $content = unserialize($data['content']);
         ?>
         <tr>
-            <td><?php echo $data['class']; ?></td>
+            <td><?php echo $data['metadata']['__name__']; ?></td>
             <td><?php echo json_encode($content); ?></td>
             <td><?php echo $job['created']; ?></td>
             <td><?php echo $job['executed']; ?></td>
