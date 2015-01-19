@@ -68,17 +68,21 @@ class AccountController extends AbstractActionController
             return $this->redirect()->toRoute('home');
         }
 
-        $form = $this->getServiceLocator()->get('FormElementManager')
+        // directly logout without confirmation if the session id is given
+        // to protect against simple CSRF
+        if ($this->params()->fromQuery('s') !== session_id()) {
+            $form = $this->getServiceLocator()->get('FormElementManager')
                 ->get('Vrok\Form\ConfirmationForm');
-        $form->setData($this->request->getPost());
-        if (!$this->request->isPost() || !$form->isValid()) {
-            return $this->createViewModel(array('form' => $form));
+            $form->setData($this->request->getPost());
+            if (!$this->request->isPost() || !$form->isValid()) {
+                return $this->createViewModel(array('form' => $form));
+            }
         }
 
         $userService = $this->getServiceLocator()->get('UserManager');
         $userService->logout();
 
-        return $this->redirect()->toRoute('account/login');
+        return $this->redirect()->toRoute('home');
     }
 
     /**
