@@ -129,8 +129,11 @@ class Module implements
         // ist ausserdem auch nur die default-timezone für anzeigen
         date_default_timezone_set('Europe/Berlin');
 
-        // @todo ersetzen mit locale detection aktueller User + Translator setzen
-        \Locale::setDefault('de_DE');
+        // @todo accept-header und locale des eingeloggten users auswerten
+        $metaService = $sm->get('Vrok\Service\Meta');
+        $defaultLocale = $metaService->getValue('defaultLocale') ?: 'de_DE';
+        \Locale::setDefault($defaultLocale);
+        $sm->get('Translator')->setLocale($defaultLocale);
 
         $sharedEvents = $eventManager->getSharedManager();
 

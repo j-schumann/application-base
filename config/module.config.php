@@ -828,8 +828,11 @@ return array(
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="translator">
     'translator' => array(
-        // @todo replace with locale detection and user settings
-        'locale' => 'de_DE',
+        // this sets the primary and the fallback locale
+        // the primary locale is overwritten in the module bootstrap according
+        // to the systems defaultLocale stored in the metaData and eventually
+        // detected by the users profile language or accept-language headers.
+        'locale' => ['de_DE', 'de_DE'],
     ),
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="validation_manager">
