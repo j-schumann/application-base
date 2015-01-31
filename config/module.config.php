@@ -48,17 +48,17 @@ return array(
                 // guards for application-base
                 array(
                     'controller' => 'AppBase\Controller\Account',
-                    'action' => array('login', 'index', 'request-password'),
-                    'roles' => array('guest', 'user',),
+                    'action'     => array('login', 'index', 'request-password'),
+                    'roles'      => array('guest', 'user',),
                 ),
                 array(
                     'controller' => 'AppBase\Controller\Account',
-                    'action' => array('change-password', 'logout'),
-                    'roles' => array('user'),
+                    'action'     => array('change-password', 'logout', 'delete'),
+                    'roles'      => array('user'),
                 ),
                 array(
                     'controller' => 'AppBase\Controller\Admin',
-                    'roles' => array('admin'),
+                    'roles'      => array('admin'),
                 ),
                 array(
                     // console route
@@ -295,6 +295,11 @@ return array(
                         'route'   => 'account/request-password',
                         'visible' => false,
                     ),
+                    array(
+                        'label'   => 'navigation.account.delete',
+                        'route'   => 'account/delete',
+                        'visible' => false,
+                    ),
                 ),
             ),
             'administration' => array(
@@ -458,6 +463,15 @@ return array(
                             'route' => 'request-password[/]',
                             'defaults' => array(
                                 'action' => 'request-password',
+                            ),
+                        ),
+                    ),
+                    'delete' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => 'delete[/]',
+                            'defaults' => array(
+                                'action' => 'delete',
                             ),
                         ),
                     ),

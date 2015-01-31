@@ -122,7 +122,7 @@ class AccountController extends AbstractActionController
     /**
      * Allows the user to request an email with a new random password.
      *
-     * @return ViewModel
+     * @return ViewModel|Response
      */
     public function requestPasswordAction()
     {
@@ -153,6 +153,40 @@ class AccountController extends AbstractActionController
         $this->flashMessenger()
                 ->addSuccessMessage('message.user.passwordRequested');
 
+        return $this->redirect()->toRoute('account/login');
+    }
+
+    /**
+     * Allows the user to delete his account.
+     */
+    public function deleteAction()
+    {
+        $form = $this->getServiceLocator()->get('FormElementManager')
+            ->get('Vrok\Form\ConfirmationForm');
+
+        $form->setData($this->request->getPost());
+        if (!$this->request->isPost() || !$form->isValid()) {
+            return $this->createViewModel(array('form' => $form));
+        }
+
+        $userManager = $this->getServiceLocator()->get('UserManager');
+        $results = $userManager->deleteAccount();
+        foreach($results as $message) {
+            if (is_string($message)) {
+                $this->flashMessenger()
+                    ->addInfoMessage($message);
+            }
+        }
+
+        // still logged in -> delete failed, show the messages
+        if ($this->identity()) {
+            return $this->createViewModel([]);
+        }
+
+        $this->flashMessenger()->addSuccessMessage('message.account.deleted');
+
+        // we don't want an extra "deleted" page but want a page where flash
+        // messages are shown
         return $this->redirect()->toRoute('account/login');
     }
 }
