@@ -242,4 +242,16 @@ class UserController extends AbstractActionController
                 ->addSuccessMessage('message.user.deleted');
         return $this->redirect()->toRoute('user');
     }
+
+    /**
+     * Checks the strength of the POSTed password and returns its rating.
+     */
+    public function passwordStrengthAction()
+    {
+        $pw = $this->params()->fromPost('pw');
+        $um = $this->getServiceLocator()->get('UserManager');
+        $rating = $um->ratePassword($pw);
+        $rating['ratingText'] = $this->translate($rating['ratingText']);
+        return $this->getJsonModel($rating);
+    }
 }

@@ -161,30 +161,4 @@ class Module implements
         $sessionManager->start();
         Container::setDefaultManager($sessionManager);
     }
-
-    /**
-     * @todo necessary?
-     *
-     * @param ApplicationInterface $application
-     * @return type
-     */
-    protected function prepareTheme(ApplicationInterface $application)
-    {
-        $sm = $application->getServiceManager();
-
-        $config = $sm->get('Config');
-        if (!empty($config['theme'])) {
-            return;
-        }
-
-        if (isset($config['theme']['template_map'])) {
-            $map = $sm->get('ViewTemplateMapResolver');
-            $map->merge($config['theme']['template_map']);
-        }
-
-        if (isset($config['theme']['template_path_stack'])) {
-            $stack = $sm->get('ViewTemplatePathStack');
-            $stack->addPaths($config['theme']['template_path_stack']);
-        }
-    }
 }

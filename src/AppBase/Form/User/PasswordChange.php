@@ -8,6 +8,7 @@
 namespace AppBase\Form\User;
 
 use \Vrok\Form\Form;
+use Vrok\Validator\PasswordStrength;
 use \Zend\InputFilter\InputFilterProviderInterface;
 
 /**
@@ -32,8 +33,10 @@ class PasswordChange extends Form implements InputFilterProviderInterface
 
         $passwordDefinition['name'] = 'newPassword';
         $passwordDefinition['options']['label'] = 'form.user.newPassword.label';
+        $passwordDefinition['attributes']['class'] = 'rate-password';
         $this->add($passwordDefinition);
 
+        unset($passwordDefinition['attributes']['class']);
         $passwordDefinition['name'] = 'passwordRepeat';
         $passwordDefinition['options']['label'] = 'form.user.passwordRepeat.label';
         $this->add($passwordDefinition);
@@ -57,8 +60,21 @@ class PasswordChange extends Form implements InputFilterProviderInterface
 
         $oldPasswordSpec = $ur->getInputSpecification('password');
 
+        $userManager = $this->getServiceLocator()->getServiceLocator()
+                ->get('UserManager');
+        $thresholds = $userManager->getPasswordStrengthThresholds();
+
         $newPasswordSpec = $oldPasswordSpec;
         $newPasswordSpec['name'] = 'newPassword';
+        $newPasswordSpec['validators']['passwordStrength'] = array(
+            'name'    => PasswordStrength::class,
+            'options' => array(
+                'threshold' => $thresholds['ok'],
+                'messages'  => array(
+                    PasswordStrength::TOO_WEAK => 'validate.user.password.tooWeak',
+                ),
+            ),
+        );
 
         $repeatSpec = array(
             'name'     => 'passwordRepeat',

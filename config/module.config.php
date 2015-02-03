@@ -3,6 +3,18 @@
  * Application-Base config
  */
 return array(
+// <editor-fold defaultstate="collapsed" desc="asset_manager">
+    'asset_manager' => array(
+        'resolver_configs' => array(
+            'paths' => array(
+                __DIR__ . '/../public',
+            ),
+            'view_scripts' => array(
+                'app-base.js' => 'app-base/partials/app-base.js',
+            ),
+        ),
+    ),
+// </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="bjyauthorize">
     'bjyauthorize' => array(
         'default_role' => 'guest',
@@ -53,7 +65,7 @@ return array(
                 ),
                 array(
                     'controller' => 'AppBase\Controller\Account',
-                    'action'     => array('change-password', 'logout', 'delete'),
+                    'action'     => array('change-displayname', 'change-password', 'logout', 'delete'),
                     'roles'      => array('user'),
                 ),
                 array(
@@ -67,66 +79,71 @@ return array(
                 ),
                 array(
                     'controller' => 'AppBase\Controller\Group',
-                    'roles' => array('userAdmin'),
+                    'roles'      => array('userAdmin'),
                 ),
                 array(
                     'controller' => 'AppBase\Controller\SlmQueue',
-                    'roles' => array('queueAdmin'),
+                    'roles'      => array('queueAdmin'),
                 ),
                 array(
                     // console route
                     'controller' => 'AppBase\Controller\SlmQueue',
-                    'action' => 'check-jobs',
-                    'roles' => array('guest', 'queueAdmin'),
+                    'action'     => 'check-jobs',
+                    'roles'      => array('guest', 'queueAdmin'),
                 ),
                 array(
                     'controller' => 'AppBase\Controller\User',
-                    'roles' => array('userAdmin',),
+                    'roles'      => array('userAdmin',),
+                ),
+                array(
+                    'controller' => 'AppBase\Controller\User',
+                    'action'     => 'password-strength',
+                    'roles'      => array('guest', 'user'),
                 ),
                 array(
                     // console route
                     'controller' => 'AppBase\Controller\Validation',
-                    'roles' => array('guest', 'user'),
+                    'roles'      => array('guest', 'user'),
                 ),
 
                 // guards for the SlmQueue module
                 array(
                     // console route
                     'controller' => 'SlmQueueDoctrine\Controller\DoctrineWorkerController',
-                    'roles' => array('guest', 'user'),
+                    'roles'      => array('guest', 'user'),
                 ),
 
                 // guards for the translation module
                 array(
                     'controller' => 'TranslationModule\Controller\Index',
-                    'roles' => array('translationAdmin'),
+                    'roles'      => array('translationAdmin'),
                 ),
                 array(
                     'controller' => 'TranslationModule\Controller\String',
-                    'roles' => array('translationAdmin'),
+                    'roles'      => array('translationAdmin'),
                 ),
                 array(
                     'controller' => 'TranslationModule\Controller\Module',
-                    'roles' => array('translationAdmin'),
+                    'roles'      => array('translationAdmin'),
                 ),
                 array(
                     'controller' => 'TranslationModule\Controller\Language',
-                    'roles' => array('translationAdmin'),
+                    'roles'      => array('translationAdmin'),
                 ),
                 array(
                     'controller' => 'TranslationModule\Controller\Management',
-                    'roles' => array('translationAdmin'),
+                    'roles'      => array('translationAdmin'),
                 ),
 
                 // guards for supervisor-control
                 array(
                     'controller' => 'SupervisorControl\Controller\Supervisor',
-                    'roles' => array('supervisorAdmin'),
+                    'roles'      => array('supervisorAdmin'),
                 ),
                 array(
                     // console route
                     'controller' => 'SupervisorControl\Controller\Console',
-                    'roles' => array('guest', 'supervisorAdmin'),
+                    'roles'      => array('guest', 'supervisorAdmin'),
                 ),
             ),
         ),
@@ -284,6 +301,11 @@ return array(
                         'label'    => 'navigation.account.logout',
                         'route'    => 'account/logout',
                         'resource' => 'user',
+                    ),
+                    array(
+                        'label'   => 'navigation.account.changeDisplayname',
+                        'route'   => 'account/change-displayname',
+                        'visible' => false,
                     ),
                     array(
                         'label'   => 'navigation.account.changePassword',
@@ -449,27 +471,36 @@ return array(
                         ),
                     ),
                     'change-password' => array(
-                        'type' => 'Segment',
+                        'type'    => 'Segment',
                         'options' => array(
-                            'route' => 'change-password[/]',
+                            'route'    => 'change-password[/]',
                             'defaults' => array(
                                 'action' => 'change-password',
                             ),
                         ),
                     ),
-                    'request-password' => array(
-                        'type' => 'Segment',
+                    'change-displayname' => array(
+                        'type'    => 'Segment',
                         'options' => array(
-                            'route' => 'request-password[/]',
+                            'route'    => 'change-displayname[/]',
+                            'defaults' => array(
+                                'action' => 'change-displayname',
+                            ),
+                        ),
+                    ),
+                    'request-password' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => 'request-password[/]',
                             'defaults' => array(
                                 'action' => 'request-password',
                             ),
                         ),
                     ),
                     'delete' => array(
-                        'type' => 'Segment',
+                        'type'    => 'Segment',
                         'options' => array(
-                            'route' => 'delete[/]',
+                            'route'    => 'delete[/]',
                             'defaults' => array(
                                 'action' => 'delete',
                             ),
@@ -641,9 +672,9 @@ return array(
                         ),
                     ),
                     'delete' => array(
-                        'type' => 'segment',
+                        'type'    => 'segment',
                         'options' => array(
-                            'route' => 'delete/[:id][/]',
+                            'route'       => 'delete/[:id][/]',
                             'constraints' => array(
                                 'id' => '[0-9]+'
                             ),
@@ -652,10 +683,19 @@ return array(
                             ),
                         ),
                     ),
-                    'search' => array(
-                        'type' => 'Segment',
+                    'password-strength' => array(
+                        'type'    => 'segment',
                         'options' => array(
-                            'route' => 'search[/]',
+                            'route'    => 'password-strength[/]',
+                            'defaults' => array(
+                                'action' => 'password-strength'
+                            ),
+                        ),
+                    ),
+                    'search' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => 'search[/]',
                             'defaults' => array(
                                 'action' => 'search'
                             ),

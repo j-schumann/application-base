@@ -26,7 +26,13 @@ class Login extends Form implements InputFilterProviderInterface
         $ur = $this->getEntityManager()
                 ->getRepository('Vrok\Entity\User');
 
-        $this->add($ur->getFormElementDefinition('username'));
+        // we use a custom label here to allow sites that do not support a
+        // username to translate it as "Email" or sites that allow both to
+        // translate as "Email or Username".
+        $username = $ur->getFormElementDefinition('username');
+        $username['options']['label'] = 'form.user.loginname.label';
+        $this->add($username);
+
         $this->add($ur->getFormElementDefinition('password'));
 
         $this->add(array(

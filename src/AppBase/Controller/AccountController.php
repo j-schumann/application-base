@@ -86,6 +86,36 @@ class AccountController extends AbstractActionController
     }
 
     /**
+     * Allows the logged in user to change his displayName.
+     *
+     * @return ViewModel|Response
+     */
+    public function changeDisplaynameAction()
+    {
+        $form = $this->getServiceLocator()->get('FormElementManager')
+                ->get('AppBase\Form\User\DisplayNameChange');
+
+        $um = $this->getServiceLocator()->get('UserManager');
+        $user = $this->identity();
+
+        $form->setData($um->getUserRepository()->getInstanceData($user));
+        $form->setData($this->request->getPost());
+        $viewModel = $this->createViewModel(array('form' => $form));
+
+        if (!$this->request->isPost() || !$form->isValid()) {
+            return $viewModel;
+        }
+
+        $data = $form->getData();
+        $user->setDisplayName($data['displayName']);
+        $um->getEntityManager()->flush();
+
+        $this->flashMessenger()
+                ->addSuccessMessage('message.user.displayNameChanged');
+        return $this->redirect()->toRoute('account');
+    }
+
+    /**
      * Allows the logged in user to change his password.
      * BjyGuarded: users only
      *
