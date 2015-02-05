@@ -113,6 +113,7 @@ class UserController extends AbstractActionController
         $setRandomPassword = (bool)$data['user']['setRandomPassword'];
         unset($data['user']['setRandomPassword']);
 
+
         if (!$setRandomPassword && !$data['user']['password']) {
             $form->get('user')
                     ->setElementMessage('password', 'validate.user.password.notSet');
@@ -151,12 +152,19 @@ class UserController extends AbstractActionController
         $em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
         $repository = $em->getRepository('Vrok\Entity\User');
 
+        $userData = $repository->getInstanceData($user);
+        $userData['createdAt'] = $user->getCreatedAt()->format(\DateTime::COOKIE);
+        $userData['lastLogin'] = $user->getLastLogin()
+                ? $user->getLastLogin()->format(\DateTime::COOKIE)
+                : '';
+        $userData['lastSession'] = $user->getLastSession()
+                ? $user->getLastSession()->format(\DateTime::COOKIE)
+                : '';
+        unset($userData['password']);
+
         $form = $this->getServiceLocator()->get('FormElementManager')
                 ->get('AppBase\Form\User\UserEdit');
-        $userData = $repository->getInstanceData($user);
-        unset($userData['password']);
         $form->setData(array('user' => $userData));
-
         $viewModel = $this->createViewModel(array(
             'form' => $form,
             'user' => $user,
@@ -174,6 +182,9 @@ class UserController extends AbstractActionController
         $data = $form->getData();
         $setRandomPassword = (bool)$data['user']['setRandomPassword'];
         unset($data['user']['setRandomPassword']);
+        unset($data['user']['createdAt']);
+        unset($data['user']['lastLogin']);
+        unset($data['user']['lastSession']);
 
         // dont set an empty password, leave the current one
         if (empty($data['user']['password'])) {

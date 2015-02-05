@@ -69,6 +69,10 @@ class UserFieldset extends Fieldset implements InputFilterProviderInterface
         $this->add($ur->getFormElementDefinition('isValidated'));
         $this->get('isValidated')->setValue(true);
 
+        $this->add($ur->getFormElementDefinition('createdAt'));
+        $this->add($ur->getFormElementDefinition('lastLogin'));
+        $this->add($ur->getFormElementDefinition('lastSession'));
+
         // the ID field is hidden, we need it for the UniqueObject validator
         $this->add($ur->getFormElementDefinition('id'));
     }
