@@ -297,7 +297,7 @@ return array(
                         'route'    => 'account',
                         'resource' => 'user',
                     ),
-                    array(
+                    'account/logout' => array(
                         'label'    => 'navigation.account.logout',
                         'route'    => 'account/logout',
                         'resource' => 'user',
@@ -892,7 +892,9 @@ return array(
 // <editor-fold defaultstate="collapsed" desc="validation_manager">
     'validation_manager' => array(
         'timeouts' => array(
-            'password' => 172800, //48*60*60
+            'confirmPasswordRequest' => 172800, //48*60*60
+            'confirmEmailChange'     => 172800, //48*60*60
+            'validateUser'           => 172800, //48*60*60
         ),
     ),
 // </editor-fold>

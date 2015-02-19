@@ -22,34 +22,28 @@ class CronController extends AbstractActionController
 
     /**
      * @triggers cronHourly
-     * @todo remove rebug
      */
     public function cronHourlyAction()
     {
         $this->getEventManager()->trigger(self::EVENT_CRON_HOURLY, $this);
-        $log = $this->serviceLocator->get('ZendLog');
-        $log->debug('cronHourly finished '.  date('Y-m-d H:i:s'));
+        echo 'cronHourly finished: '.  date('Y-m-d H:i:s') . "\n";
     }
 
     /**
      * @triggers cronDaily
-     * @todo remove rebug
      */
     public function cronDailyAction()
     {
         $this->getEventManager()->trigger(self::EVENT_CRON_DAILY, $this);
-        $log = $this->serviceLocator->get('ZendLog');
-        $log->debug('cronDaily finished '.  date('Y-m-d H:i:s'));
+        echo 'cronDaily finished: '.  date('Y-m-d H:i:s') . "\n";
     }
 
     /**
      * @triggers cronMonthly
-     * @todo remove rebug
      */
     public function cronMonthlyAction()
     {
         $this->getEventManager()->trigger(self::EVENT_CRON_MONTHLY, $this);
-        $log = $this->serviceLocator->get('ZendLog');
-        $log->debug('cronMonthly finished '.  date('Y-m-d H:i:s'));
+        echo 'cronMonthly finished: '.  date('Y-m-d H:i:s') . "\n";
     }
 }

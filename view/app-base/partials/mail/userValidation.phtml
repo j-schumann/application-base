@@ -1,0 +1,23 @@
+<h2>Account-Aktivierung</h2>
+<p>Hallo <?php echo $this->user->getDisplayName(); ?>!</p>
+<p>
+    Sie haben auf <a href="<?php echo $this->fullUrl('https'); ?>" title="Startseite"><?php echo $this->fullUrl('https'); ?></a>
+    ein neues Benutzerkonto angelegt.<br />
+    Bitte klicken Sie auf den folgenden Link um die Richtigkeit Ihrer Email-Adresse
+    zu bestätigen und Ihr Benutzerkonto zu aktivieren:
+    <br />
+    <a href="<?php echo $this->fullUrl('https').$this->confirmationUrl; ?>" title="Benutzerkonto aktivieren" class="button btn-primary">Benutzerkonto jetzt aktivieren</a>
+</p>
+<p>
+    Sollte der Bestätigungslink nicht funktionieren können Sie die Daten auf der Seite
+    <a href="<?php echo $this->fullUrl('https').$this->confirmationBase; ?>" title="Manuelle Bestätigung"><?php echo $this->fullUrl('https').$this->confirmationBase; ?></a>
+    auch manuell angeben.<br />
+    Anfrage-Nr: <b><?php echo $this->validation->getId(); ?></b><br />
+    Bestätigungscode: <b><?php echo $this->validation->getToken(); ?></b>
+</p>
+<p>
+    Der Bestätigungslink ist noch <?php echo $this->durationFormat(['seconds' => $this->validationTimeout]); ?> gültig.<br />
+    Sollten Sie diesen Eintrag nicht vorgenommen haben so ist keine Aktion erforderlich, die
+    Daten werden nach Ablauf der Frist automatisch aus dem System gelöscht wenn die Bestätigung
+    nicht bis dahin durchgeführt wurde.<br />
+</p>

@@ -177,7 +177,7 @@ class AccountController extends AbstractActionController
         // @todo do not directly change the password but send a validation and then
         // show a form for the new password (+confirmation).
         //$validationManager = $this->getServiceLocator()->get('ValidationManager');
-        //$validations = $validationManager->getValidations($user, 'password');
+        //$validations = $validationManager->getValidations($user, 'confirmPasswordRequest');
 
         $userManager->sendRandomPassword($user);
         $this->flashMessenger()
