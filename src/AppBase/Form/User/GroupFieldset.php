@@ -7,6 +7,7 @@
 
 namespace AppBase\Form\User;
 
+use Vrok\Entity\Group;
 use Vrok\Form\Fieldset;
 use Zend\InputFilter\InputFilterProviderInterface;
 
@@ -40,14 +41,13 @@ class GroupFieldset extends Fieldset implements InputFilterProviderInterface
     {
         $this->setName('group');
 
-        $groupRepository = $this->getEntityManager()
-                ->getRepository('Vrok\Entity\Group');
+        $repository = $this->getEntityManager()->getRepository(Group::class);
 
         // the ID field is hidden, we need it for the UniqueObject validator
-        $this->add($groupRepository->getFormElementDefinition('id'));
-        $this->add($groupRepository->getFormElementDefinition('name'));
-        $this->add($groupRepository->getFormElementDefinition('description'));
-        $this->add($groupRepository->getFormElementDefinition('parent'));
+        $this->add($repository->getFormElementDefinition('id'));
+        $this->add($repository->getFormElementDefinition('name'));
+        $this->add($repository->getFormElementDefinition('description'));
+        $this->add($repository->getFormElementDefinition('parent'));
     }
 
     /**
@@ -55,8 +55,7 @@ class GroupFieldset extends Fieldset implements InputFilterProviderInterface
      */
     public function getInputFilterSpecification()
     {
-        $repository = $this->getEntityManager()
-                ->getRepository('Vrok\Entity\Group');
+        $repository = $this->getEntityManager()->getRepository(Group::class);
         return $repository->getInputFilterSpecification();
     }
 }
