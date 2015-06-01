@@ -8,7 +8,7 @@
     "require": {
         "php": ">=5.4",
         "bjyoungblood/bjy-authorize": "~1.4.0",
-        "doctrine/doctrine-orm-module": "dev-master",
+        "doctrine/doctrine-orm-module": "~0.9",
         "gedmo/doctrine-extensions": "~2.3.9",
         "slm/queue-doctrine": "~0.4.0",
         "vrok/vrok-lib": "dev-master@dev",
