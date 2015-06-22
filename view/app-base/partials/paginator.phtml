@@ -1,4 +1,7 @@
-<?php if ($this->pageCount > 1): ?>
+<?php
+$this->params = (array)$this->params;
+
+if ($this->pageCount > 1): ?>
 <ul class="pagination">
     <li class="active">
         <span><?php echo $this->translate('view.pages'); ?></span>
