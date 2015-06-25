@@ -16,8 +16,8 @@
         "vrok/supervisor-control": "dev-master@dev"
     },
     "autoload": {
-        "psr-0": {
-            "AppBase": "src/"
+        "psr-4": {
+            "AppBase\\": "src/"
         }
     },
     "bin": [
