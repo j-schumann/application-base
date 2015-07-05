@@ -29,11 +29,11 @@ class UserController extends AbstractActionController
             $sessionContainer['order'] = 'asc';
         }
         $orderBy = $this->params()->fromQuery('orderBy');
-        if (in_array($orderBy, array('username', 'email'))) {
+        if (in_array($orderBy, ['username', 'email'])) {
             $sessionContainer['orderBy'] = $orderBy;
         }
         $order = $this->params()->fromQuery('order');
-        if (in_array($order, array('asc', 'desc'))) {
+        if (in_array($order, ['asc', 'desc'])) {
             $sessionContainer['order'] = $order;
         }
 
@@ -41,14 +41,14 @@ class UserController extends AbstractActionController
         $form = $this->getServiceLocator()->get('FormElementManager')
                 ->get('AppBase\Form\User\UserFilter');
         if ($sessionContainer['userFilter']) {
-            $form->setData(array(
+            $form->setData([
                 'userFilter' => $sessionContainer['userFilter']
-            ));
+            ]);
         }
 
         if ($this->params()->fromQuery('group')) {
             $group = $userManager->getGroupRepository()
-                    ->findOneBy(array('name' => $this->params()->fromQuery('group')));
+                    ->findOneBy(['name' => $this->params()->fromQuery('group')]);
 
             if ($group) {
                 $form->get('userFilter')->get('groupFilter')->setValue($group->getId());
@@ -84,12 +84,12 @@ class UserController extends AbstractActionController
         $paginator->setItemCountPerPage(15);
         $paginator->setCurrentPageNumber((int)$this->params()->fromQuery('page', 1));
 
-        return $this->createViewModel(array(
+        return $this->createViewModel([
             'form'      => $form,
             'paginator' => $paginator,
             'orderBy'   => $sessionContainer['orderBy'],
             'order'     => $sessionContainer['order'],
-        ));
+        ]);
     }
 
     /**
@@ -102,7 +102,7 @@ class UserController extends AbstractActionController
         $form = $this->getServiceLocator()->get('FormElementManager')
                 ->get('AppBase\Form\User\UserCreate');
         $form->setData($this->request->getPost());
-        $viewModel = $this->createViewModel(array('form' => $form));
+        $viewModel = ['form' => $form];
 
         if (!$this->request->isPost() || !$form->isValid()) {
             return $viewModel;
@@ -146,7 +146,7 @@ class UserController extends AbstractActionController
         $user = $this->getEntityFromParam('Vrok\Entity\User');
         if (!$user instanceof User) {
             $this->getResponse()->setStatusCode(404);
-            return $this->createViewModel(array('message' => $user));
+            return $this->createViewModel(['message' => $user]);
         }
 
         $em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
@@ -164,11 +164,12 @@ class UserController extends AbstractActionController
 
         $form = $this->getServiceLocator()->get('FormElementManager')
                 ->get('AppBase\Form\User\UserEdit');
-        $form->setData(array('user' => $userData));
-        $viewModel = $this->createViewModel(array(
+        $form->setData(['user' => $userData]);
+
+        $viewModel = [
             'form' => $form,
             'user' => $user,
-        ));
+        ];
 
         if (!$this->request->isPost()) {
             return $viewModel;
@@ -216,18 +217,18 @@ class UserController extends AbstractActionController
         $user = $this->getEntityFromParam('Vrok\Entity\User');
         if (!$user instanceof \Vrok\Entity\User) {
             $this->getResponse()->setStatusCode(404);
-            return $this->createViewModel(array('message' => $user));
+            return $this->createViewModel(['message' => $user]);
         }
 
         $form = $this->getServiceLocator()->get('FormElementManager')
                 ->get('Vrok\Form\ConfirmationForm');
-        $form->setConfirmationMessage(array('message.user.confirmDelete',
-            array('displayName' => $user->getDisplayName(), 'email' => $user->getEmail())));
+        $form->setConfirmationMessage(['message.user.confirmDelete',
+            ['displayName' => $user->getDisplayName(), 'email' => $user->getEmail()]]);
 
-        $viewModel = $this->createViewModel(array(
+        $viewModel = [
             'form' => $form,
             'user' => $user,
-        ));
+        ];
 
         if (!$this->request->isPost()) {
             return $viewModel;
@@ -246,7 +247,7 @@ class UserController extends AbstractActionController
         catch (\Doctrine\DBAL\DBALException $e) {
             $this->flashMessenger()
                 ->addErrorMessage('message.user.cannotDeleteReferenced');
-            return $this->redirect()->toRoute('user/edit', array('id' => $user->getId()));
+            return $this->redirect()->toRoute('user/edit', ['id' => $user->getId()]);
         }
 
         $this->flashMessenger()

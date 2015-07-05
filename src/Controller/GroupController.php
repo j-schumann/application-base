@@ -26,7 +26,7 @@ class GroupController extends AbstractActionController
         $repository = $em->getRepository('Vrok\Entity\Group');
         $groups = $repository->findAll();
 
-        return $this->createViewModel(array('groups' => $groups));
+        return $this->createViewModel(['groups' => $groups]);
     }
 
     /**
@@ -39,9 +39,9 @@ class GroupController extends AbstractActionController
         $form = $this->getServiceLocator()->get('FormElementManager')
                 ->get('AppBase\Form\User\Group');
 
-        $viewModel = $this->createViewModel(array(
+        $viewModel = [
             'form' => $form,
-        ));
+        ];
 
         if (!$this->request->isPost()) {
             return $viewModel;
@@ -71,7 +71,7 @@ class GroupController extends AbstractActionController
         $group = $this->getEntityFromParam('Vrok\Entity\Group');
         if (!$group instanceof Group) {
             $this->getResponse()->setStatusCode(404);
-            return $this->createViewModel(array('message' => $group));
+            return $this->createViewModel(['message' => $group]);
         }
 
         $em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
@@ -79,12 +79,12 @@ class GroupController extends AbstractActionController
 
         $form = $this->getServiceLocator()->get('FormElementManager')
                 ->get('AppBase\Form\User\Group');
-        $form->setData(array('group' => $repository->getInstanceData($group)));
+        $form->setData(['group' => $repository->getInstanceData($group)]);
 
-        $viewModel = $this->createViewModel(array(
+        $viewModel = [
             'form'  => $form,
             'group' => $group,
-        ));
+        ];
 
         if (!$this->request->isPost()) {
             return $viewModel;
@@ -114,7 +114,7 @@ class GroupController extends AbstractActionController
         $group = $this->getEntityFromParam('Vrok\Entity\Group');
         if (!$group instanceof Group) {
             $this->getResponse()->setStatusCode(404);
-            return $this->createViewModel(array('message' => $group));
+            return $this->createViewModel(['message' => $group]);
         }
 
         if ($group->getChildren()->count()) {
@@ -125,13 +125,13 @@ class GroupController extends AbstractActionController
 
         $form = $this->getServiceLocator()->get('FormElementManager')
                 ->get('Vrok\Form\ConfirmationForm');
-        $form->setConfirmationMessage(array('message.user.group.confirmDelete',
-            $group->getName()));
+        $form->setConfirmationMessage(['message.user.group.confirmDelete',
+            $group->getName()]);
 
-        $viewModel = $this->createViewModel(array(
+        $viewModel = [
             'form'  => $form,
             'group' => $group,
-        ));
+        ];
 
         if (!$this->request->isPost()) {
             return $viewModel;

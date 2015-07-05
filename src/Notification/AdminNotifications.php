@@ -34,13 +34,13 @@ class AdminNotifications implements ListenerAggregateInterface, ServiceLocatorAw
         $shared->attach(
             'AppBase\Controller\SlmQueueController',
             \AppBase\Controller\SlmQueueController::EVENT_BURIEDJOBSFOUND,
-            array($this, 'onBuriedJobsFound')
+            [$this, 'onBuriedJobsFound']
         );
 
         $shared->attach(
             'AppBase\Controller\SlmQueueController',
             \AppBase\Controller\SlmQueueController::EVENT_LONGRUNNINGJOBSFOUND,
-            array($this, 'onLongRunningJobsFound')
+            [$this, 'onLongRunningJobsFound']
         );
 
         $shared->attach(
@@ -49,7 +49,7 @@ class AdminNotifications implements ListenerAggregateInterface, ServiceLocatorAw
             // (\SupervisorControl\Controller\ConsoleController::EVENT_PROCESSNOTRUNNING)
             'processNotRunning',
 
-            array($this, 'onProcessNotRunning')
+            [$this, 'onProcessNotRunning']
         );
 
         /*
@@ -58,7 +58,7 @@ class AdminNotifications implements ListenerAggregateInterface, ServiceLocatorAw
         $shared->attach(
             'SlmQueue\Worker\WorkerInterface',
             \SlmQueue\Worker\WorkerEvent::EVENT_PROCESS_JOB_POST,
-            array($this, 'onProcessJobPost')
+            [$this, 'onProcessJobPost']
         );*/
     }
 
@@ -81,17 +81,17 @@ class AdminNotifications implements ListenerAggregateInterface, ServiceLocatorAw
         $mail = $emailService->createMail();
         $mail->setSubject('mail.slmQueue.buriedJobsFound.subject');
 
-        $mail->setHtmlBody(array('mail.slmQueue.buriedJobsFound.body', array(
+        $mail->setHtmlBody(['mail.slmQueue.buriedJobsFound.body', [
             'queueName' => $queue->getName(),
             'count' => $count,
-            'queueUrl' => $fullUrl('https').$url('slm-queue/list-buried', array(
+            'queueUrl' => $fullUrl('https').$url('slm-queue/list-buried', [
                 'name' => $queue->getName()
-            )),
-        )));
+            ]),
+        ]]);
 
         $userManager = $this->serviceLocator->get('UserManager');
         $group = $userManager->getGroupRepository()
-                ->findOneBy(array('name' => 'queueAdmin'));
+                ->findOneBy(['name' => 'queueAdmin']);
 
         if (!$group) {
             throw new \RuntimeException(
@@ -126,18 +126,18 @@ class AdminNotifications implements ListenerAggregateInterface, ServiceLocatorAw
         $mail = $emailService->createMail();
         $mail->setSubject('mail.slmQueue.longRunningJobsFound.subject');
 
-        $mail->setHtmlBody(array('mail.slmQueue.longRunningJobsFound.body', array(
+        $mail->setHtmlBody(['mail.slmQueue.longRunningJobsFound.body', [
             'queueName' => $queue->getName(),
             'count'     => $count,
             'threshold' => $threshold / 60, // @todo implement DateInterval-Viewhelper
-            'queueUrl'  => $fullUrl('https').$url('slm-queue/list-running', array(
+            'queueUrl'  => $fullUrl('https').$url('slm-queue/list-running', [
                 'name' => $queue->getName()
-            )),
-        )));
+            ]),
+        ]]);
 
         $userManager = $this->serviceLocator->get('UserManager');
         $group = $userManager->getGroupRepository()
-                ->findOneBy(array('name' => 'queueAdmin'));
+                ->findOneBy(['name' => 'queueAdmin']);
 
         if (!$group) {
             throw new \RuntimeException(
@@ -170,17 +170,17 @@ class AdminNotifications implements ListenerAggregateInterface, ServiceLocatorAw
         $mail = $emailService->createMail();
         $mail->setSubject('mail.supervisor.processNotRunning.subject');
 
-        $mail->setHtmlBody(array('mail.supervisor.processNotRunning.body', array(
+        $mail->setHtmlBody(['mail.supervisor.processNotRunning.body', [
             'processName' => $processName,
             'processState' => $processInfo ? $processInfo['statename'] : 'NOT_FOUND',
             'now' => $dateFormat(new \DateTime(),
                     \IntlDateFormatter::LONG, \IntlDateFormatter::MEDIUM),
             'supervisorUrl' => $fullUrl('https').$url('supervisor'),
-        )));
+        ]]);
 
         $userManager = $this->serviceLocator->get('UserManager');
         $group = $userManager->getGroupRepository()
-                ->findOneBy(array('name' => 'supervisorAdmin'));
+                ->findOneBy(['name' => 'supervisorAdmin']);
 
         if (!$group) {
             throw new \RuntimeException(

@@ -75,7 +75,7 @@ class AccountController extends AbstractActionController
                 ->get('Vrok\Form\ConfirmationForm');
             $form->setData($this->request->getPost());
             if (!$this->request->isPost() || !$form->isValid()) {
-                return $this->createViewModel(array('form' => $form));
+                return $this->createViewModel(['form' => $form]);
             }
         }
 
@@ -100,7 +100,7 @@ class AccountController extends AbstractActionController
 
         $form->setData($um->getUserRepository()->getInstanceData($user));
         $form->setData($this->request->getPost());
-        $viewModel = $this->createViewModel(array('form' => $form));
+        $viewModel = $this->createViewModel(['form' => $form]);
 
         if (!$this->request->isPost() || !$form->isValid()) {
             return $viewModel;
@@ -126,7 +126,7 @@ class AccountController extends AbstractActionController
         $form = $this->getServiceLocator()->get('FormElementManager')
                 ->get('AppBase\Form\User\PasswordChange');
         $form->setData($this->request->getPost());
-        $viewModel = $this->createViewModel(array('form' => $form));
+        $viewModel = $this->createViewModel(['form' => $form]);
 
         if (!$this->request->isPost() || !$form->isValid()) {
             return $viewModel;
@@ -159,7 +159,7 @@ class AccountController extends AbstractActionController
         $form = $this->getServiceLocator()->get('FormElementManager')
                 ->get('AppBase\Form\User\PasswordRequest');
         $form->setData($this->request->getPost());
-        $viewModel = $this->createViewModel(array('form' => $form));
+        $viewModel = $this->createViewModel(['form' => $form]);
 
         if (!$this->request->isPost() || !$form->isValid()) {
             return $viewModel;
@@ -196,7 +196,7 @@ class AccountController extends AbstractActionController
 
         $form->setData($this->request->getPost());
         if (!$this->request->isPost() || !$form->isValid()) {
-            return $this->createViewModel(array('form' => $form));
+            return $this->createViewModel(['form' => $form]);
         }
 
         $userManager = $this->getServiceLocator()->get('UserManager');

@@ -34,16 +34,16 @@
             <td><?php echo $group->getName(); ?></td>
             <td><?php echo $group->getParent() ? $group->getParent()->getName() : ''; ?></td>
             <td>
-                <a href="<?php echo $this->url('user', array('id' => $group->getId()), array('query' => array('group' => $group->getName()))); ?>" title="<?php echo $this->translate('view.user.group.showUsers'); ?>">
+                <a href="<?php echo $this->url('user', ['id' => $group->getId()], ['query' => ['group' => $group->getName()]]); ?>" title="<?php echo $this->translate('view.user.group.showUsers'); ?>">
                     <?php echo count($group->getMembers()); ?></td>
                 </a>
             <td>
-                <a href="<?php echo $this->url('user/group/edit', array('id' => $group->getId())); ?>" title="<?php echo $this->translate('view.user.group.gotoEdit'); ?>">
+                <a href="<?php echo $this->url('user/group/edit', ['id' => $group->getId()]); ?>" title="<?php echo $this->translate('view.user.group.gotoEdit'); ?>">
                     <?php echo $this->translate('view.user.group.gotoEdit'); ?>
                 </a>
                 <?php if (!$group->getChildren()->count()) : ?>
                 <br />
-                <a href="<?php echo $this->url('user/group/delete', array('id' => $group->getId())); ?>" title="<?php echo $this->translate('view.user.group.gotoDelete'); ?>">
+                <a href="<?php echo $this->url('user/group/delete', ['id' => $group->getId()]); ?>" title="<?php echo $this->translate('view.user.group.gotoDelete'); ?>">
                     <?php echo $this->translate('view.user.group.gotoDelete'); ?>
                 </a>
                 <?php endif; ?>

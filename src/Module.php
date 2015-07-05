@@ -44,8 +44,8 @@ class Module implements
      */
     public function getServiceConfig()
     {
-        return array(
-            'factories' => array(
+        return [
+            'factories' => [
                 'doctrine.cache.zend_storage' => function($sm) {
                     return new \DoctrineModule\Cache\ZendStorageCache(
                             $sm->get('defaultCache'));
@@ -61,7 +61,7 @@ class Module implements
                 },
 
                 'Zend\Mail\Transport' => function($sm) {
-                    $spec = array();
+                    $spec = [];
                     $config = $sm->get('Config');
                     if (!empty($config['email_service']['transport'])) {
                         $spec = $config['email_service']['transport'];
@@ -80,8 +80,8 @@ class Module implements
                         $sm->get('Vrok\Authentication\Adapter\Doctrine')
                     );
                 },
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -91,8 +91,8 @@ class Module implements
      */
     public function getViewHelperConfig()
     {
-        return array(
-            'factories' => array(
+        return [
+            'factories' => [
                 'navigation' => function($sm) {
                     $auth = $sm->getServiceLocator()->get('BjyAuthorize\Service\Authorize');
                     $role = $auth->getIdentity();
@@ -102,8 +102,8 @@ class Module implements
 
                     return $navigation;
                 },
-            ),
-        );
+            ],
+        ];
     }
 
     /**

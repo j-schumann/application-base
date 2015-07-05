@@ -75,11 +75,11 @@
                         'view.yes' : 'view.no'); ?>
             </td>
             <td>
-                <a href="<?php echo $this->url('user/edit', array('id' => $user->getId())); ?>" title="<?php echo $this->translate('view.user.gotoEdit'); ?>">
+                <a href="<?php echo $this->url('user/edit', ['id' => $user->getId()]); ?>" title="<?php echo $this->translate('view.user.gotoEdit'); ?>">
                     <?php echo $this->translate('view.user.gotoEdit'); ?>
                 </a>
                 <br />
-                <a href="<?php echo $this->url('user/delete', array('id' => $user->getId())); ?>" title="<?php echo $this->translate('view.user.gotoDelete'); ?>">
+                <a href="<?php echo $this->url('user/delete', ['id' => $user->getId()]); ?>" title="<?php echo $this->translate('view.user.gotoDelete'); ?>">
                     <?php echo $this->translate('view.user.gotoDelete'); ?>
                 </a>
             </td>
@@ -94,10 +94,10 @@ echo $this->paginationControl(
     $this->paginator,
     'sliding',
     'app-base/partials/paginator.phtml',
-    array(
+    [
         'route'    => 'user',
         'fragment' => 'users-list',
-    )
+    ]
 );
 
 else : ?>

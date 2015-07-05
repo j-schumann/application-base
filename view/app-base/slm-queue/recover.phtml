@@ -8,9 +8,9 @@
 
 <div class="col-md-5">
     <?php
-    $this->form->setAttribute('action', $this->url('slm-queue/recover', array(
+    $this->form->setAttribute('action', $this->url('slm-queue/recover', [
         'name' => $this->name,
-    )));
+    ]));
     echo $this->formDecorator($this->form);
     ?>
 </div>

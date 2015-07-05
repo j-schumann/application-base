@@ -35,15 +35,15 @@
             <td><?php echo $queue['running']; ?></td>
             <td><?php echo $queue['buried']; ?></td>
             <td>
-                <a href="<?php echo $this->url('slm-queue/recover', array('name' => $queue['name'])); ?>" title="<?php echo $this->translate('view.slmQueue.gotoRecover'); ?>">
+                <a href="<?php echo $this->url('slm-queue/recover', ['name' => $queue['name']]); ?>" title="<?php echo $this->translate('view.slmQueue.gotoRecover'); ?>">
                     <?php echo $this->translate('view.slmQueue.gotoRecover'); ?>
                 </a>
                 <br />
-                <a href="<?php echo $this->url('slm-queue/list-running', array('name' => $queue['name'])); ?>" title="<?php echo $this->translate('view.slmQueue.gotoRunningList'); ?>">
+                <a href="<?php echo $this->url('slm-queue/list-running', ['name' => $queue['name']]); ?>" title="<?php echo $this->translate('view.slmQueue.gotoRunningList'); ?>">
                     <?php echo $this->translate('view.slmQueue.gotoRunningList'); ?>
                 </a>
                 <br />
-                <a href="<?php echo $this->url('slm-queue/list-buried', array('name' => $queue['name'])); ?>" title="<?php echo $this->translate('view.slmQueue.gotoBuriedList'); ?>">
+                <a href="<?php echo $this->url('slm-queue/list-buried', ['name' => $queue['name']]); ?>" title="<?php echo $this->translate('view.slmQueue.gotoBuriedList'); ?>">
                     <?php echo $this->translate('view.slmQueue.gotoBuriedList'); ?>
                 </a>
             </td>

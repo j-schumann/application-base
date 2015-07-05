@@ -34,13 +34,13 @@ class ConfirmationForm extends Form implements InputFilterProviderInterface
 
         $this->add($vr->getFormElementDefinition('token'));
 
-        $this->add(array(
+        $this->add([
             'name'       => 'confirm',
-            'attributes' => array(
+            'attributes' => [
                 'type'  => 'submit',
                 'value' => 'form.validation.confirm.label',
-            )
-        ));
+            ],
+        ]);
     }
 
     /**
@@ -59,9 +59,9 @@ class ConfirmationForm extends Form implements InputFilterProviderInterface
             $vr->getFormHelper()->getNotEmptyValidatorSpecification()
         );
 
-        return array(
+        return [
             $id,
             $vr->getInputSpecification('token'),
-        );
+        ];
     }
 }

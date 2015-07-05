@@ -8,9 +8,9 @@
 
 <div class="col-md-5">
     <?php
-    $this->form->setAttribute('action', $this->url('user/group/edit', array(
+    $this->form->setAttribute('action', $this->url('user/group/edit', [
         'id' => $this->group->getId(),
-    )));
+    ]));
     echo $this->formDecorator($this->form);
     ?>
 </div>

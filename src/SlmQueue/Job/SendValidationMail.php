@@ -40,20 +40,20 @@ class SendValidationMail extends AbstractJob
         $this->getEntityManager()->flush();
 
         $partial = $this->getServiceLocator()->get('viewhelpermanager')->get('partial');
-        $html = $partial('app-base/partials/mail/userValidation', array(
+        $html = $partial('app-base/partials/mail/userValidation', [
             'user'              => $user,
             'validation'        => $validation,
             'confirmationUrl'   => $vm->getConfirmationUrl($validation),
             'confirmationBase'  => $vm->getConfirmationUrl(),
             'validationTimeout' => $vm->getTimeout(UserManager::VALIDATION_USER),
-        ));
-        $text = $partial('app-base/partials/mail/userValidationText', array(
+        ]);
+        $text = $partial('app-base/partials/mail/userValidationText', [
             'user'              => $user,
             'validation'        => $validation,
             'confirmationUrl'   => $vm->getConfirmationUrl($validation),
             'confirmationBase'  => $vm->getConfirmationUrl(),
             'validationTimeout' => $vm->getTimeout(UserManager::VALIDATION_USER),
-        ));
+        ]);
 
         $emailService = $this->getServiceLocator()->get(Email::class);
         $mail = $emailService->createMail();

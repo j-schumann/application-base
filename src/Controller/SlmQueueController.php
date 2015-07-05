@@ -42,7 +42,7 @@ class SlmQueueController extends AbstractActionController
         // each queue must have an entry in [slm_queue][queue_manager][factories]
         // -> get those
         $services = $qm->getRegisteredServices();
-        $queues = array();
+        $queues = [];
         foreach($services['factories'] as $name) {
             $queue = $qm->get($name);
 
@@ -70,25 +70,25 @@ class SlmQueueController extends AbstractActionController
 
             $sql = 'SELECT COUNT(*) FROM ' . $queue->getOptions()->getTableName()
                     .' WHERE status = ? AND queue = ?';
-            $pendingCount = $connection->fetchColumn($sql, array(
-                DoctrineQueue::STATUS_PENDING, $queue->getName()), 0);
-            $runningCount = $connection->fetchColumn($sql, array(
-                DoctrineQueue::STATUS_RUNNING, $queue->getName()), 0);
-            $buriedCount = $connection->fetchColumn($sql, array(
-                DoctrineQueue::STATUS_BURIED, $queue->getName()), 0);
+            $pendingCount = $connection->fetchColumn($sql, [
+                DoctrineQueue::STATUS_PENDING, $queue->getName()], 0);
+            $runningCount = $connection->fetchColumn($sql, [
+                DoctrineQueue::STATUS_RUNNING, $queue->getName()], 0);
+            $buriedCount = $connection->fetchColumn($sql, [
+                DoctrineQueue::STATUS_BURIED, $queue->getName()], 0);
 
-            $queues[$key] = array(
+            $queues[$key] = [
                 'name'    => $queue->getName(),
                 'pending' => $pendingCount,
                 'running' => $runningCount,
                 'buried'  => $buriedCount,
-            );
+            ];
         }
 
 
-        return $this->createViewModel(array(
+        return $this->createViewModel([
             'queues' => $queues,
-        ));
+        ]);
     }
 
     /**
@@ -109,10 +109,9 @@ class SlmQueueController extends AbstractActionController
         $form = $this->getServiceLocator()->get('FormElementManager')
                 ->get('AppBase\SlmQueue\RecoverForm');
 
-        $viewModel = $this->createViewModel(array(
-            'form'     => $form,
+        $viewModel = ['form'     => $form,
             'name' => $name,
-        ));
+        ];
 
         if (!$this->request->isPost()) {
             return $viewModel;
@@ -147,13 +146,13 @@ class SlmQueueController extends AbstractActionController
         $queue = $qm->get($name);
         $sql = 'SELECT * FROM ' . $queue->getOptions()->getTableName()
                 .' WHERE status = ? AND queue = ?';
-        $buriedJobs = $queue->connection->fetchAll($sql, array(
-            DoctrineQueue::STATUS_BURIED, $queue->getName()));
+        $buriedJobs = $queue->connection->fetchAll($sql, [
+            DoctrineQueue::STATUS_BURIED, $queue->getName()]);
 
-        return $this->createViewModel(array(
+        return $this->createViewModel([
             'name'       => $name,
             'buriedJobs' => $buriedJobs,
-        ));
+        ]);
     }
 
     /**
@@ -173,13 +172,13 @@ class SlmQueueController extends AbstractActionController
         $queue = $qm->get($name);
         $sql = 'SELECT * FROM ' . $queue->getOptions()->getTableName()
                 .' WHERE status = ? AND queue = ?';
-        $runningJobs = $queue->connection->fetchAll($sql, array(
-            DoctrineQueue::STATUS_RUNNING, $queue->getName()));
+        $runningJobs = $queue->connection->fetchAll($sql, [
+            DoctrineQueue::STATUS_RUNNING, $queue->getName()]);
 
-        return $this->createViewModel(array(
+        return $this->createViewModel([
             'name'        => $name,
             'runningJobs' => $runningJobs,
-        ));
+        ]);
     }
 
     /**
@@ -207,12 +206,12 @@ class SlmQueueController extends AbstractActionController
         $form = $this->getServiceLocator()->get('FormElementManager')
                 ->get('Vrok\Form\ConfirmationForm');
 
-        $viewModel = $this->createViewModel(array(
+        $viewModel = [
             'form' => $form,
             'name' => $name,
             'id'   => $id,
             'job'  => $job,
-        ));
+        ];
 
         $form->setData($this->request->getPost());
 
@@ -224,9 +223,9 @@ class SlmQueueController extends AbstractActionController
 
         $queue->release($job);
         $this->flashMessenger()->addSuccessMessage('message.slmQueue.jobReleased');
-        return $this->redirect()->toRoute('slm-queue/list-running', array(
+        return $this->redirect()->toRoute('slm-queue/list-running', [
             'name' => $name,
-        ));
+        ]);
     }
 
     /**
@@ -254,12 +253,12 @@ class SlmQueueController extends AbstractActionController
         $form = $this->getServiceLocator()->get('FormElementManager')
                 ->get('Vrok\Form\ConfirmationForm');
 
-        $viewModel = $this->createViewModel(array(
+        $viewModel = [
             'form' => $form,
             'name' => $name,
             'id'   => $id,
             'job'  => $job,
-        ));
+        ];
 
         $form->setData($this->request->getPost());
 
@@ -271,10 +270,10 @@ class SlmQueueController extends AbstractActionController
 
         $queue->push($job);
         $this->flashMessenger()->addSuccessMessage('message.slmQueue.jobCopyPushed');
-        return $this->redirect()->toRoute('slm-queue/delete', array(
+        return $this->redirect()->toRoute('slm-queue/delete', [
             'name' => $name,
             'id'   => $id,
-        ));
+        ]);
     }
 
     /**
@@ -302,12 +301,12 @@ class SlmQueueController extends AbstractActionController
         $form = $this->getServiceLocator()->get('FormElementManager')
                 ->get('Vrok\Form\ConfirmationForm');
 
-        $viewModel = $this->createViewModel(array(
+        $viewModel = [
             'form' => $form,
             'name' => $name,
             'id'   => $id,
             'job'  => $job,
-        ));
+        ];
 
         $form->setData($this->request->getPost());
 
@@ -317,9 +316,9 @@ class SlmQueueController extends AbstractActionController
             return $viewModel;
         }
 
-        $queue->connection->delete($queue->getOptions()->getTableName(), array(
+        $queue->connection->delete($queue->getOptions()->getTableName(), [
             'id' => $job->getId()
-        ));
+        ]);
 
         $this->flashMessenger()->addSuccessMessage('message.slmQueue.jobDeleted');
         return $this->redirect()->toRoute('slm-queue');
@@ -348,28 +347,32 @@ class SlmQueueController extends AbstractActionController
 
             $sql = 'SELECT COUNT(*) FROM '.$queue->getOptions()->getTableName()
                 .' WHERE executed < ? AND status = ? AND queue = ? AND finished IS NULL';
-            $runningCount = $queue->connection->fetchColumn($sql, array(
+            $runningCount = $queue->connection->fetchColumn(
+                $sql,
+                [
                     $maxAge->format('Y-m-d H:i:s'),
                     DoctrineQueue::STATUS_RUNNING,
                     $queue->getName()
-                ), 0);
+                ],
+                0
+            );
 
             if ($runningCount) {
-                $this->getEventManager()->trigger(self::EVENT_LONGRUNNINGJOBSFOUND, $queue, array(
+                $this->getEventManager()->trigger(self::EVENT_LONGRUNNINGJOBSFOUND, $queue, [
                     'count'     => $runningCount,
                     'threshold' => $threshold,
-                ));
+                ]);
             }
 
             $sql = 'SELECT COUNT(*) FROM '.$queue->getOptions()->getTableName()
                     .' WHERE status = ? AND queue = ?';
-            $buriedCount = $queue->connection->fetchColumn($sql, array(
-                DoctrineQueue::STATUS_BURIED, $queue->getName()), 0);
+            $buriedCount = $queue->connection->fetchColumn($sql, [
+                DoctrineQueue::STATUS_BURIED, $queue->getName()], 0);
 
             if ($buriedCount) {
-                $this->getEventManager()->trigger(self::EVENT_BURIEDJOBSFOUND, $queue, array(
+                $this->getEventManager()->trigger(self::EVENT_BURIEDJOBSFOUND, $queue, [
                     'count' => $buriedCount,
-                ));
+                ]);
             }
         }
     }

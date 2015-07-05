@@ -30,7 +30,7 @@ class GroupFieldset extends Fieldset implements InputFilterProviderInterface
             $parent = $this->get('parent');
             $findMethod = $parent->getOption('find_method');
             $findMethod['params']['groupId'] = $data['id'];
-            $parent->setOptions(array('find_method' => $findMethod));
+            $parent->setOptions(['find_method' => $findMethod]);
         }
     }
 

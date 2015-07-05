@@ -1,4 +1,4 @@
-<h3><?php echo $this->translate(array('view.slmQueue.listBuried.heading', $this->name)); ?></h3>
+<h3><?php echo $this->translate(['view.slmQueue.listBuried.heading', $this->name]); ?></h3>
 <p>
     <?php echo $this->translate('view.slmQueue.listBuried.intro'); ?>
 </p>
@@ -50,11 +50,11 @@
                 <?php echo $job['trace']; ?>
             </td>
             <td>
-                <a href="<?php echo $this->url('slm-queue/unbury', array('name' => $this->name, 'id' => $job['id'])); ?>" title="<?php echo $this->translate('view.slmQueue.unburyJob'); ?>">
+                <a href="<?php echo $this->url('slm-queue/unbury', ['name' => $this->name, 'id' => $job['id']]); ?>" title="<?php echo $this->translate('view.slmQueue.unburyJob'); ?>">
                     <?php echo $this->translate('view.slmQueue.unburyJob'); ?>
                 </a>
                 <br />
-                <a href="<?php echo $this->url('slm-queue/delete', array('name' => $this->name, 'id' => $job['id'])); ?>" title="<?php echo $this->translate('view.slmQueue.deleteJob'); ?>">
+                <a href="<?php echo $this->url('slm-queue/delete', ['name' => $this->name, 'id' => $job['id']]); ?>" title="<?php echo $this->translate('view.slmQueue.deleteJob'); ?>">
                     <?php echo $this->translate('view.slmQueue.deleteJob'); ?>
                 </a>
             </td>

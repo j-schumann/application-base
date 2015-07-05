@@ -35,13 +35,13 @@ class Login extends Form implements InputFilterProviderInterface
 
         $this->add($ur->getFormElementDefinition('password'));
 
-        $this->add(array(
+        $this->add([
             'name'       => 'login',
-            'attributes' => array(
+            'attributes' => [
                 'type'  => 'submit',
                 'value' => 'form.user.login.label',
-            )
-        ));
+            ],
+        ]);
     }
 
     /**
@@ -59,9 +59,9 @@ class Login extends Form implements InputFilterProviderInterface
         //$passwordSpec = $ur->getInputSpecification('password');
         //$passwordSpec['validators']['auth'] = $userManager->getAuthValidator();
 
-        return array(
+        return [
             $ur->getInputSpecification('username'),
             $ur->getInputSpecification('password'),
-        );
+        ];
     }
 }

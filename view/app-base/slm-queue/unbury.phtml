@@ -14,10 +14,10 @@
 
 <div class="col-md-5">
     <?php
-    $this->form->setAttribute('action', $this->url('slm-queue/unbury', array(
+    $this->form->setAttribute('action', $this->url('slm-queue/unbury', [
         'name' => $this->name,
         'id'   => $this->id,
-    )));
+    ]));
     echo $this->formDecorator($this->form);
     ?>
 </div>

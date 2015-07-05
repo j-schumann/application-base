@@ -22,12 +22,12 @@ class UserCreate extends Form
         // csrf first so error message appears above the form
         $this->addCsrfElement('csrfUserCreate');
 
-        $this->add(array(
+        $this->add([
             'type'    => 'AppBase\Form\User\UserFieldset',
-            'options' => array(
+            'options' => [
                 'use_as_base_fieldset' => true
-            )
-        ));
+            ],
+        ]);
 
         // Description for this use case
         $this->get('user')->get('setRandomPassword')->setOption('description',
@@ -37,22 +37,22 @@ class UserCreate extends Form
         // probably not know the password
         $this->get('user')->get('setRandomPassword')->setValue(true);
 
-        $this->add(array(
+        $this->add([
             'name'       => 'submit',
-            'attributes' => array(
+            'attributes' => [
                 'type'  => 'submit',
                 'value' => 'form.submit',
-            )
-        ));
+            ],
+        ]);
 
         // only validate the fields we used, else the InputFilter would return empty
         // values for the fields we have not used, e.g. createdAt, and those would
         // throw errors when given to the setters.
-        $this->setValidationGroup(array(
-            'user' => array(
+        $this->setValidationGroup([
+            'user' => [
                 'email', 'username', 'displayName', 'password', 'groups',
                 'isActive', 'isValidated', 'setRandomPassword'
-            ),
-        ));
+            ],
+        ]);
     }
 }

@@ -21,30 +21,30 @@ class UserFilter extends Form
     {
         $this->setName('user-filter');
 
-        $this->add(array(
+        $this->add([
             'type'    => 'Fieldset',
             'name'    => 'userFilter',
-            'options' => array(
+            'options' => [
                 'label' => 'form.user.userFilter.label',
-            ),
-            'elements' => array(
-                 array(
-                    'spec' => array(
+            ],
+            'elements' => [
+                [
+                    'spec' => [
                         'type'    => 'Zend\Form\Element\Text',
                         'name'    => 'nameSearch',
-                        'options' => array(
+                        'options' => [
                             'label' => 'form.user.nameSearch.label'
-                        ),
-                        'attributes' => array(
+                        ],
+                        'attributes' => [
                             'maxlength' => 255,
-                        ),
-                    ),
-                ),
-                array(
-                    'spec' => array(
-                        'type' => 'Vrok\Form\Element\ObjectSelect',
-                        'name' => 'groupFilter',
-                        'options' => array(
+                        ],
+                    ],
+                ],
+                [
+                    'spec' => [
+                        'type'    => 'Vrok\Form\Element\ObjectSelect',
+                        'name'    => 'groupFilter',
+                        'options' => [
                             'object_manager'     => $this->getEntityManager(),
                             'target_class'       => 'Vrok\Entity\Group',
                             'property'           => 'name',
@@ -54,24 +54,24 @@ class UserFilter extends Form
                             // to force the user to select one and not only use the first
                             // one that is automatically selected
                             'display_empty_item' => true,
-                        ),
-                        'attributes' => array(
+                        ],
+                        'attributes' => [
                             'multiple' => false,
-                        ),
-                    ),
-                ),
-                array(
-                    'spec' => array(
+                        ],
+                    ],
+                ],
+                [
+                    'spec' => [
                         'name'       => 'submit',
-                        'attributes' => array(
+                        'attributes' => [
                             'type'  => 'submit',
                             'value' => 'form.submit',
                             'id'    => 'submit',
-                        ),
-                    )
-                ),
-            ),
-        ));
+                        ],
+                    ]
+                ],
+            ],
+        ]);
     }
 
     /**

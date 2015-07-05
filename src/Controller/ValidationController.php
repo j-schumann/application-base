@@ -28,9 +28,7 @@ class ValidationController extends AbstractActionController
     {
         $form = $this->getServiceLocator()->get('FormElementManager')
             ->get('AppBase\Form\Validation\ConfirmationForm');
-        $viewModel = $this->createViewModel(array(
-            'form' => $form,
-        ));
+        $viewModel = ['form' => $form];
 
         // the Form was posted, ignore the URL parameters
         if ($this->request->isPost()) {
@@ -45,7 +43,7 @@ class ValidationController extends AbstractActionController
         else {
             $id = $this->params('id');
             $token = $this->params('token');
-            $form->setData(array('id' => $id, 'token' => $token));
+            $form->setData(['id' => $id, 'token' => $token]);
 
             if (!$id || !$token) {
                 if ($id xor $token) {

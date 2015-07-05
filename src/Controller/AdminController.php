@@ -65,13 +65,13 @@ class AdminController extends AbstractActionController
         $form = $this->getServiceLocator()->get('FormElementManager')
                 ->get('Vrok\Form\ConfirmationForm');
         $form->setConfirmationMessage(
-            array('message.cache.confirmFlush', array('name' => $name))
+            ['message.cache.confirmFlush', ['name' => $name]]
         );
 
-        $viewModel = $this->createViewModel(array(
+        $viewModel = [
             'name' => $name,
             'form' => $form,
-        ));
+        ];
 
         if (!$this->request->isPost()) {
             return $viewModel;

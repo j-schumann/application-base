@@ -33,13 +33,13 @@ class DisplayNameChange extends Form implements InputFilterProviderInterface
         // for uniqueObject validators
         $this->add($ur->getFormElementDefinition('id'));
 
-        $this->add(array(
+        $this->add([
             'name'       => 'confirm',
-            'attributes' => array(
+            'attributes' => [
                 'type'  => 'submit',
                 'value' => 'form.submit',
-            )
-        ));
+            ],
+        ]);
     }
 
     /**
@@ -56,8 +56,8 @@ class DisplayNameChange extends Form implements InputFilterProviderInterface
         $displayName['validators']['notEmpty']
                 = $ur->getFormHelper()->getNotEmptyValidatorSpecification();
 
-        return array(
+        return [
             $displayName,
-        );
+        ];
     }
 }

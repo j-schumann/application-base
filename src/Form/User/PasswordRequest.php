@@ -28,13 +28,13 @@ class PasswordRequest extends Form implements InputFilterProviderInterface
 
         $this->add($ur->getFormElementDefinition('username'));
 
-        $this->add(array(
+        $this->add([
             'name'       => 'request-password',
-            'attributes' => array(
+            'attributes' => [
                 'type'  => 'submit',
                 'value' => 'form.submit',
-            )
-        ));
+            ],
+        ]);
     }
 
     /**
@@ -45,8 +45,8 @@ class PasswordRequest extends Form implements InputFilterProviderInterface
         $ur = $this->getEntityManager()
                 ->getRepository('Vrok\Entity\User');
 
-        return array(
+        return [
             $ur->getInputSpecification('username'),
-        );
+        ];
     }
 }

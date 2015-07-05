@@ -19,20 +19,20 @@ class Group extends Form
      */
     public function init()
     {
-        $this->add(array(
+        $this->add([
             'type'    => 'AppBase\Form\User\GroupFieldset',
-            'options' => array(
+            'options' => [
                 'use_as_base_fieldset' => true
-            )
-        ));
+            ],
+        ]);
 
-        $this->add(array(
+        $this->add([
             'name'       => 'submit',
-            'attributes' => array(
+            'attributes' => [
                 'type'  => 'submit',
                 'value' => 'form.submit',
                 'id'    => 'submit',
-            ),
-        ));
+            ],
+        ]);
     }
 }

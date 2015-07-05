@@ -42,22 +42,22 @@ class UserFieldset extends Fieldset implements InputFilterProviderInterface
                         'displayName').'.description';
         $this->add($displayName);
 
-        // Admin sees the password he enters for the user
-        // it is not required to allow setting a random password
+        // Admin sees the password he enters for the user,
+        // it is not required - to allow setting a random password
         $password = $ur->getFormElementDefinition('password');
         $password['type'] = 'Zend\Form\Element\Text';
         unset($password['attributes']['required']);
         $this->add($password);
 
-        $this->add(array(
+        $this->add([
             'type'    => 'Zend\Form\Element\Checkbox',
             'name'    => 'setRandomPassword',
-            'options' => array(
+            'options' => [
                 'label'           => 'form.user.setRandomPassword.label',
                 'unchecked_value' => 0,
                 'checked_value'   => 1,
-            ),
-        ));
+            ],
+        ]);
 
         $this->add($ur->getFormElementDefinition('groups'));
 
@@ -89,37 +89,35 @@ class UserFieldset extends Fieldset implements InputFilterProviderInterface
 
         // this is not added per default in the repository class as other forms like the
         // login or passwordRequest form don't need it
-        $spec['email']['validators']['uniqueObject'] = array(
+        $spec['email']['validators']['uniqueObject'] = [
             'name'    => 'DoctrineModule\Validator\UniqueObject',
-            'options' => array(
+            'options' => [
                 'use_context'       => true,
                 'object_repository' => $ur,
                 'fields'            => 'email',
                 'object_manager'    => $this->getEntityManager(),
-                'messages' => array(
+                'messages' => [
                     \DoctrineModule\Validator\UniqueObject::ERROR_OBJECT_NOT_UNIQUE =>
-                        \Vrok\Doctrine\Common::getEntityTranslationString(
-                            'Vrok\User\Entity', 'email').'.notUnique',
-                )
-            ),
-        );
+                        \Vrok\Doctrine\Common::getEntityTranslationString('Vrok\User\Entity', 'email').'.notUnique',
+                ],
+            ],
+        ];
 
         // this is not added per default in the repository class as other forms like the
         // login or passwordRequest form don't need it
-        $spec['username']['validators']['uniqueObject'] = array(
+        $spec['username']['validators']['uniqueObject'] = [
             'name'    => 'DoctrineModule\Validator\UniqueObject',
-            'options' => array(
+            'options' => [
                 'use_context'       => true,
                 'object_repository' => $ur,
                 'fields'            => 'username',
                 'object_manager'    => $this->getEntityManager(),
-                'messages' => array(
+                'messages' => [
                     \DoctrineModule\Validator\UniqueObject::ERROR_OBJECT_NOT_UNIQUE =>
-                        \Vrok\Doctrine\Common::getEntityTranslationString(
-                            'Vrok\User\Entity', 'username').'.notUnique',
-                )
-            ),
-        );
+                        \Vrok\Doctrine\Common::getEntityTranslationString('Vrok\User\Entity', 'username').'.notUnique',
+                ],
+            ],
+        ];
 
         // allow empty usernames for admin as it defaults to the email
         $spec['username']['required'] = false;

@@ -22,25 +22,25 @@ class RecoverForm extends Form implements InputFilterProviderInterface
     {
         $this->addCsrfElement('csrfRecover');
 
-        $this->add(array(
+        $this->add([
             'type'       => 'Zend\Form\Element\Text',
             'name'       => 'executionTime',
-            'options'    => array(
+            'options'    => [
                 'label' => 'Maximum execution time in minutes:'
-            ),
-            'attributes' => array(
+            ],
+            'attributes' => [
                 'maxlength' => 3,
                 'value'     => 30,
-            ),
-        ));
+            ],
+        ]);
 
-        $this->add(array(
+        $this->add([
             'name'       => 'confirm',
-            'attributes' => array(
+            'attributes' => [
                 'type'    => 'submit',
                 'value'   => 'Submit',
-            )
-        ));
+            ],
+        ]);
     }
 
     /**
@@ -48,35 +48,35 @@ class RecoverForm extends Form implements InputFilterProviderInterface
      */
     public function getInputFilterSpecification()
     {
-        return array(
-            'executionTime' => array(
+        return [
+            'executionTime' => [
                 'required'   => true,
                 'allowEmpty' => false,
-                'filters'    => array(
-                    array('name' => 'Zend\Filter\StringTrim'),
-                ),
-                'validators' => array(
-                    array(
+                'filters'    => [
+                    ['name' => 'Zend\Filter\StringTrim'],
+                ],
+                'validators' => [
+                    [
                         'name'    => 'Zend\Validator\Digits',
-                        'options' => array(
-                            'messages' => array(
+                        'options' => [
+                            'messages' => [
                                 \Zend\Validator\Digits::NOT_DIGITS =>
                                     \Vrok\Doctrine\FormHelper::ERROR_NOTINT,
-                            ),
-                        ),
-                    ),
-                    array(
+                            ],
+                        ],
+                    ],
+                    [
                         'name'    => 'Zend\Validator\StringLength',
-                        'options' => array(
+                        'options' => [
                             'max'      => 3,
-                            'messages' => array(
+                            'messages' => [
                                 \Zend\Validator\StringLength::TOO_LONG =>
                                     \Vrok\Doctrine\FormHelper::ERROR_TOOLONG,
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        );
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
     }
 }

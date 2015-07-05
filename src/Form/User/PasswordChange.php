@@ -41,13 +41,13 @@ class PasswordChange extends Form implements InputFilterProviderInterface
         $passwordDefinition['options']['label'] = 'form.user.passwordRepeat.label';
         $this->add($passwordDefinition);
 
-        $this->add(array(
+        $this->add([
             'name'       => 'confirm',
-            'attributes' => array(
+            'attributes' => [
                 'type'  => 'submit',
                 'value' => 'form.submit',
-            )
-        ));
+            ],
+        ]);
     }
 
     /**
@@ -66,41 +66,41 @@ class PasswordChange extends Form implements InputFilterProviderInterface
 
         $newPasswordSpec = $oldPasswordSpec;
         $newPasswordSpec['name'] = 'newPassword';
-        $newPasswordSpec['validators']['passwordStrength'] = array(
+        $newPasswordSpec['validators']['passwordStrength'] = [
             'name'    => PasswordStrength::class,
-            'options' => array(
+            'options' => [
                 'threshold' => $thresholds['ok'],
-                'messages'  => array(
+                'messages'  => [
                     PasswordStrength::TOO_WEAK => 'validate.user.password.tooWeak',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
 
-        $repeatSpec = array(
+        $repeatSpec = [
             'name'     => 'passwordRepeat',
             'required' => true,
-            'filters'  => array(
-                array('name' => 'StringTrim')
-            ),
-            'validators' => array(
+            'filters'  => [
+                ['name' => 'StringTrim']
+            ],
+            'validators' => [
                 $ur->getFormHelper()->getNotEmptyValidatorSpecification(),
-                array(
+                [
                     'name'    => 'Identical',
-                    'options' => array(
+                    'options' => [
                         'token'    => 'newPassword',
-                        'messages' => array(
+                        'messages' => [
                             \Zend\Validator\Identical::NOT_SAME
                                 => 'validate.user.passwordRepeat.notSame',
-                        ),
-                    ),
-                ),
-            ),
-        );
+                        ],
+                    ],
+                ],
+            ],
+        ];
 
-        return array(
+        return [
             $oldPasswordSpec,
             $newPasswordSpec,
             $repeatSpec,
-        );
+        ];
     }
 }
