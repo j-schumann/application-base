@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   (c) 2014, Vrok
  * @license     http://customlicense CustomLicense
@@ -26,7 +27,7 @@ class CronController extends AbstractActionController
     public function cronHourlyAction()
     {
         $this->getEventManager()->trigger(self::EVENT_CRON_HOURLY, $this);
-        echo 'cronHourly finished: '.  date('Y-m-d H:i:s') . "\n";
+        echo 'cronHourly finished: '.date('Y-m-d H:i:s')."\n";
     }
 
     /**
@@ -35,7 +36,7 @@ class CronController extends AbstractActionController
     public function cronDailyAction()
     {
         $this->getEventManager()->trigger(self::EVENT_CRON_DAILY, $this);
-        echo 'cronDaily finished: '.  date('Y-m-d H:i:s') . "\n";
+        echo 'cronDaily finished: '.date('Y-m-d H:i:s')."\n";
     }
 
     /**
@@ -44,6 +45,6 @@ class CronController extends AbstractActionController
     public function cronMonthlyAction()
     {
         $this->getEventManager()->trigger(self::EVENT_CRON_MONTHLY, $this);
-        echo 'cronMonthly finished: '.  date('Y-m-d H:i:s') . "\n";
+        echo 'cronMonthly finished: '.date('Y-m-d H:i:s')."\n";
     }
 }

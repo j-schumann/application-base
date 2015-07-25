@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   (c) 2014, Vrok
  * @license     http://customlicense CustomLicense
@@ -27,8 +28,8 @@ class GroupFieldset extends Fieldset implements InputFilterProviderInterface
         parent::populateValues($data);
 
         if (isset($data['id'])) {
-            $parent = $this->get('parent');
-            $findMethod = $parent->getOption('find_method');
+            $parent                          = $this->get('parent');
+            $findMethod                      = $parent->getOption('find_method');
             $findMethod['params']['groupId'] = $data['id'];
             $parent->setOptions(['find_method' => $findMethod]);
         }
@@ -56,6 +57,7 @@ class GroupFieldset extends Fieldset implements InputFilterProviderInterface
     public function getInputFilterSpecification()
     {
         $repository = $this->getEntityManager()->getRepository(Group::class);
+
         return $repository->getInputFilterSpecification();
     }
 }

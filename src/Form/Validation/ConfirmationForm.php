@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   (c) 2014, Vrok
  * @license     http://customlicense CustomLicense
@@ -12,7 +13,7 @@ use Zend\InputFilter\InputFilterProviderInterface;
 
 /**
  * Shows inputs for validation ID and token, used if the confirmation via URL failed,
- * e.g. parameters were incomplete
+ * e.g. parameters were incomplete.
  */
 class ConfirmationForm extends Form implements InputFilterProviderInterface
 {
@@ -28,7 +29,7 @@ class ConfirmationForm extends Form implements InputFilterProviderInterface
                 ->getRepository('Vrok\Entity\Validation');
 
         // the autoincrement is not required by default
-        $id = $vr->getFormElementDefinition('id');
+        $id                           = $vr->getFormElementDefinition('id');
         $id['attributes']['required'] = 'required';
         $this->add($id);
 
@@ -52,7 +53,7 @@ class ConfirmationForm extends Form implements InputFilterProviderInterface
                 ->getRepository('Vrok\Entity\Validation');
 
         // the autoincrement is not required by default
-        $id = $vr->getInputSpecification('id');
+        $id             = $vr->getInputSpecification('id');
         $id['required'] = true;
         \Vrok\Stdlib\ArrayUtils::array_unshift_assoc(
             $id['validators'], 'notEmpty',

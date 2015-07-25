@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   (c) 2014, Vrok
  * @license     http://customlicense CustomLicense
@@ -7,7 +8,7 @@
 
 namespace AppBase\Form\User;
 
-use \Vrok\Form\Form;
+use Vrok\Form\Form;
 
 /**
  * Allows admins to create a new user.
@@ -25,7 +26,7 @@ class UserCreate extends Form
         $this->add([
             'type'    => 'AppBase\Form\User\UserFieldset',
             'options' => [
-                'use_as_base_fieldset' => true
+                'use_as_base_fieldset' => true,
             ],
         ]);
 
@@ -51,7 +52,7 @@ class UserCreate extends Form
         $this->setValidationGroup([
             'user' => [
                 'email', 'username', 'displayName', 'password', 'groups',
-                'isActive', 'isValidated', 'setRandomPassword'
+                'isActive', 'isValidated', 'setRandomPassword',
             ],
         ]);
     }

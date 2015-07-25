@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   (c) 2014, Vrok
  * @license     http://customlicense CustomLicense
@@ -23,10 +24,10 @@ class RecoverForm extends Form implements InputFilterProviderInterface
         $this->addCsrfElement('csrfRecover');
 
         $this->add([
-            'type'       => 'Zend\Form\Element\Text',
-            'name'       => 'executionTime',
-            'options'    => [
-                'label' => 'Maximum execution time in minutes:'
+            'type'    => 'Zend\Form\Element\Text',
+            'name'    => 'executionTime',
+            'options' => [
+                'label' => 'Maximum execution time in minutes:',
             ],
             'attributes' => [
                 'maxlength' => 3,
@@ -37,8 +38,8 @@ class RecoverForm extends Form implements InputFilterProviderInterface
         $this->add([
             'name'       => 'confirm',
             'attributes' => [
-                'type'    => 'submit',
-                'value'   => 'Submit',
+                'type'  => 'submit',
+                'value' => 'Submit',
             ],
         ]);
     }
@@ -60,8 +61,7 @@ class RecoverForm extends Form implements InputFilterProviderInterface
                         'name'    => 'Zend\Validator\Digits',
                         'options' => [
                             'messages' => [
-                                \Zend\Validator\Digits::NOT_DIGITS =>
-                                    \Vrok\Doctrine\FormHelper::ERROR_NOTINT,
+                                \Zend\Validator\Digits::NOT_DIGITS => \Vrok\Doctrine\FormHelper::ERROR_NOTINT,
                             ],
                         ],
                     ],
@@ -70,8 +70,7 @@ class RecoverForm extends Form implements InputFilterProviderInterface
                         'options' => [
                             'max'      => 3,
                             'messages' => [
-                                \Zend\Validator\StringLength::TOO_LONG =>
-                                    \Vrok\Doctrine\FormHelper::ERROR_TOOLONG,
+                                \Zend\Validator\StringLength::TOO_LONG => \Vrok\Doctrine\FormHelper::ERROR_TOOLONG,
                             ],
                         ],
                     ],

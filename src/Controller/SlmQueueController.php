@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   (c) 2014, Vrok
  * @license     http://customlicense CustomLicense
@@ -42,8 +43,8 @@ class SlmQueueController extends AbstractActionController
         // each queue must have an entry in [slm_queue][queue_manager][factories]
         // -> get those
         $services = $qm->getRegisteredServices();
-        $queues = [];
-        foreach($services['factories'] as $name) {
+        $queues   = [];
+        foreach ($services['factories'] as $name) {
             $queue = $qm->get($name);
 
             // we support only Doctrine queues as we have no functionality to receive
@@ -61,21 +62,21 @@ class SlmQueueController extends AbstractActionController
      *
      * @return ViewModel
      */
-    public function indexAction( )
+    public function indexAction()
     {
         $queues = $this->getQueues();
-        foreach($queues as $key => $queue) {
+        foreach ($queues as $key => $queue) {
             $connection = $queue->connection;
             /* @var $connection \Doctrine\DBAL\Connection */
 
-            $sql = 'SELECT COUNT(*) FROM ' . $queue->getOptions()->getTableName()
+            $sql = 'SELECT COUNT(*) FROM '.$queue->getOptions()->getTableName()
                     .' WHERE status = ? AND queue = ?';
             $pendingCount = $connection->fetchColumn($sql, [
-                DoctrineQueue::STATUS_PENDING, $queue->getName()], 0);
+                DoctrineQueue::STATUS_PENDING, $queue->getName(), ], 0);
             $runningCount = $connection->fetchColumn($sql, [
-                DoctrineQueue::STATUS_RUNNING, $queue->getName()], 0);
+                DoctrineQueue::STATUS_RUNNING, $queue->getName(), ], 0);
             $buriedCount = $connection->fetchColumn($sql, [
-                DoctrineQueue::STATUS_BURIED, $queue->getName()], 0);
+                DoctrineQueue::STATUS_BURIED, $queue->getName(), ], 0);
 
             $queues[$key] = [
                 'name'    => $queue->getName(),
@@ -84,7 +85,6 @@ class SlmQueueController extends AbstractActionController
                 'buried'  => $buriedCount,
             ];
         }
-
 
         return $this->createViewModel([
             'queues' => $queues,
@@ -100,17 +100,18 @@ class SlmQueueController extends AbstractActionController
     public function recoverAction()
     {
         $name = $this->params('name');
-        $qm = $this->getQueueManager();
+        $qm   = $this->getQueueManager();
         if (!$qm->has($name)) {
             $this->flashMessenger()->addErrorMessage('message.slmQueue.queueNotFound');
+
             return $this->redirect()->toRoute('slm-queue');
         }
 
         $form = $this->getServiceLocator()->get('FormElementManager')
                 ->get('AppBase\SlmQueue\RecoverForm');
 
-        $viewModel = ['form'     => $form,
-            'name' => $name,
+        $viewModel = ['form' => $form,
+            'name'           => $name,
         ];
 
         if (!$this->request->isPost()) {
@@ -126,6 +127,7 @@ class SlmQueueController extends AbstractActionController
         $count = $queue->recover($form->get('executionTime')->getValue());
         $this->flashMessenger()->addSuccessMessage('Recovered '.$count.' jobs in queue "'
                 .$name.'"!');
+
         return $this->redirect()->toRoute('slm-queue');
     }
 
@@ -137,17 +139,18 @@ class SlmQueueController extends AbstractActionController
     public function listBuriedAction()
     {
         $name = $this->params('name');
-        $qm = $this->getQueueManager();
+        $qm   = $this->getQueueManager();
         if (!$qm->has($name)) {
             $this->flashMessenger()->addErrorMessage('message.slmQueue.queueNotFound');
+
             return $this->redirect()->toRoute('slm-queue');
         }
 
         $queue = $qm->get($name);
-        $sql = 'SELECT * FROM ' . $queue->getOptions()->getTableName()
+        $sql   = 'SELECT * FROM '.$queue->getOptions()->getTableName()
                 .' WHERE status = ? AND queue = ?';
         $buriedJobs = $queue->connection->fetchAll($sql, [
-            DoctrineQueue::STATUS_BURIED, $queue->getName()]);
+            DoctrineQueue::STATUS_BURIED, $queue->getName(), ]);
 
         return $this->createViewModel([
             'name'       => $name,
@@ -163,17 +166,18 @@ class SlmQueueController extends AbstractActionController
     public function listRunningAction()
     {
         $name = $this->params('name');
-        $qm = $this->getQueueManager();
+        $qm   = $this->getQueueManager();
         if (!$qm->has($name)) {
             $this->flashMessenger()->addErrorMessage('message.slmQueue.queueNotFound');
+
             return $this->redirect()->toRoute('slm-queue');
         }
 
         $queue = $qm->get($name);
-        $sql = 'SELECT * FROM ' . $queue->getOptions()->getTableName()
+        $sql   = 'SELECT * FROM '.$queue->getOptions()->getTableName()
                 .' WHERE status = ? AND queue = ?';
         $runningJobs = $queue->connection->fetchAll($sql, [
-            DoctrineQueue::STATUS_RUNNING, $queue->getName()]);
+            DoctrineQueue::STATUS_RUNNING, $queue->getName(), ]);
 
         return $this->createViewModel([
             'name'        => $name,
@@ -189,17 +193,19 @@ class SlmQueueController extends AbstractActionController
     public function releaseAction()
     {
         $name = $this->params('name');
-        $qm = $this->getQueueManager();
+        $qm   = $this->getQueueManager();
         if (!$qm->has($name)) {
             $this->flashMessenger()->addErrorMessage('message.slmQueue.queueNotFound');
+
             return $this->redirect()->toRoute('slm-queue');
         }
 
-        $id = $this->params('id');
+        $id    = $this->params('id');
         $queue = $qm->get($name);
-        $job = $queue->peek($id);
+        $job   = $queue->peek($id);
         if (!$job) {
             $this->flashMessenger()->addErrorMessage('message.slmQueue.jobNotFound');
+
             return $this->redirect()->toRoute('slm-queue');
         }
 
@@ -218,11 +224,13 @@ class SlmQueueController extends AbstractActionController
         if (!$this->request->isPost() || !$form->isValid()) {
             $this->flashMessenger()
                     ->addInfoMessage('message.slmQueue.confirmRelease');
+
             return $viewModel;
         }
 
         $queue->release($job);
         $this->flashMessenger()->addSuccessMessage('message.slmQueue.jobReleased');
+
         return $this->redirect()->toRoute('slm-queue/list-running', [
             'name' => $name,
         ]);
@@ -236,17 +244,19 @@ class SlmQueueController extends AbstractActionController
     public function unburyAction()
     {
         $name = $this->params('name');
-        $qm = $this->getQueueManager();
+        $qm   = $this->getQueueManager();
         if (!$qm->has($name)) {
             $this->flashMessenger()->addErrorMessage('message.slmQueue.queueNotFound');
+
             return $this->redirect()->toRoute('slm-queue');
         }
 
-        $id = $this->params('id');
+        $id    = $this->params('id');
         $queue = $qm->get($name);
-        $job = $queue->peek($id);
+        $job   = $queue->peek($id);
         if (!$job) {
             $this->flashMessenger()->addErrorMessage('message.slmQueue.jobNotFound');
+
             return $this->redirect()->toRoute('slm-queue');
         }
 
@@ -265,11 +275,13 @@ class SlmQueueController extends AbstractActionController
         if (!$this->request->isPost() || !$form->isValid()) {
             $this->flashMessenger()
                     ->addInfoMessage('message.slmQueue.confirmUnbury');
+
             return $viewModel;
         }
 
         $queue->push($job);
         $this->flashMessenger()->addSuccessMessage('message.slmQueue.jobCopyPushed');
+
         return $this->redirect()->toRoute('slm-queue/delete', [
             'name' => $name,
             'id'   => $id,
@@ -284,17 +296,19 @@ class SlmQueueController extends AbstractActionController
     public function deleteAction()
     {
         $name = $this->params('name');
-        $qm = $this->getQueueManager();
+        $qm   = $this->getQueueManager();
         if (!$qm->has($name)) {
             $this->flashMessenger()->addErrorMessage('message.slmQueue.queueNotFound');
+
             return $this->redirect()->toRoute('slm-queue');
         }
 
-        $id = $this->params('id');
+        $id    = $this->params('id');
         $queue = $qm->get($name);
-        $job = $queue->peek($id);
+        $job   = $queue->peek($id);
         if (!$job) {
             $this->flashMessenger()->addErrorMessage('message.slmQueue.jobNotFound');
+
             return $this->redirect()->toRoute('slm-queue');
         }
 
@@ -313,14 +327,16 @@ class SlmQueueController extends AbstractActionController
         if (!$this->request->isPost() || !$form->isValid()) {
             $this->flashMessenger()
                     ->addInfoMessage('message.slmQueue.confirmDelete');
+
             return $viewModel;
         }
 
         $queue->connection->delete($queue->getOptions()->getTableName(), [
-            'id' => $job->getId()
+            'id' => $job->getId(),
         ]);
 
         $this->flashMessenger()->addSuccessMessage('message.slmQueue.jobDeleted');
+
         return $this->redirect()->toRoute('slm-queue');
     }
 
@@ -333,16 +349,16 @@ class SlmQueueController extends AbstractActionController
      */
     public function checkJobsAction()
     {
-        $config = $this->getServiceLocator()->get('Config');
+        $config    = $this->getServiceLocator()->get('Config');
         $threshold = isset($config['slm_queue']['runtime_threshold'])
-            ? (int)$config['slm_queue']['runtime_threshold']
+            ? (int) $config['slm_queue']['runtime_threshold']
             : 60 * 60;
 
         $queues = $this->getQueues();
-        foreach($queues as $queue) {
-            $interval = new \DateInterval('PT'.$threshold.'S');
+        foreach ($queues as $queue) {
+            $interval         = new \DateInterval('PT'.$threshold.'S');
             $interval->invert = true;
-            $maxAge = new \DateTime(null, new \DateTimeZone('UTC'));
+            $maxAge           = new \DateTime(null, new \DateTimeZone('UTC'));
             $maxAge->add($interval);
 
             $sql = 'SELECT COUNT(*) FROM '.$queue->getOptions()->getTableName()
@@ -352,7 +368,7 @@ class SlmQueueController extends AbstractActionController
                 [
                     $maxAge->format('Y-m-d H:i:s'),
                     DoctrineQueue::STATUS_RUNNING,
-                    $queue->getName()
+                    $queue->getName(),
                 ],
                 0
             );
@@ -367,7 +383,7 @@ class SlmQueueController extends AbstractActionController
             $sql = 'SELECT COUNT(*) FROM '.$queue->getOptions()->getTableName()
                     .' WHERE status = ? AND queue = ?';
             $buriedCount = $queue->connection->fetchColumn($sql, [
-                DoctrineQueue::STATUS_BURIED, $queue->getName()], 0);
+                DoctrineQueue::STATUS_BURIED, $queue->getName(), ], 0);
 
             if ($buriedCount) {
                 $this->getEventManager()->trigger(self::EVENT_BURIEDJOBSFOUND, $queue, [

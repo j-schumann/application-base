@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   (c) 2014, Vrok
  * @license     http://customlicense CustomLicense
@@ -33,7 +34,7 @@ class UserFilter extends Form
                         'type'    => 'Zend\Form\Element\Text',
                         'name'    => 'nameSearch',
                         'options' => [
-                            'label' => 'form.user.nameSearch.label'
+                            'label' => 'form.user.nameSearch.label',
                         ],
                         'attributes' => [
                             'maxlength' => 255,
@@ -45,10 +46,10 @@ class UserFilter extends Form
                         'type'    => 'Vrok\Form\Element\ObjectSelect',
                         'name'    => 'groupFilter',
                         'options' => [
-                            'object_manager'     => $this->getEntityManager(),
-                            'target_class'       => 'Vrok\Entity\Group',
-                            'property'           => 'name',
-                            'label'              => 'form.user.groupFilter.label',
+                            'object_manager' => $this->getEntityManager(),
+                            'target_class'   => 'Vrok\Entity\Group',
+                            'property'       => 'name',
+                            'label'          => 'form.user.groupFilter.label',
 
                             // display the empty element even if the relation is required
                             // to force the user to select one and not only use the first
@@ -68,7 +69,7 @@ class UserFilter extends Form
                             'value' => 'form.submit',
                             'id'    => 'submit',
                         ],
-                    ]
+                    ],
                 ],
             ],
         ]);
@@ -82,6 +83,7 @@ class UserFilter extends Form
         $if = parent::getInputFilter();
         $if->get('userFilter')->get('groupFilter')->setAllowEmpty(true);
         $if->get('userFilter')->get('groupFilter')->setRequired(false);
+
         return $if;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   (c) 2014, Vrok
  * @license     http://customlicense CustomLicense
@@ -7,8 +8,8 @@
 
 namespace AppBase\Form\User;
 
-use \Vrok\Form\Form;
-use \Zend\InputFilter\InputFilterProviderInterface;
+use Vrok\Form\Form;
+use Zend\InputFilter\InputFilterProviderInterface;
 
 /**
  * Asks the user to enter his new displayName.
@@ -26,7 +27,7 @@ class DisplayNameChange extends Form implements InputFilterProviderInterface
         $ur = $this->getEntityManager()
                 ->getRepository('Vrok\Entity\User');
 
-        $displayName = $ur->getFormElementDefinition('displayName');
+        $displayName                           = $ur->getFormElementDefinition('displayName');
         $displayName['attributes']['required'] = 'required';
         $this->add($displayName);
 
@@ -50,9 +51,9 @@ class DisplayNameChange extends Form implements InputFilterProviderInterface
         $ur = $this->getEntityManager()
                 ->getRepository('Vrok\Entity\User');
 
-        $displayName = $ur->getInputSpecification('displayName');
+        $displayName               = $ur->getInputSpecification('displayName');
         $displayName['allowEmpty'] = false;
-        $displayName['required'] = true;
+        $displayName['required']   = true;
         $displayName['validators']['notEmpty']
                 = $ur->getFormHelper()->getNotEmptyValidatorSpecification();
 

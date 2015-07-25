@@ -1,13 +1,14 @@
 <?php
+
 /**
- * Application-Base config
+ * Application-Base config.
  */
 return [
 // <editor-fold defaultstate="collapsed" desc="asset_manager">
     'asset_manager' => [
         'resolver_configs' => [
             'paths' => [
-                __DIR__ . '/../public',
+                __DIR__.'/../public',
             ],
             'view_scripts' => [
                 'app-base.js' => 'app-base/partials/app-base.js',
@@ -17,9 +18,9 @@ return [
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="bjyauthorize">
     'bjyauthorize' => [
-        'default_role' => 'guest',
+        'default_role'      => 'guest',
         'identity_provider' => 'BjyAuthorize\Provider\Identity\AuthenticationIdentityProvider',
-        'role_providers' => [
+        'role_providers'    => [
             'BjyAuthorize\Provider\Role\Config' => [
                 'user' => [
                     'children' => ['admin'],
@@ -30,7 +31,7 @@ return [
             // user groups tabel
             'BjyAuthorize\Provider\Role\ObjectRepositoryProvider' => [
                 'role_entity_class' => 'Vrok\Entity\Group',
-                'object_manager' => 'Doctrine\ORM\EntityManager',
+                'object_manager'    => 'Doctrine\ORM\EntityManager',
             ],
         ],
         'resource_providers' => [
@@ -57,7 +58,7 @@ return [
                 [
                     'controller' => 'AppBase\Controller\Account',
                     'action'     => ['login', 'index', 'request-password'],
-                    'roles'      => ['guest', 'user',],
+                    'roles'      => ['guest', 'user'],
                 ],
                 [
                     'controller' => 'AppBase\Controller\Account',
@@ -70,7 +71,7 @@ return [
                 ],
                 [
                     'controller' => 'AppBase\Controller\Cron',
-                    'roles' => ['guest', 'user'],
+                    'roles'      => ['guest', 'user'],
                 ],
                 [
                     'controller' => 'AppBase\Controller\Group',
@@ -87,7 +88,7 @@ return [
                 ],
                 [
                     'controller' => 'AppBase\Controller\User',
-                    'roles'      => ['userAdmin',],
+                    'roles'      => ['userAdmin'],
                 ],
                 [
                     'controller' => 'AppBase\Controller\User',
@@ -134,7 +135,7 @@ return [
                 ],
                 [
                        'controller' => 'SupervisorControl\Controller\Console',
-                    'roles'      => ['guest', 'supervisorAdmin'],
+                    'roles'         => ['guest', 'supervisorAdmin'],
                 ],
             ],
         ],
@@ -147,7 +148,7 @@ return [
             'routes' => [
                 'cron-hourly' => [
                     'options' => [
-                        'route' => 'cron-hourly',
+                        'route'    => 'cron-hourly',
                         'defaults' => [
                             'controller' => 'AppBase\Controller\Cron',
                             'action'     => 'cron-hourly',
@@ -156,7 +157,7 @@ return [
                 ],
                 'cron-daily' => [
                     'options' => [
-                        'route' => 'cron-daily',
+                        'route'    => 'cron-daily',
                         'defaults' => [
                             'controller' => 'AppBase\Controller\Cron',
                             'action'     => 'cron-daily',
@@ -165,7 +166,7 @@ return [
                 ],
                 'cron-monthly' => [
                     'options' => [
-                        'route' => 'cron-monthly',
+                        'route'    => 'cron-monthly',
                         'defaults' => [
                             'controller' => 'AppBase\Controller\Cron',
                             'action'     => 'cron-monthly',
@@ -174,7 +175,7 @@ return [
                 ],
                 'purge-validations' => [
                     'options' => [
-                        'route' => 'purge-validations',
+                        'route'    => 'purge-validations',
                         'defaults' => [
                             'controller' => 'AppBase\Controller\Validation',
                             'action'     => 'purge',
@@ -183,7 +184,7 @@ return [
                 ],
                 'check-jobs' => [
                     'options' => [
-                        'route' => 'check-jobs',
+                        'route'    => 'check-jobs',
                         'defaults' => [
                             'controller' => 'AppBase\Controller\SlmQueue',
                             'action'     => 'check-jobs',
@@ -197,12 +198,12 @@ return [
 // <editor-fold defaultstate="collapsed" desc="controllers">
     'controllers' => [
         'invokables' => [
-            'AppBase\Controller\Account' => 'AppBase\Controller\AccountController',
-            'AppBase\Controller\Admin' => 'AppBase\Controller\AdminController',
-            'AppBase\Controller\Cron' => 'AppBase\Controller\CronController',
-            'AppBase\Controller\Group' => 'AppBase\Controller\GroupController',
-            'AppBase\Controller\SlmQueue' => 'AppBase\Controller\SlmQueueController',
-            'AppBase\Controller\User' => 'AppBase\Controller\UserController',
+            'AppBase\Controller\Account'    => 'AppBase\Controller\AccountController',
+            'AppBase\Controller\Admin'      => 'AppBase\Controller\AdminController',
+            'AppBase\Controller\Cron'       => 'AppBase\Controller\CronController',
+            'AppBase\Controller\Group'      => 'AppBase\Controller\GroupController',
+            'AppBase\Controller\SlmQueue'   => 'AppBase\Controller\SlmQueueController',
+            'AppBase\Controller\User'       => 'AppBase\Controller\UserController',
             'AppBase\Controller\Validation' => 'AppBase\Controller\ValidationController',
         ],
     ],
@@ -220,7 +221,7 @@ return [
                 'generate_proxies' => true,
 
                 // directory where proxies will be stored.
-                'proxy_dir' => __DIR__ . '/../../../../data/DoctrineORMModule/Proxy',
+                'proxy_dir' => __DIR__.'/../../../../data/DoctrineORMModule/Proxy',
 
                 // namespace for generated proxy classes
                 'proxy_namespace' => 'DoctrineORMModule\Proxy',
@@ -234,13 +235,13 @@ return [
             'queue_entities' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'zend_storage',
-                'paths' => [__DIR__ . '/../../../slm/queue-doctrine/data']
+                'paths' => [__DIR__.'/../../../slm/queue-doctrine/data'],
             ],
 
             // include the DoctrineQueue
             'orm_default' => [
                 'drivers' => [
-                    'Application\Entity' => 'queue_entities'
+                    'Application\Entity' => 'queue_entities',
                 ],
             ],
 
@@ -260,7 +261,7 @@ return [
     ],
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="navigation">
-    /**
+    /*
      * Bjy-Authorize uses resource names like
      * controller/{ControllerServiceName}:{action} when the guards are defined with
      * one or more actions instead of defining the actions as privileges on the controllers
@@ -270,10 +271,10 @@ return [
     'navigation' => [
         'default' => [
             'account' => [
-                'label'    => 'navigation.account',
-                'route'    => 'account',
-                'order'    => -100,
-                'pages'    => [
+                'label' => 'navigation.account',
+                'route' => 'account',
+                'order' => -100,
+                'pages' => [
                     [
                         'label'    => 'navigation.account.login',
                         'route'    => 'account/login',
@@ -449,9 +450,9 @@ return [
                         ],
                     ],
                     'logout' => [
-                        'type' => 'Segment',
+                        'type'    => 'Segment',
                         'options' => [
-                            'route' => 'logout[/]',
+                            'route'    => 'logout[/]',
                             'defaults' => [
                                 'action' => 'logout',
                             ],
@@ -539,7 +540,7 @@ return [
                 ],
             ],
             'slm-queue' => [
-                'type' => 'Literal',
+                'type'    => 'Literal',
                 'options' => [
                     'route'    => '/slm-queue/',
                     'defaults' => [
@@ -548,7 +549,7 @@ return [
                     ],
                 ],
                 'may_terminate' => true,
-                'child_routes' => [
+                'child_routes'  => [
                     'recover' => [
                         'type'    => 'Segment',
                         'options' => [
@@ -651,10 +652,10 @@ return [
                         'options' => [
                             'route'       => 'edit/[:id][/]',
                             'constraints' => [
-                                'id' => '[0-9]+'
+                                'id' => '[0-9]+',
                             ],
                             'defaults' => [
-                                'action' => 'edit'
+                                'action' => 'edit',
                             ],
                         ],
                     ],
@@ -663,10 +664,10 @@ return [
                         'options' => [
                             'route'       => 'delete/[:id][/]',
                             'constraints' => [
-                                'id' => '[0-9]+'
+                                'id' => '[0-9]+',
                             ],
                             'defaults' => [
-                                'action' => 'delete'
+                                'action' => 'delete',
                             ],
                         ],
                     ],
@@ -675,7 +676,7 @@ return [
                         'options' => [
                             'route'    => 'password-strength[/]',
                             'defaults' => [
-                                'action' => 'password-strength'
+                                'action' => 'password-strength',
                             ],
                         ],
                     ],
@@ -684,7 +685,7 @@ return [
                         'options' => [
                             'route'    => 'search[/]',
                             'defaults' => [
-                                'action' => 'search'
+                                'action' => 'search',
                             ],
                         ],
                     ],
@@ -713,10 +714,10 @@ return [
                                 'options' => [
                                     'route'       => 'edit/[:id][/]',
                                     'constraints' => [
-                                        'id' => '[0-9]+'
+                                        'id' => '[0-9]+',
                                     ],
                                     'defaults' => [
-                                        'action' => 'edit'
+                                        'action' => 'edit',
                                     ],
                                 ],
                             ],
@@ -725,10 +726,10 @@ return [
                                 'options' => [
                                     'route'       => 'delete/[:id][/]',
                                     'constraints' => [
-                                        'id' => '[0-9]+'
+                                        'id' => '[0-9]+',
                                     ],
                                     'defaults' => [
-                                        'action' => 'delete'
+                                        'action' => 'delete',
                                     ],
                                 ],
                             ],
@@ -742,7 +743,7 @@ return [
                     'route'    => '/validation/',
                     'defaults' => [
                         'controller' => 'AppBase\Controller\Validation',
-                        'action'    => 'index',
+                        'action'     => 'index',
                     ],
                 ],
                 'may_terminate' => true,
@@ -809,8 +810,7 @@ return [
             'Navigation' => 'Zend\Navigation\Service\DefaultNavigationFactory',
 
             // replace the default translator with our custom extension
-            'Zend\I18n\Translator\TranslatorInterface'
-                    => 'Vrok\I18n\Translator\TranslatorServiceFactory',
+            'Zend\I18n\Translator\TranslatorInterface' => 'Vrok\I18n\Translator\TranslatorServiceFactory',
         ],
 
         'invokables' => [
@@ -888,12 +888,12 @@ return [
         'not_found_template'       => 'error/404',
         'exception_template'       => 'error/index',
         'template_map'             => [
-            'error/403'   => __DIR__ . '/../view/error/403.phtml',
-            'error/404'   => __DIR__ . '/../view/error/404.phtml',
-            'error/index' => __DIR__ . '/../view/error/index.phtml',
+            'error/403'   => __DIR__.'/../view/error/403.phtml',
+            'error/404'   => __DIR__.'/../view/error/404.phtml',
+            'error/index' => __DIR__.'/../view/error/index.phtml',
            ],
         'template_path_stack' => [
-            __DIR__ . '/../view',
+            __DIR__.'/../view',
         ],
         'strategies' => [
             // done by [bjyautorize][unauthorized_strategy]

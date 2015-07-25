@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   (c) 2014, Vrok
  * @license     http://customlicense CustomLicense
@@ -33,7 +34,7 @@ class Module implements
      */
     public function getConfig()
     {
-        return include __DIR__ . '/../config/module.config.php';
+        return include __DIR__.'/../config/module.config.php';
     }
 
     /**
@@ -46,26 +47,27 @@ class Module implements
     {
         return [
             'factories' => [
-                'doctrine.cache.zend_storage' => function($sm) {
+                'doctrine.cache.zend_storage' => function ($sm) {
                     return new \DoctrineModule\Cache\ZendStorageCache(
                             $sm->get('defaultCache'));
                 },
 
                 'ZendLog' => function ($sm) {
-                    $filename = 'log_' . date('F') . '.txt';
+                    $filename = 'log_'.date('F').'.txt';
                     $log = new \Zend\Log\Logger();
-                    $writer = new \Zend\Log\Writer\Stream('./data/logs/' . $filename);
+                    $writer = new \Zend\Log\Writer\Stream('./data/logs/'.$filename);
                     $log->addWriter($writer);
 
                     return $log;
                 },
 
-                'Zend\Mail\Transport' => function($sm) {
+                'Zend\Mail\Transport' => function ($sm) {
                     $spec = [];
                     $config = $sm->get('Config');
                     if (!empty($config['email_service']['transport'])) {
                         $spec = $config['email_service']['transport'];
                     }
+
                     return \Zend\Mail\Transport\Factory::create($spec);
                 },
 
@@ -93,7 +95,7 @@ class Module implements
     {
         return [
             'factories' => [
-                'navigation' => function($sm) {
+                'navigation' => function ($sm) {
                     $auth = $sm->getServiceLocator()->get('BjyAuthorize\Service\Authorize');
                     $role = $auth->getIdentity();
 
@@ -116,7 +118,7 @@ class Module implements
         $application = $e->getApplication();
         /* @var $application ApplicationInterface */
         $eventManager = $application->getEventManager();
-        $config = $application->getServiceManager()->get('config');
+        $config       = $application->getServiceManager()->get('config');
 
         $this->initSession($config);
 
@@ -130,7 +132,7 @@ class Module implements
         date_default_timezone_set('Europe/Berlin');
 
         // @todo accept-header und locale des eingeloggten users auswerten
-        $metaService = $sm->get('Vrok\Service\Meta');
+        $metaService   = $sm->get('Vrok\Service\Meta');
         $defaultLocale = $metaService->getValue('defaultLocale') ?: 'de_DE';
         \Locale::setDefault($defaultLocale);
         $sm->get('Translator')->setLocale($defaultLocale);
@@ -138,10 +140,10 @@ class Module implements
         $sharedEvents = $eventManager->getSharedManager();
 
         // Listen to the CRON events, they are rare, don't instantiate any objects yet
-        $sharedEvents->attach('AppBase\Controller\CronController', 'cronDaily', function($e) {
-	    return \Vrok\SlmQueue\Job\PurgeValidations::onCronDaily($e);
+        $sharedEvents->attach('AppBase\Controller\CronController', 'cronDaily', function ($e) {
+        return \Vrok\SlmQueue\Job\PurgeValidations::onCronDaily($e);
         });
-        $sharedEvents->attach('AppBase\Controller\CronController', 'cronDaily', function($e) {
+        $sharedEvents->attach('AppBase\Controller\CronController', 'cronDaily', function ($e) {
             return \Vrok\SlmQueue\Job\CheckTodos::onCronDaily($e);
         });
     }

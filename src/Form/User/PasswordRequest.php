@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   (c) 2014, Vrok
  * @license     http://customlicense CustomLicense
@@ -7,8 +8,8 @@
 
 namespace AppBase\Form\User;
 
-use \Vrok\Form\Form;
-use \Zend\InputFilter\InputFilterProviderInterface;
+use Vrok\Form\Form;
+use Zend\InputFilter\InputFilterProviderInterface;
 
 /**
  * Asks the user for his username (or email) to reset his password.

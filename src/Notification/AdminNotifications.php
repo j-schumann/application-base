@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   (c) 2014, Vrok
  * @license     http://customlicense CustomLicense
@@ -67,6 +68,7 @@ class AdminNotifications implements ListenerAggregateInterface, ServiceLocatorAw
      * jobs remaining in the queue.
      *
      * @param \Zend\EventManager\EventInterface $e
+     *
      * @throws \RuntimeException when the queueAdmin group does not exist
      */
     public function onBuriedJobsFound(EventInterface $e)
@@ -75,22 +77,22 @@ class AdminNotifications implements ListenerAggregateInterface, ServiceLocatorAw
         $count = $e->getParam('count');
 
         $emailService = $this->serviceLocator->get('EmailService');
-        $url = $this->serviceLocator->get('viewhelpermanager')->get('url');
-        $fullUrl = $this->serviceLocator->get('viewhelpermanager')->get('FullUrl');
+        $url          = $this->serviceLocator->get('viewhelpermanager')->get('url');
+        $fullUrl      = $this->serviceLocator->get('viewhelpermanager')->get('FullUrl');
 
         $mail = $emailService->createMail();
         $mail->setSubject('mail.slmQueue.buriedJobsFound.subject');
 
         $mail->setHtmlBody(['mail.slmQueue.buriedJobsFound.body', [
             'queueName' => $queue->getName(),
-            'count' => $count,
-            'queueUrl' => $fullUrl('https').$url('slm-queue/list-buried', [
-                'name' => $queue->getName()
+            'count'     => $count,
+            'queueUrl'  => $fullUrl('https').$url('slm-queue/list-buried', [
+                'name'  => $queue->getName(),
             ]),
         ]]);
 
         $userManager = $this->serviceLocator->get('UserManager');
-        $group = $userManager->getGroupRepository()
+        $group       = $userManager->getGroupRepository()
                 ->findOneBy(['name' => 'queueAdmin']);
 
         if (!$group) {
@@ -98,8 +100,8 @@ class AdminNotifications implements ListenerAggregateInterface, ServiceLocatorAw
                 'Group "queueAdmin" not found when buried jobs where found!');
         }
 
-        $admins  = $group->getMembers();
-        foreach($admins as $user) {
+        $admins = $group->getMembers();
+        foreach ($admins as $user) {
             $mail->addTo($user->getEmail(), $user->getDisplayName());
         }
 
@@ -111,17 +113,18 @@ class AdminNotifications implements ListenerAggregateInterface, ServiceLocatorAw
      * jobs remaining in the queue.
      *
      * @param \Zend\EventManager\EventInterface $e
+     *
      * @throws \RuntimeException when the queueAdmin group does not exist
      */
     public function onLongRunningJobsFound(EventInterface $e)
     {
-        $queue = $e->getTarget();
-        $count = $e->getParam('count');
+        $queue     = $e->getTarget();
+        $count     = $e->getParam('count');
         $threshold = $e->getParam('threshold');
 
         $emailService = $this->serviceLocator->get('EmailService');
-        $url = $this->serviceLocator->get('viewhelpermanager')->get('url');
-        $fullUrl = $this->serviceLocator->get('viewhelpermanager')->get('FullUrl');
+        $url          = $this->serviceLocator->get('viewhelpermanager')->get('url');
+        $fullUrl      = $this->serviceLocator->get('viewhelpermanager')->get('FullUrl');
 
         $mail = $emailService->createMail();
         $mail->setSubject('mail.slmQueue.longRunningJobsFound.subject');
@@ -131,12 +134,12 @@ class AdminNotifications implements ListenerAggregateInterface, ServiceLocatorAw
             'count'     => $count,
             'threshold' => $threshold / 60, // @todo implement DateInterval-Viewhelper
             'queueUrl'  => $fullUrl('https').$url('slm-queue/list-running', [
-                'name' => $queue->getName()
+                'name'  => $queue->getName(),
             ]),
         ]]);
 
         $userManager = $this->serviceLocator->get('UserManager');
-        $group = $userManager->getGroupRepository()
+        $group       = $userManager->getGroupRepository()
                 ->findOneBy(['name' => 'queueAdmin']);
 
         if (!$group) {
@@ -144,8 +147,8 @@ class AdminNotifications implements ListenerAggregateInterface, ServiceLocatorAw
                 'Group "queueAdmin" not found when buried jobs where found!');
         }
 
-        $admins  = $group->getMembers();
-        foreach($admins as $user) {
+        $admins = $group->getMembers();
+        foreach ($admins as $user) {
             $mail->addTo($user->getEmail(), $user->getDisplayName());
         }
 
@@ -163,23 +166,23 @@ class AdminNotifications implements ListenerAggregateInterface, ServiceLocatorAw
         $processInfo = $e->getParam('info');
 
         $emailService = $this->serviceLocator->get('EmailService');
-        $url = $this->serviceLocator->get('viewhelpermanager')->get('url');
-        $fullUrl = $this->serviceLocator->get('viewhelpermanager')->get('FullUrl');
-        $dateFormat = $this->serviceLocator->get('viewhelpermanager')->get('DateFormat');
+        $url          = $this->serviceLocator->get('viewhelpermanager')->get('url');
+        $fullUrl      = $this->serviceLocator->get('viewhelpermanager')->get('FullUrl');
+        $dateFormat   = $this->serviceLocator->get('viewhelpermanager')->get('DateFormat');
 
         $mail = $emailService->createMail();
         $mail->setSubject('mail.supervisor.processNotRunning.subject');
 
         $mail->setHtmlBody(['mail.supervisor.processNotRunning.body', [
-            'processName' => $processName,
+            'processName'  => $processName,
             'processState' => $processInfo ? $processInfo['statename'] : 'NOT_FOUND',
-            'now' => $dateFormat(new \DateTime(),
+            'now'          => $dateFormat(new \DateTime(),
                     \IntlDateFormatter::LONG, \IntlDateFormatter::MEDIUM),
             'supervisorUrl' => $fullUrl('https').$url('supervisor'),
         ]]);
 
         $userManager = $this->serviceLocator->get('UserManager');
-        $group = $userManager->getGroupRepository()
+        $group       = $userManager->getGroupRepository()
                 ->findOneBy(['name' => 'supervisorAdmin']);
 
         if (!$group) {
@@ -187,8 +190,8 @@ class AdminNotifications implements ListenerAggregateInterface, ServiceLocatorAw
                 'Group "supervisorAdmin" not found when a process was not running!');
         }
 
-        $admins  = $group->getMembers();
-        foreach($admins as $user) {
+        $admins = $group->getMembers();
+        foreach ($admins as $user) {
             $mail->addTo($user->getEmail(), $user->getDisplayName());
         }
 
@@ -196,14 +199,14 @@ class AdminNotifications implements ListenerAggregateInterface, ServiceLocatorAw
     }
 
     /**
-     *
      * @todo https://github.com/juriansluiman/SlmQueue/pull/104
      * @todo #250
+     *
      * @param \Zend\EventManager\EventInterface $e
      */
     public function onProcessJobPost(EventInterface $e)
     {
-      //  \Doctrine\Common\Util\Debug::dump($e, 4);
+        //  \Doctrine\Common\Util\Debug::dump($e, 4);
       //  \Doctrine\Common\Util\Debug::dump($e->getJob(), 4);
       //  $log = $this->serviceLocator->get('ZendLog');
         /* @var $log \Zend\Log\Logger */

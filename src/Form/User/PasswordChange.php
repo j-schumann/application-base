@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   (c) 2014, Vrok
  * @license     http://customlicense CustomLicense
@@ -7,9 +8,9 @@
 
 namespace AppBase\Form\User;
 
-use \Vrok\Form\Form;
+use Vrok\Form\Form;
 use Vrok\Validator\PasswordStrength;
-use \Zend\InputFilter\InputFilterProviderInterface;
+use Zend\InputFilter\InputFilterProviderInterface;
 
 /**
  * Asks the user to enter his current password, the new password and repeat it to avoid typos.
@@ -27,17 +28,17 @@ class PasswordChange extends Form implements InputFilterProviderInterface
         $ur = $this->getEntityManager()
                 ->getRepository('Vrok\Entity\User');
 
-        $passwordDefinition = $ur->getFormElementDefinition('password');
+        $passwordDefinition                     = $ur->getFormElementDefinition('password');
         $passwordDefinition['options']['label'] = 'form.user.currentPassword.label';
         $this->add($passwordDefinition);
 
-        $passwordDefinition['name'] = 'newPassword';
-        $passwordDefinition['options']['label'] = 'form.user.newPassword.label';
+        $passwordDefinition['name']                = 'newPassword';
+        $passwordDefinition['options']['label']    = 'form.user.newPassword.label';
         $passwordDefinition['attributes']['class'] = 'rate-password';
         $this->add($passwordDefinition);
 
         unset($passwordDefinition['attributes']['class']);
-        $passwordDefinition['name'] = 'passwordRepeat';
+        $passwordDefinition['name']             = 'passwordRepeat';
         $passwordDefinition['options']['label'] = 'form.user.passwordRepeat.label';
         $this->add($passwordDefinition);
 
@@ -64,8 +65,8 @@ class PasswordChange extends Form implements InputFilterProviderInterface
                 ->get('UserManager');
         $thresholds = $userManager->getPasswordStrengthThresholds();
 
-        $newPasswordSpec = $oldPasswordSpec;
-        $newPasswordSpec['name'] = 'newPassword';
+        $newPasswordSpec                                   = $oldPasswordSpec;
+        $newPasswordSpec['name']                           = 'newPassword';
         $newPasswordSpec['validators']['passwordStrength'] = [
             'name'    => PasswordStrength::class,
             'options' => [
@@ -80,7 +81,7 @@ class PasswordChange extends Form implements InputFilterProviderInterface
             'name'     => 'passwordRepeat',
             'required' => true,
             'filters'  => [
-                ['name' => 'StringTrim']
+                ['name' => 'StringTrim'],
             ],
             'validators' => [
                 $ur->getFormHelper()->getNotEmptyValidatorSpecification(),
@@ -89,8 +90,7 @@ class PasswordChange extends Form implements InputFilterProviderInterface
                     'options' => [
                         'token'    => 'newPassword',
                         'messages' => [
-                            \Zend\Validator\Identical::NOT_SAME
-                                => 'validate.user.passwordRepeat.notSame',
+                            \Zend\Validator\Identical::NOT_SAME => 'validate.user.passwordRepeat.notSame',
                         ],
                     ],
                 ],

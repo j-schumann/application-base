@@ -11,7 +11,7 @@ use Vrok\Mvc\Controller\AbstractActionController;
 class AccountController extends AbstractActionController
 {
     /**
-     * Account overview for the logged in User
+     * Account overview for the logged in User.
      *
      * @return ViewModel
      */
@@ -43,13 +43,14 @@ class AccountController extends AbstractActionController
         }
 
         $data = $form->getData();
-        $um = $this->getServiceLocator()->get('UserManager');
+        $um   = $this->getServiceLocator()->get('UserManager');
 
         // we do not use the Zend\Authentication\Validator directly in the form
         // as this would lead to a successful login even when the CSRF failed
         $result = $um->login($data['username'], $data['password']);
-        if (! $result instanceof User) {
+        if (!$result instanceof User) {
             $form->get('password')->setMessages($result);
+
             return $this->createViewModel($viewModel);
         }
 
@@ -95,7 +96,7 @@ class AccountController extends AbstractActionController
         $form = $this->getServiceLocator()->get('FormElementManager')
                 ->get('AppBase\Form\User\DisplayNameChange');
 
-        $um = $this->getServiceLocator()->get('UserManager');
+        $um   = $this->getServiceLocator()->get('UserManager');
         $user = $this->identity();
 
         $form->setData($um->getUserRepository()->getInstanceData($user));
@@ -112,12 +113,13 @@ class AccountController extends AbstractActionController
 
         $this->flashMessenger()
                 ->addSuccessMessage('message.user.displayNameChanged');
+
         return $this->redirect()->toRoute('account');
     }
 
     /**
      * Allows the logged in user to change his password.
-     * BjyGuarded: users only
+     * BjyGuarded: users only.
      *
      * @return ViewModel
      */
@@ -132,12 +134,13 @@ class AccountController extends AbstractActionController
             return $viewModel;
         }
 
-        $data = $form->getData();
+        $data        = $form->getData();
         $userManager = $this->getServiceLocator()->get('UserManager');
-        $user = $userManager->getAuthService()->getIdentity();
+        $user        = $userManager->getAuthService()->getIdentity();
 
         if (!$user->checkPassword($data['password'])) {
             $form->setElementMessage('password', 'validate.user.wrongPassword');
+
             return $viewModel;
         }
 
@@ -146,6 +149,7 @@ class AccountController extends AbstractActionController
 
         $this->flashMessenger()
                 ->addSuccessMessage('message.user.passwordChanged');
+
         return $this->redirect()->toRoute('account');
     }
 
@@ -165,12 +169,13 @@ class AccountController extends AbstractActionController
             return $viewModel;
         }
 
-        $data = $form->getData();
+        $data        = $form->getData();
         $userManager = $this->getServiceLocator()->get('UserManager');
 
         $user = $userManager->getUserByIdentity($data['username']);
         if (!$user) {
             $form->setElementMessage('username', 'validate.user.identityNotFound');
+
             return $viewModel;
         }
 
@@ -200,8 +205,8 @@ class AccountController extends AbstractActionController
         }
 
         $userManager = $this->getServiceLocator()->get('UserManager');
-        $results = $userManager->deleteAccount();
-        foreach($results as $message) {
+        $results     = $userManager->deleteAccount();
+        foreach ($results as $message) {
             if (is_string($message)) {
                 $this->flashMessenger()
                     ->addInfoMessage($message);

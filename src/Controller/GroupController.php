@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   (c) 2014, Vrok
  * @license     http://customlicense CustomLicense
@@ -22,9 +23,9 @@ class GroupController extends AbstractActionController
      */
     public function indexAction()
     {
-        $em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
+        $em         = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
         $repository = $em->getRepository('Vrok\Entity\Group');
-        $groups = $repository->findAll();
+        $groups     = $repository->findAll();
 
         return $this->createViewModel(['groups' => $groups]);
     }
@@ -52,12 +53,13 @@ class GroupController extends AbstractActionController
             return $viewModel;
         }
 
-        $data = $form->getData();
+        $data        = $form->getData();
         $userService = $this->getServiceLocator()->get('UserManager');
-        $group = $userService->createGroup($data['group']);
+        $group       = $userService->createGroup($data['group']);
 
         $this->flashMessenger()
                 ->addSuccessMessage('message.user.group.created');
+
         return $this->redirect()->toRoute('user/group');
     }
 
@@ -71,10 +73,11 @@ class GroupController extends AbstractActionController
         $group = $this->getEntityFromParam('Vrok\Entity\Group');
         if (!$group instanceof Group) {
             $this->getResponse()->setStatusCode(404);
+
             return $this->createViewModel(['message' => $group]);
         }
 
-        $em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
+        $em         = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
         $repository = $em->getRepository('Vrok\Entity\Group');
 
         $form = $this->getServiceLocator()->get('FormElementManager')
@@ -101,6 +104,7 @@ class GroupController extends AbstractActionController
 
         $this->flashMessenger()
                 ->addSuccessMessage('message.user.group.edited');
+
         return $this->redirect()->toRoute('user/group');
     }
 
@@ -114,19 +118,21 @@ class GroupController extends AbstractActionController
         $group = $this->getEntityFromParam('Vrok\Entity\Group');
         if (!$group instanceof Group) {
             $this->getResponse()->setStatusCode(404);
+
             return $this->createViewModel(['message' => $group]);
         }
 
         if ($group->getChildren()->count()) {
             $this->flashMessenger()
                 ->addErrorMessage('message.user.group.cannotDeleteWithChildren');
+
             return $this->redirect()->toRoute('user/group');
         }
 
         $form = $this->getServiceLocator()->get('FormElementManager')
                 ->get('Vrok\Form\ConfirmationForm');
         $form->setConfirmationMessage(['message.user.group.confirmDelete',
-            $group->getName()]);
+            $group->getName(), ]);
 
         $viewModel = [
             'form'  => $form,
@@ -148,6 +154,7 @@ class GroupController extends AbstractActionController
 
         $this->flashMessenger()
                 ->addSuccessMessage('message.user.group.deleted');
+
         return $this->redirect()->toRoute('user/group');
     }
 }

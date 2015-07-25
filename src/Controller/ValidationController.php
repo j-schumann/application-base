@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   (c) 2014, Vrok
  * @license     http://customlicense CustomLicense
@@ -37,11 +38,10 @@ class ValidationController extends AbstractActionController
                 return $viewModel;
             }
 
-            $id = $form->get('id')->getValue();
+            $id    = $form->get('id')->getValue();
             $token = $form->get('token')->getValue();
-        }
-        else {
-            $id = $this->params('id');
+        } else {
+            $id    = $this->params('id');
             $token = $this->params('token');
             $form->setData(['id' => $id, 'token' => $token]);
 
@@ -50,6 +50,7 @@ class ValidationController extends AbstractActionController
                     $this->flashMessenger()
                             ->addErrorMessage('message.validation.paramMissing');
                 }
+
                 return $viewModel;
             }
         }

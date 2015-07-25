@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   (c) 2014, Vrok
  * @license     http://customlicense CustomLicense
@@ -23,14 +24,14 @@ class SendValidationMail extends AbstractJob
      */
     public function execute()
     {
-        $payload = $this->getContent();
+        $payload     = $this->getContent();
         $userManager = $this->getServiceLocator()->get(UserManager::class);
-        $user = $userManager->getUserRepository()->find($payload['userId']);
+        $user        = $userManager->getUserRepository()->find($payload['userId']);
         if (!$user) {
             throw new \RuntimeException('User '.$payload['userId'].' not found!');
         }
 
-        $vm = $this->getServiceLocator()->get(ValidationManager::class);
+        $vm         = $this->getServiceLocator()->get(ValidationManager::class);
         $validation = $vm->createValidation(
             UserManager::VALIDATION_USER,
             $user
@@ -40,7 +41,7 @@ class SendValidationMail extends AbstractJob
         $this->getEntityManager()->flush();
 
         $partial = $this->getServiceLocator()->get('viewhelpermanager')->get('partial');
-        $html = $partial('app-base/partials/mail/userValidation', [
+        $html    = $partial('app-base/partials/mail/userValidation', [
             'user'              => $user,
             'validation'        => $validation,
             'confirmationUrl'   => $vm->getConfirmationUrl($validation),
@@ -56,7 +57,7 @@ class SendValidationMail extends AbstractJob
         ]);
 
         $emailService = $this->getServiceLocator()->get(Email::class);
-        $mail = $emailService->createMail();
+        $mail         = $emailService->createMail();
         $mail->addTo($user->getEmail());
         $mail->setSubject('mail.userValidation.subject');
 

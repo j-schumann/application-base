@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   (c) 2014, Vrok
  * @license     http://customlicense CustomLicense
@@ -28,15 +29,16 @@ class AdminController extends AbstractActionController
      */
     public function cachesAction()
     {
-        $config = $this->getServiceLocator()->get('config');
+        $config     = $this->getServiceLocator()->get('config');
         $cacheNames = isset($config['caches'])
             ? array_keys($config['caches'])
             : [];
 
         $caches = [];
-        foreach($cacheNames as $name) {
+        foreach ($cacheNames as $name) {
             $caches[$name] = $this->getServiceLocator()->get($name);
         }
+
         return $this->createViewModel(['caches' => $caches]);
     }
 
@@ -47,18 +49,20 @@ class AdminController extends AbstractActionController
      */
     public function flushCacheAction()
     {
-        $name = $this->params('name');
+        $name   = $this->params('name');
         $config = $this->getServiceLocator()->get('config');
         if (!isset($config['caches'][$name])) {
             $this->flashMessenger()
                 ->addErrorMessage('message.cache.notFound');
+
             return $this->redirect()->toRoute('admin/caches');
         }
 
         $cache = $this->getServiceLocator()->get($name);
-        if (! $cache instanceof \Zend\Cache\Storage\FlushableInterface) {
+        if (!$cache instanceof \Zend\Cache\Storage\FlushableInterface) {
             $this->flashMessenger()
                 ->addErrorMessage('message.cache.notFlushable');
+
             return $this->redirect()->toRoute('admin/caches');
         }
 
@@ -85,6 +89,7 @@ class AdminController extends AbstractActionController
         $cache->flush();
         $this->flashMessenger()
             ->addSuccessMessage('message.cache.flushed');
+
         return $this->redirect()->toRoute('admin/caches');
     }
 

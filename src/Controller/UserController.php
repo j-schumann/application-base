@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   (c) 2014, Vrok
  * @license     http://customlicense CustomLicense
@@ -38,11 +39,11 @@ class UserController extends AbstractActionController
         }
 
         $userManager = $this->getServiceLocator()->get('UserManager');
-        $form = $this->getServiceLocator()->get('FormElementManager')
+        $form        = $this->getServiceLocator()->get('FormElementManager')
                 ->get('AppBase\Form\User\UserFilter');
         if ($sessionContainer['userFilter']) {
             $form->setData([
-                'userFilter' => $sessionContainer['userFilter']
+                'userFilter' => $sessionContainer['userFilter'],
             ]);
         }
 
@@ -59,7 +60,7 @@ class UserController extends AbstractActionController
         if ($this->request->isPost()) {
             $isValid = $form->setData($this->request->getPost())->isValid();
             if ($isValid) {
-                $data = $form->getData();
+                $data                           = $form->getData();
                 $sessionContainer['userFilter'] = $data['userFilter'];
             }
         }
@@ -82,7 +83,7 @@ class UserController extends AbstractActionController
 
         $paginator = $filter->getPaginator();
         $paginator->setItemCountPerPage(15);
-        $paginator->setCurrentPageNumber((int)$this->params()->fromQuery('page', 1));
+        $paginator->setCurrentPageNumber((int) $this->params()->fromQuery('page', 1));
 
         return $this->createViewModel([
             'form'      => $form,
@@ -110,20 +111,21 @@ class UserController extends AbstractActionController
 
         $data = $form->getData();
 
-        $setRandomPassword = (bool)$data['user']['setRandomPassword'];
+        $setRandomPassword = (bool) $data['user']['setRandomPassword'];
         unset($data['user']['setRandomPassword']);
-
 
         if (!$setRandomPassword && !$data['user']['password']) {
             $form->get('user')
                     ->setElementMessage('password', 'validate.user.password.notSet');
+
             return $viewModel;
         }
 
         $userManager = $this->getServiceLocator()->get('UserManager');
-        $user = $userManager->createUser($data['user']);
+        $user        = $userManager->createUser($data['user']);
         if (!$user instanceof User) {
             $form->get('user')->setUntranslatedMessages($user);
+
             return $viewModel;
         }
 
@@ -133,6 +135,7 @@ class UserController extends AbstractActionController
 
         $this->getServiceLocator()->get('Doctrine\ORM\EntityManager')->flush();
         $this->flashMessenger()->addSuccessMessage('message.user.created');
+
         return $this->redirect()->toRoute('user');
     }
 
@@ -146,13 +149,14 @@ class UserController extends AbstractActionController
         $user = $this->getEntityFromParam('Vrok\Entity\User');
         if (!$user instanceof User) {
             $this->getResponse()->setStatusCode(404);
+
             return $this->createViewModel(['message' => $user]);
         }
 
-        $em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
+        $em         = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
         $repository = $em->getRepository('Vrok\Entity\User');
 
-        $userData = $repository->getInstanceData($user);
+        $userData              = $repository->getInstanceData($user);
         $userData['createdAt'] = $user->getCreatedAt()->format(\DateTime::COOKIE);
         $userData['lastLogin'] = $user->getLastLogin()
                 ? $user->getLastLogin()->format(\DateTime::COOKIE)
@@ -180,8 +184,8 @@ class UserController extends AbstractActionController
             return $viewModel;
         }
 
-        $data = $form->getData();
-        $setRandomPassword = (bool)$data['user']['setRandomPassword'];
+        $data              = $form->getData();
+        $setRandomPassword = (bool) $data['user']['setRandomPassword'];
         unset($data['user']['setRandomPassword']);
         unset($data['user']['createdAt']);
         unset($data['user']['lastLogin']);
@@ -203,6 +207,7 @@ class UserController extends AbstractActionController
 
         $this->flashMessenger()
                 ->addSuccessMessage('message.user.edited');
+
         return $this->redirect()->toRoute('user');
     }
 
@@ -210,6 +215,7 @@ class UserController extends AbstractActionController
      * Allows the userAdmin to delete the selected user.
      *
      * @todo softdelete nutzen/implementieren
+     *
      * @return ViewModel|Response
      */
     public function deleteAction()
@@ -217,13 +223,14 @@ class UserController extends AbstractActionController
         $user = $this->getEntityFromParam('Vrok\Entity\User');
         if (!$user instanceof \Vrok\Entity\User) {
             $this->getResponse()->setStatusCode(404);
+
             return $this->createViewModel(['message' => $user]);
         }
 
         $form = $this->getServiceLocator()->get('FormElementManager')
                 ->get('Vrok\Form\ConfirmationForm');
         $form->setConfirmationMessage(['message.user.confirmDelete',
-            ['displayName' => $user->getDisplayName(), 'email' => $user->getEmail()]]);
+            ['displayName' => $user->getDisplayName(), 'email' => $user->getEmail()], ]);
 
         $viewModel = [
             'form' => $form,
@@ -243,15 +250,16 @@ class UserController extends AbstractActionController
         $em->remove($user);
         try {
             $em->flush();
-        }
-        catch (\Doctrine\DBAL\DBALException $e) {
+        } catch (\Doctrine\DBAL\DBALException $e) {
             $this->flashMessenger()
                 ->addErrorMessage('message.user.cannotDeleteReferenced');
+
             return $this->redirect()->toRoute('user/edit', ['id' => $user->getId()]);
         }
 
         $this->flashMessenger()
                 ->addSuccessMessage('message.user.deleted');
+
         return $this->redirect()->toRoute('user');
     }
 
@@ -260,10 +268,11 @@ class UserController extends AbstractActionController
      */
     public function passwordStrengthAction()
     {
-        $pw = $this->params()->fromPost('pw');
-        $um = $this->getServiceLocator()->get('UserManager');
-        $rating = $um->ratePassword($pw);
+        $pw                   = $this->params()->fromPost('pw');
+        $um                   = $this->getServiceLocator()->get('UserManager');
+        $rating               = $um->ratePassword($pw);
         $rating['ratingText'] = $this->translate($rating['ratingText']);
+
         return $this->getJsonModel($rating);
     }
 }

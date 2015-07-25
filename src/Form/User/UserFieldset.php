@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright   (c) 2014, Vrok
  * @license     http://customlicense CustomLicense
@@ -11,7 +12,7 @@ use Vrok\Form\Fieldset;
 use Zend\InputFilter\InputFilterProviderInterface;
 
 /**
- * Form to create or edit an user
+ * Form to create or edit an user.
  */
 class UserFieldset extends Fieldset implements InputFilterProviderInterface
 {
@@ -36,7 +37,7 @@ class UserFieldset extends Fieldset implements InputFilterProviderInterface
         $this->add($username);
 
         // the displayName is not required for admins, it defaults to the username if empty
-        $displayName = $ur->getFormElementDefinition('displayName');
+        $displayName                           = $ur->getFormElementDefinition('displayName');
         $displayName['options']['description'] =
                 \Vrok\Doctrine\Common::getEntityTranslationString('Vrok\Entity\User',
                         'displayName').'.description';
@@ -44,7 +45,7 @@ class UserFieldset extends Fieldset implements InputFilterProviderInterface
 
         // Admin sees the password he enters for the user,
         // it is not required - to allow setting a random password
-        $password = $ur->getFormElementDefinition('password');
+        $password         = $ur->getFormElementDefinition('password');
         $password['type'] = 'Zend\Form\Element\Text';
         unset($password['attributes']['required']);
         $this->add($password);
@@ -96,9 +97,8 @@ class UserFieldset extends Fieldset implements InputFilterProviderInterface
                 'object_repository' => $ur,
                 'fields'            => 'email',
                 'object_manager'    => $this->getEntityManager(),
-                'messages' => [
-                    \DoctrineModule\Validator\UniqueObject::ERROR_OBJECT_NOT_UNIQUE =>
-                        \Vrok\Doctrine\Common::getEntityTranslationString('Vrok\User\Entity', 'email').'.notUnique',
+                'messages'          => [
+                    \DoctrineModule\Validator\UniqueObject::ERROR_OBJECT_NOT_UNIQUE => \Vrok\Doctrine\Common::getEntityTranslationString('Vrok\User\Entity', 'email').'.notUnique',
                 ],
             ],
         ];
@@ -112,20 +112,19 @@ class UserFieldset extends Fieldset implements InputFilterProviderInterface
                 'object_repository' => $ur,
                 'fields'            => 'username',
                 'object_manager'    => $this->getEntityManager(),
-                'messages' => [
-                    \DoctrineModule\Validator\UniqueObject::ERROR_OBJECT_NOT_UNIQUE =>
-                        \Vrok\Doctrine\Common::getEntityTranslationString('Vrok\User\Entity', 'username').'.notUnique',
+                'messages'          => [
+                    \DoctrineModule\Validator\UniqueObject::ERROR_OBJECT_NOT_UNIQUE => \Vrok\Doctrine\Common::getEntityTranslationString('Vrok\User\Entity', 'username').'.notUnique',
                 ],
             ],
         ];
 
         // allow empty usernames for admin as it defaults to the email
-        $spec['username']['required'] = false;
+        $spec['username']['required']   = false;
         $spec['username']['allowEmpty'] = true;
         unset($spec['username']['validators']['notEmpty']);
 
         // allow empty passwords for admin as the can set a random password
-        $spec['password']['required'] = false;
+        $spec['password']['required']   = false;
         $spec['password']['allowEmpty'] = true;
         unset($spec['password']['validators']['notEmpty']);
 
