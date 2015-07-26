@@ -23,7 +23,7 @@
             type: 'POST',
             dataType: 'json',
             data: data,
-            url: '<?php echo $this->fullUrl().$this->basePath().$this->url("user/password-strength"); ?>',
+            url: '<?php echo $this->fullUrl().$this->url("user/password-strength"); ?>',
             success: function (data) {
                 $(element).parent('.form-group')
                         .removeClass('has-success has-warning has-error');
