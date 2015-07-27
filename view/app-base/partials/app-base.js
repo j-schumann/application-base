@@ -41,7 +41,7 @@
 
                 // still try to process, maybe we received a 403 with a
                 // redirect in the response.script
-                Vrok.Tools.processResponse(data.responseJSON, $container, defaults);
+                Vrok.Tools.processResponse(data.responseJSON, element);
             }
         };
 
@@ -56,6 +56,18 @@
             Vrok.ratePassword.timer = setTimeout(function() {
                 Vrok.ratePassword(e.currentTarget);
             }, 300);
+        });
+
+        // get users consent to using cookies on this website
+        $.cookieBar({
+            message: "<?php echo $this->translate('cookiebar.message'); ?>",
+            acceptText: "<?php echo $this->translate('cookiebar.acceptText'); ?>",
+            append: true,
+            bottom: true,
+            fixed: true,
+            policyButton: true,
+            policyText: "<?php echo $this->translate('cookiebar.policyText'); ?>",
+            policyURL: "<?php echo $this->url('privacy'); ?>#cookies"
         });
     });
 }(jQuery));
