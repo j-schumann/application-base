@@ -30,7 +30,7 @@ class UserController extends AbstractActionController
             $sessionContainer['order'] = 'asc';
         }
         $orderBy = $this->params()->fromQuery('orderBy');
-        if (in_array($orderBy, ['username', 'email'])) {
+        if (in_array($orderBy, ['username', 'email', 'lastLogin'])) {
             $sessionContainer['orderBy'] = $orderBy;
         }
         $order = $this->params()->fromQuery('order');
