@@ -22,22 +22,33 @@
     <thead>
         <tr>
             <th>
-                <a href="?orderBy=username&order=<?php echo ($this->orderBy === 'username' && $this->order === 'asc') ? 'desc' : 'asc'; ?>#user-filter" class="no-text-deco" title="<?php echo $this->translate('view.sort.'.($this->orderBy === 'username' && $this->order === 'asc' ? 'desc' : 'asc')); ?>">
-                    <?php echo $this->translate('view.user.username'); ?>
-                    <?php if ($this->orderBy == 'username') : ?>
-                        <span class="icon-<?php echo $this->order; ?>"></span>
-                    <?php endif; ?>
-                </a>
+                <?php echo $this->partial('app-base/partials/sortcolumn', [
+                    'field'    => 'username',
+                    'label'    => $this->translate('view.user.username'),
+                    'orderBy'  => $this->orderBy,
+                    'order'    => $this->order,
+                    'fragment' => 'users-list',
+                ]); ?>
                 <br />
                 <?php echo $this->translate('view.user.displayName'); ?>
             </th>
             <th>
-                <a href="?orderBy=email&order=<?php echo ($this->orderBy === 'email' && $this->order === 'asc') ? 'desc' : 'asc'; ?>#user-filter" class="no-text-deco" title="<?php echo $this->translate('view.sort.'.($this->orderBy === 'email' && $this->order === 'asc' ? 'desc' : 'asc')); ?>">
-                    <?php echo $this->translate('view.user.email'); ?>
-                    <?php if ($this->orderBy == 'email') : ?>
-                        <span class="icon-<?php echo $this->order; ?>"></span>
-                    <?php endif; ?>
-                </a>
+                <?php echo $this->partial('app-base/partials/sortcolumn', [
+                    'field'    => 'email',
+                    'label'    => $this->translate('view.user.email'),
+                    'orderBy'  => $this->orderBy,
+                    'order'    => $this->order,
+                    'fragment' => 'users-list',
+                ]); ?>
+            </th>
+            <th>
+                <?php echo $this->partial('app-base/partials/sortcolumn', [
+                    'field'    => 'lastLogin',
+                    'label'    => $this->translate('view.user.lastLogin'),
+                    'orderBy'  => $this->orderBy,
+                    'order'    => $this->order,
+                    'fragment' => 'users-list',
+                ]); ?>
             </th>
             <th>
                 <?php echo $this->translate('view.user.groups'); ?>
@@ -60,6 +71,9 @@
             </td>
             <td>
                 <?php echo $user->getEmail(); ?>
+            </td>
+            <td>
+                <?php echo $this->dateFormat($user->getLastLogin(), IntlDateFormatter::SHORT, IntlDateFormatter::SHORT); ?>
             </td>
             <td>
                 <?php
