@@ -3,16 +3,23 @@
     <?php echo $this->translate('view.error.403.intro'); ?>
 </p>
 
-<!--<p>
-    <?php if (\BjyAuthorize\Guard\Controller::ERROR === $error) : ?>
-        You are not authorized to access <?php echo($controller);?>
-        <?php if ($action) : ?>::<?php echo($action);?>Action()<?php endif;?>.
-    <?php elseif (\BjyAuthorize\Guard\Route::ERROR === $error)  : ?>
-        You are not authorized to access <?php echo $route;?>.
-    <?php elseif ($error == 'error-unauthorized') : ?>
-        You are not authorized:
-        <?php echo $reason; ?>
-    <?php else : ?>
-        An unknown error occurred.
-    <?php endif;?>
-</p>-->
+<?php
+    // the default options "display_not_found_reason" and "display_exceptions"
+    // are not injected here, use the ENV:
+    if (APPLICATION_ENV === 'development') :
+?>
+    <br />
+    <p>
+        <?php if (\BjyAuthorize\Guard\Controller::ERROR === $error) : ?>
+            You are not authorized to access <b><?php echo($controller);?>
+            <?php if ($action) : ?>::<?php echo($action);?>Action()<?php endif;?></b>.
+        <?php elseif (\BjyAuthorize\Guard\Route::ERROR === $error)  : ?>
+            You are not authorized to access <b><?php echo $route;?></b>.
+        <?php elseif ($error == 'error-unauthorized') : ?>
+            You are not authorized:
+            <b><?php echo $reason; ?></b>
+        <?php else : ?>
+            An unknown error occurred.
+        <?php endif;?>
+    </p>
+<?php endif;

@@ -41,14 +41,14 @@
 
                 // still try to process, maybe we received a 403 with a
                 // redirect in the response.script
-                Vrok.Tools.processResponse(data.responseJSON, element);
+                Vrok.Tools.processResponse(data.responseJSON, $container, defaults);
             }
         };
 
         $.ajax(request);
     };
 
-    // initialize ajax-forms on page load
+    // initialize forms on page load
     $(document).ready(function() {
         $("body").on('keyup', 'input.rate-password', function(e) {
             clearTimeout(Vrok.ratePassword.timer);

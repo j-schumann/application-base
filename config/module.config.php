@@ -811,6 +811,11 @@ return [
 
             // replace the default translator with our custom extension
             'Zend\I18n\Translator\TranslatorInterface' => 'Vrok\I18n\Translator\TranslatorServiceFactory',
+
+            // replace the default guard to conform with the ZF2 event flow.
+            // necessary so that no view is rendered when the access is denied,
+            // just the 302 header is returned
+            'BjyAuthorize\Guard\Controller' => 'Vrok\BjyAuthorize\ControllerGuardServiceFactory',
         ],
 
         'invokables' => [
@@ -882,8 +887,11 @@ return [
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="view_manager">
     'view_manager' => [
-        'display_not_found_reason' => true,
-        'display_exceptions'       => true,
+        // secure defaults - no internal information displayed, overwrite in
+        // your local.php to see the details:
+        'display_not_found_reason' => false,
+        'display_exceptions'       => false,
+
         'doctype'                  => 'XHTML5',
         'not_found_template'       => 'error/404',
         'exception_template'       => 'error/index',
