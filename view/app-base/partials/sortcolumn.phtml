@@ -1,4 +1,4 @@
-<a href="?orderBy=<?php echo $this->field; ?>&order=<?php echo ($this->orderBy === $this->field && $this->order === 'asc') ? 'desc' : 'asc'; ?>#<?php echo $this->fragment; ?>" class="no-text-deco" title="<?php echo $this->translate('view.sort.'.($this->orderBy === $this->field && $this->order === 'asc' ? 'desc' : 'asc')); ?>" data-toggle="tooltip">
+<a href="?orderBy=<?php echo $this->field; ?>&order=<?php echo ($this->orderBy === $this->field && $this->order === 'asc') ? 'desc' : 'asc'; if (count($this->params)) { echo '&'.http_build_query($this->params); } ?>#<?php echo $this->fragment; ?>" class="no-text-deco" title="<?php echo $this->translate('view.sort.'.($this->orderBy === $this->field && $this->order === 'asc' ? 'desc' : 'asc')); ?>" data-toggle="tooltip">
     <?php echo $this->label ?>
     <?php if ($this->orderBy == $this->field) :
         if ($this->order == 'asc') : ?>
