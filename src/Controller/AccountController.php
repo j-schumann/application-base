@@ -3,7 +3,9 @@
 namespace AppBase\Controller;
 
 use Vrok\Entity\User;
+use Vrok\Service\UserManager;
 use Vrok\Mvc\Controller\AbstractActionController;
+use Zend\Session\Container as SessionContainer;
 
 /**
  * Handles the basic actions for the users account like login/logout/password cahnge etc.
@@ -179,14 +181,65 @@ class AccountController extends AbstractActionController
             return $viewModel;
         }
 
+        $this->queue('jobs')->push('AppBase\SlmQueue\Job\SendPasswordRequest', [
+            'userId' => $user->getId(),
+        ]);
+
         // @todo do not directly change the password but send a validation and then
         // show a form for the new password (+confirmation).
         //$validationManager = $this->getServiceLocator()->get('ValidationManager');
         //$validations = $validationManager->getValidations($user, 'confirmPasswordRequest');
 
-        $userManager->sendRandomPassword($user);
+        //$userManager->sendRandomPassword($user);
         $this->flashMessenger()
                 ->addSuccessMessage('message.user.passwordRequested');
+
+        return $this->redirect()->toRoute('account/login');
+    }
+
+    /**
+     * Allows the user to set a new password after confirming a pw request.
+     *
+     * @return ViewModel|Response
+     */
+    public function resetPasswordAction()
+    {
+        if ($this->currentUser()) {
+            return $this->redirect()->toRoute('account');
+        }
+
+        $form = $this->getServiceLocator()->get('FormElementManager')
+                ->get('AppBase\Form\User\PasswordReset');
+        $form->setData($this->request->getPost());
+        $viewModel = $this->createViewModel(['form' => $form]);
+
+        $sessionContainer = new SessionContainer(UserManager::class);
+        if (!$sessionContainer['passwordRequestIdentity']) {
+            return $this->redirect()->toRoute('account/login');
+        }
+
+        $userManager = $this->getServiceLocator()->get(UserManager::class);
+
+        /* @var $user User */
+        $user = $userManager->getUserByIdentity($sessionContainer['passwordRequestIdentity']);
+        if (!$user) {
+            $this->flashMessenger()
+                    ->addErrorMessage('validate.user.identityNotFound');
+
+            return $this->redirect()->toRoute('account/login');
+        }
+
+        if (!$this->request->isPost() || !$form->isValid()) {
+            return $viewModel;
+        }
+
+        $data = $form->getData();
+        $user->setPassword($data['newPassword']);
+        $userManager->getEntityManager()->flush();
+        $sessionContainer['passwordRequestIdentity'] = null;
+
+        $this->flashMessenger()
+                ->addSuccessMessage('message.user.passwordChanged');
 
         return $this->redirect()->toRoute('account/login');
     }
@@ -204,7 +257,7 @@ class AccountController extends AbstractActionController
             return $this->createViewModel(['form' => $form]);
         }
 
-        $userManager = $this->getServiceLocator()->get('UserManager');
+        $userManager = $this->getServiceLocator()->get(UserManager::class);
         $results     = $userManager->deleteAccount();
         foreach ($results as $message) {
             if (is_string($message)) {
