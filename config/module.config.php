@@ -195,19 +195,6 @@ return [
         ],
     ],
 // </editor-fold>
-// <editor-fold defaultstate="collapsed" desc="controllers">
-    'controllers' => [
-        'invokables' => [
-            'AppBase\Controller\Account'    => 'AppBase\Controller\AccountController',
-            'AppBase\Controller\Admin'      => 'AppBase\Controller\AdminController',
-            'AppBase\Controller\Cron'       => 'AppBase\Controller\CronController',
-            'AppBase\Controller\Group'      => 'AppBase\Controller\GroupController',
-            'AppBase\Controller\SlmQueue'   => 'AppBase\Controller\SlmQueueController',
-            'AppBase\Controller\User'       => 'AppBase\Controller\UserController',
-            'AppBase\Controller\Validation' => 'AppBase\Controller\ValidationController',
-        ],
-    ],
-// </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="doctrine">
     'doctrine' => [
         'configuration' => [
@@ -820,10 +807,6 @@ return [
 
             // replace the default translator with our custom extension
             'Zend\I18n\Translator\TranslatorInterface' => 'Vrok\I18n\Translator\TranslatorServiceFactory',
-        ],
-
-        'invokables' => [
-            'AppBase\Notification\AdminNotifications' => 'AppBase\Notification\AdminNotifications',
         ],
     ],
 // </editor-fold>

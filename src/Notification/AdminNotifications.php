@@ -11,16 +11,32 @@ namespace AppBase\Notification;
 use Zend\EventManager\EventInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 use Zend\EventManager\ListenerAggregateTrait;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorAwareTrait;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Listens to system events and notifies the administrators about them.
  */
-class AdminNotifications implements ListenerAggregateInterface, ServiceLocatorAwareInterface
+class AdminNotifications implements ListenerAggregateInterface
 {
     use ListenerAggregateTrait;
-    use ServiceLocatorAwareTrait;
+
+    /**
+     * @var ServiceLocatorInterface
+     */
+    protected $serviceLocator = null;
+
+    /**
+     * Class constructor - stores the ServiceLocator instance.
+     * We inject the locator directly as not all services are lazy loaded
+     * but some are only used in rare cases.
+     * @todo lazyload all required services and include them in the factory
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     */
+    public function __construct(ServiceLocatorInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;;
+    }
 
     /**
      * Attaches to the shared eventmanager to listen for all events of interest for this

@@ -47,6 +47,9 @@ class Module implements
     {
         return [
             'factories' => [
+                'AppBase\Notification\AdminNotifications' => function ($sm) {
+                    return new Notification\AdminNotifications($sm);
+                },
                 'doctrine.cache.zend_storage' => function ($sm) {
                     return new \DoctrineModule\Cache\ZendStorageCache(
                             $sm->get('defaultCache'));
