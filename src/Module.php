@@ -141,7 +141,7 @@ class Module implements
 
         // Listen to the CRON events, they are rare, don't instantiate any objects yet
         $sharedEvents->attach('AppBase\Controller\CronController', 'cronDaily', function ($e) {
-        return \Vrok\SlmQueue\Job\PurgeValidations::onCronDaily($e);
+            return \Vrok\SlmQueue\Job\PurgeValidations::onCronDaily($e);
         });
         $sharedEvents->attach('AppBase\Controller\CronController', 'cronDaily', function ($e) {
             return \Vrok\SlmQueue\Job\CheckTodos::onCronDaily($e);

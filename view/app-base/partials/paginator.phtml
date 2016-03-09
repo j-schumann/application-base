@@ -31,5 +31,5 @@ if ($this->pageCount > 1): ?>
     <?php if ($this->current < $this->pageCount - 1): ?>
         <li><a href="<?php echo $this->url($this->route, $this->params);?>?page=<?php echo $this->pageCount; ?>#<?php echo $this->fragment; ?>">&gt;&gt;</a></li>
     <?php endif; ?>
-</dl>
+</ul>
 <?php endif;
