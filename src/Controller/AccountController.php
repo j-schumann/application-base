@@ -41,8 +41,10 @@ class AccountController extends AbstractActionController
      */
     public function loginAction()
     {
+        $um   = $this->getUserManager();
+
         if ($this->currentUser()) {
-            return $this->redirect()->toRoute('account');
+            return $this->redirect()->toRoute($um->getPostLoginRoute());
         }
 
         $form = $this->getServiceLocator()->get('FormElementManager')
@@ -55,14 +57,12 @@ class AccountController extends AbstractActionController
         }
 
         $data = $form->getData();
-        $um   = $this->getUserManager();
 
         // we do not use the Zend\Authentication\Validator directly in the form
         // as this would lead to a successful login even when the CSRF failed
         $result = $um->login($data['username'], $data['password']);
         if (!$result instanceof User) {
             $form->get('password')->setMessages($result);
-
             return $this->createViewModel($viewModel);
         }
 
