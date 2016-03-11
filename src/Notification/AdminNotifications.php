@@ -8,6 +8,7 @@
 
 namespace AppBase\Notification;
 
+use Vrok\Service\UserManager;
 use Zend\EventManager\EventInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 use Zend\EventManager\ListenerAggregateTrait;
@@ -92,7 +93,7 @@ class AdminNotifications implements ListenerAggregateInterface
         $queue = $e->getTarget();
         $count = $e->getParam('count');
 
-        $emailService = $this->serviceLocator->get('EmailService');
+        $emailService = $this->serviceLocator->get('Vrok\Service\Email');
         $url          = $this->serviceLocator->get('viewhelpermanager')->get('url');
         $fullUrl      = $this->serviceLocator->get('viewhelpermanager')->get('FullUrl');
 
@@ -107,7 +108,7 @@ class AdminNotifications implements ListenerAggregateInterface
             ]),
         ]]);
 
-        $userManager = $this->serviceLocator->get('UserManager');
+        $userManager = $this->serviceLocator->get(UserManager::class);
         $group       = $userManager->getGroupRepository()
                 ->findOneBy(['name' => 'queueAdmin']);
 
@@ -138,7 +139,7 @@ class AdminNotifications implements ListenerAggregateInterface
         $count     = $e->getParam('count');
         $threshold = $e->getParam('threshold');
 
-        $emailService = $this->serviceLocator->get('EmailService');
+        $emailService = $this->serviceLocator->get('Vrok\Service\Email');
         $url          = $this->serviceLocator->get('viewhelpermanager')->get('url');
         $fullUrl      = $this->serviceLocator->get('viewhelpermanager')->get('FullUrl');
 
@@ -154,7 +155,7 @@ class AdminNotifications implements ListenerAggregateInterface
             ]),
         ]]);
 
-        $userManager = $this->serviceLocator->get('UserManager');
+        $userManager = $this->serviceLocator->get(UserManager::class);
         $group       = $userManager->getGroupRepository()
                 ->findOneBy(['name' => 'queueAdmin']);
 
@@ -181,7 +182,7 @@ class AdminNotifications implements ListenerAggregateInterface
         $processName = $e->getParam('processName');
         $processInfo = $e->getParam('info');
 
-        $emailService = $this->serviceLocator->get('EmailService');
+        $emailService = $this->serviceLocator->get('Vrok\Service\Email');
         $url          = $this->serviceLocator->get('viewhelpermanager')->get('url');
         $fullUrl      = $this->serviceLocator->get('viewhelpermanager')->get('FullUrl');
         $dateFormat   = $this->serviceLocator->get('viewhelpermanager')->get('DateFormat');
@@ -197,7 +198,7 @@ class AdminNotifications implements ListenerAggregateInterface
             'supervisorUrl' => $fullUrl('https').$url('supervisor'),
         ]]);
 
-        $userManager = $this->serviceLocator->get('UserManager');
+        $userManager = $this->serviceLocator->get(UserManager::class);
         $group       = $userManager->getGroupRepository()
                 ->findOneBy(['name' => 'supervisorAdmin']);
 

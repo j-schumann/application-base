@@ -13,6 +13,16 @@ use Zend\Session\Container as SessionContainer;
 class AccountController extends AbstractActionController
 {
     /**
+     * Retrieve the userManager instance.
+     *
+     * @return UserManager
+     */
+    protected function getUserManager()
+    {
+        return $this->getServiceLocator()->get(UserManager::class);
+    }
+
+    /**
      * Account overview for the logged in User.
      *
      * @return ViewModel
@@ -36,7 +46,7 @@ class AccountController extends AbstractActionController
         }
 
         $form = $this->getServiceLocator()->get('FormElementManager')
-                ->get('AppBase\Form\User\Login');
+                ->get(\AppBase\Form\User\Login::class);
         $form->setData($this->request->getPost());
         $viewModel = ['form' => $form];
 
@@ -45,7 +55,7 @@ class AccountController extends AbstractActionController
         }
 
         $data = $form->getData();
-        $um   = $this->getServiceLocator()->get('UserManager');
+        $um   = $this->getUserManager();
 
         // we do not use the Zend\Authentication\Validator directly in the form
         // as this would lead to a successful login even when the CSRF failed
@@ -82,7 +92,7 @@ class AccountController extends AbstractActionController
             }
         }
 
-        $userService = $this->getServiceLocator()->get('UserManager');
+        $userService = $this->getUserManager();
         $userService->logout();
 
         return $this->redirect()->toRoute('home');
@@ -98,7 +108,7 @@ class AccountController extends AbstractActionController
         $form = $this->getServiceLocator()->get('FormElementManager')
                 ->get('AppBase\Form\User\DisplayNameChange');
 
-        $um   = $this->getServiceLocator()->get('UserManager');
+        $um   = $this->getUserManager();
         $user = $this->identity();
 
         $form->setData($um->getUserRepository()->getInstanceData($user));
@@ -137,7 +147,7 @@ class AccountController extends AbstractActionController
         }
 
         $data        = $form->getData();
-        $userManager = $this->getServiceLocator()->get('UserManager');
+        $userManager = $this->getUserManager();
         $user        = $userManager->getAuthService()->getIdentity();
 
         if (!$user->checkPassword($data['password'])) {
@@ -172,7 +182,7 @@ class AccountController extends AbstractActionController
         }
 
         $data        = $form->getData();
-        $userManager = $this->getServiceLocator()->get('UserManager');
+        $userManager = $this->getUserManager();
 
         $user = $userManager->getUserByIdentity($data['username']);
         if (!$user) {
@@ -187,7 +197,7 @@ class AccountController extends AbstractActionController
 
         // @todo do not directly change the password but send a validation and then
         // show a form for the new password (+confirmation).
-        //$validationManager = $this->getServiceLocator()->get('ValidationManager');
+        //$validationManager = $this->getServiceLocator()->get('Vrok\Service\ValidationManager');
         //$validations = $validationManager->getValidations($user, 'confirmPasswordRequest');
 
         //$userManager->sendRandomPassword($user);

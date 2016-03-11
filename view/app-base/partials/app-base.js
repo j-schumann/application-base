@@ -41,7 +41,7 @@
 
                 // still try to process, maybe we received a 403 with a
                 // redirect in the response.script
-                Vrok.Tools.processResponse(data.responseJSON, $container, defaults);
+                Vrok.Tools.processResponse(data.responseJSON);
             }
         };
 
@@ -59,7 +59,7 @@
         });
 
         // get users consent to using cookies on this website
-        $.cookieBar({
+        if ($.cookieBar) $.cookieBar({
             message: "<?php echo $this->translate('cookiebar.message'); ?>",
             acceptText: "<?php echo $this->translate('cookiebar.acceptText'); ?>",
             append: true,

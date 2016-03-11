@@ -10,6 +10,7 @@ namespace AppBase\Controller;
 
 use Vrok\Entity\User;
 use Vrok\Mvc\Controller\AbstractActionController;
+use Vrok\Service\UserManager;
 use Zend\Session\Container as SessionContainer;
 
 /**
@@ -17,6 +18,16 @@ use Zend\Session\Container as SessionContainer;
  */
 class UserController extends AbstractActionController
 {
+    /**
+     * Retrieve the userManager instance.
+     *
+     * @return UserManager
+     */
+    protected function getUserManager()
+    {
+        return $this->getServiceLocator()->get(UserManager::class);
+    }
+
     /**
      * Lists all registered users.
      */
@@ -38,7 +49,7 @@ class UserController extends AbstractActionController
             $sessionContainer['order'] = $order;
         }
 
-        $userManager = $this->getServiceLocator()->get('UserManager');
+        $userManager = $this->getUserManager();
         $form        = $this->getServiceLocator()->get('FormElementManager')
                 ->get('AppBase\Form\User\UserFilter');
         if ($sessionContainer['userFilter']) {
@@ -121,7 +132,7 @@ class UserController extends AbstractActionController
             return $viewModel;
         }
 
-        $userManager = $this->getServiceLocator()->get('UserManager');
+        $userManager = $this->getUserManager();
         $user        = $userManager->createUser($data['user']);
         if (!$user instanceof User) {
             $form->get('user')->setUntranslatedMessages($user);
@@ -199,7 +210,7 @@ class UserController extends AbstractActionController
 
         // send the email after updating the record, maybe we set a new email...
         if ($setRandomPassword) {
-            $userManager = $this->getServiceLocator()->get('UserManager');
+            $userManager = $this->getUserManager();
             $userManager->sendRandomPassword($user);
         }
 
@@ -268,9 +279,9 @@ class UserController extends AbstractActionController
      */
     public function passwordStrengthAction()
     {
-        $pw                   = $this->params()->fromPost('pw');
-        $um                   = $this->getServiceLocator()->get('UserManager');
-        $rating               = $um->ratePassword($pw);
+        $pw = $this->params()->fromPost('pw');
+        $um = $this->getUserManager();
+        $rating = $um->ratePassword($pw);
         $rating['ratingText'] = $this->translate($rating['ratingText']);
 
         return $this->getJsonModel($rating);

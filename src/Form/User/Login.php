@@ -56,7 +56,7 @@ class Login extends Form implements InputFilterProviderInterface
         // do not use the authValidator here as he logs the user in even if the
         // form is not valid, e.g. the CSRF fails
         //$userManager = $this->getServiceLocator()->getServiceLocator()
-        //        ->get('UserManager');
+        //        ->get(UserManager::class);
         //$passwordSpec = $ur->getInputSpecification('password');
         //$passwordSpec['validators']['auth'] = $userManager->getAuthValidator();
 

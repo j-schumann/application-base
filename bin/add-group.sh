@@ -15,7 +15,7 @@ if (empty($argv[1])) {
     die("group name must be given as first argument!\n");
 }
 
-$um = $application->getServiceManager()->get('UserManager');
+$um = $application->getServiceManager()->get(Vrok\Service\UserManager::class);
 $repo = $um->getGroupRepository();
 
 $name = $argv[1];

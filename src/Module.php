@@ -11,6 +11,8 @@ namespace AppBase;
 use Zend\EventManager\EventInterface;
 use Zend\ModuleManager\Feature\BootstrapListenerInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\ModuleManager\Feature\ControllerProviderInterface;
+use Zend\ModuleManager\Feature\FormElementProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
 use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
 use Zend\Mvc\ApplicationInterface;
@@ -24,6 +26,8 @@ use Zend\Session\SessionManager;
 class Module implements
     BootstrapListenerInterface,
     ConfigProviderInterface,
+    ControllerProviderInterface,
+    FormElementProviderInterface,
     ServiceProviderInterface,
     ViewHelperProviderInterface
 {
@@ -35,6 +39,120 @@ class Module implements
     public function getConfig()
     {
         return include __DIR__.'/../config/module.config.php';
+    }
+
+    /**
+     * Return additional serviceManager config with closures that should not be
+     * in the config files to allow caching of the complete configuration.
+     *
+     * @return array
+     */
+    public function getControllerConfig()
+    {
+        return [
+            'factories' => [
+                'AppBase\Controller\Account' => function ($sm) {
+                    return new Controller\AccountController($sm);
+                },
+                'AppBase\Controller\Admin' => function ($sm) {
+                    return new Controller\AdminController($sm);
+                },
+                'AppBase\Controller\Cron' => function ($sm) {
+                    return new Controller\CronController($sm);
+                },
+                'AppBase\Controller\Group' => function ($sm) {
+                    return new Controller\GroupController($sm);
+                },
+                'AppBase\Controller\SlmQueue' => function ($sm) {
+                    return new Controller\SlmQueueController($sm);
+                },
+                'AppBase\Controller\User' => function ($sm) {
+                    return new Controller\UserController($sm);
+                },
+                'AppBase\Controller\Validation' => function ($sm) {
+                    return new Controller\ValidationController($sm);
+                },
+            ],
+        ];
+    }
+
+    /**
+     * Return additional serviceManager config with closures that should not be in the
+     * config files to allow caching of the complete configuration.
+     *
+     * @return array
+     */
+    public function getFormElementConfig()
+    {
+        return [
+            'factories' => [
+                'AppBase\Form\User\DisplayNameChange' => function ($sm) {
+                    $form = new Form\User\DisplayNameChange();
+                    $form->setServiceLocator($sm);
+                    return $form;
+                },
+                'AppBase\Form\User\Group' => function ($sm) {
+                    $form = new Form\User\Group();
+                    $form->setServiceLocator($sm);
+                    return $form;
+                },
+                'AppBase\Form\User\GroupFieldset' => function ($sm) {
+                    $form = new Form\User\GroupFieldset();
+                    $form->setServiceLocator($sm);
+                    return $form;
+                },
+                'AppBase\Form\User\Login' => function ($sm) {
+                    $form = new Form\User\Login();
+                    $form->setServiceLocator($sm);
+                    return $form;
+                },
+                'AppBase\Form\User\PasswordChange' => function ($sm) {
+                    $form = new Form\User\PasswordChange();
+                    $form->setServiceLocator($sm);
+                    return $form;
+                },
+                'AppBase\Form\User\PasswordRequest' => function ($sm) {
+                    $form = new Form\User\PasswordRequest();
+                    $form->setServiceLocator($sm);
+                    return $form;
+                },
+                'AppBase\Form\User\PasswordReset' => function ($sm) {
+                    $form = new Form\User\PasswordReset();
+                    $form->setServiceLocator($sm);
+                    return $form;
+                },
+                'AppBase\Form\User\UserCreate' => function ($sm) {
+                    $form = new Form\User\UserCreate();
+                    $form->setServiceLocator($sm);
+                    return $form;
+                },
+                'AppBase\Form\User\UserEdit' => function ($sm) {
+                    $form = new Form\User\UserEdit();
+                    $form->setServiceLocator($sm);
+                    return $form;
+                },
+                'AppBase\Form\User\UserFieldset' => function ($sm) {
+                    $form = new Form\User\UserFieldset();
+                    $form->setServiceLocator($sm);
+                    return $form;
+                },
+                'AppBase\Form\User\UserFilter' => function ($sm) {
+                    $form = new Form\User\UserFilter();
+                    $form->setServiceLocator($sm);
+                    return $form;
+                },
+                'AppBase\Form\Validation\ConfirmationForm' => function ($sm) {
+                    $form = new Form\Validation\ConfirmationForm();
+                    $form->setServiceLocator($sm);
+                    return $form;
+                },
+                'AppBase\SlmQueue\RecoverForm' => function ($sm) {
+                    $form = new SlmQueue\RecoverForm();
+                    $form->setServiceLocator($sm);
+                    return $form;
+                },
+            ],
+        ];
     }
 
     /**
@@ -126,7 +244,7 @@ class Module implements
         $this->initSession($config);
 
         // Allow caching of assertions by not using dependencies via constructor
-        // or ServiceLocatorAware but retrieving them from the static helper.
+        // but retrieving them from the static helper.
         $sm = $application->getServiceManager();
         \Vrok\Acl\Assertion\AssertionHelper::setServiceLocator($sm);
 

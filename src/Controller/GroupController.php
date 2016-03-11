@@ -54,7 +54,7 @@ class GroupController extends AbstractActionController
         }
 
         $data        = $form->getData();
-        $userService = $this->getServiceLocator()->get('UserManager');
+        $userService = $this->getServiceLocator()->get(\Vrok\Service\UserManager::class);
         $group       = $userService->createGroup($data['group']);
 
         $this->flashMessenger()

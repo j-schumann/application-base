@@ -785,13 +785,8 @@ return [
 
         // add some short names that hopefully don't conflict
         'aliases' => [
+            // @todo ist das notwendig?
             'AuthorizeRedirectStrategy' => 'Vrok\Mvc\View\Http\AuthorizeRedirectStrategy',
-            'ClientInfo'                => 'Vrok\Client\Info',
-            'EmailService'              => 'Vrok\Service\Email',
-            'MetaService'               => 'Vrok\Service\Meta',
-            'OwnerService'              => 'Vrok\Service\Owner',
-            'UserManager'               => 'Vrok\Service\UserManager',
-            'ValidationManager'         => 'Vrok\Service\ValidationManager',
             'AuthenticationService'     => 'Zend\Authentication\AuthenticationService',
 
             // @todo warum ist das notwendig?

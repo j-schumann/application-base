@@ -9,6 +9,7 @@
 namespace AppBase\Form\User;
 
 use Vrok\Form\Form;
+use Vrok\Service\UserManager;
 use Vrok\Validator\PasswordStrength;
 use Zend\InputFilter\InputFilterProviderInterface;
 
@@ -58,7 +59,7 @@ class PasswordReset extends Form implements InputFilterProviderInterface
                 ->getRepository('Vrok\Entity\User');
 
         $userManager = $this->getServiceLocator()->getServiceLocator()
-                ->get('UserManager');
+                ->get(UserManager::class);
         $thresholds = $userManager->getPasswordStrengthThresholds();
 
         $newPasswordSpec =  $ur->getInputSpecification('password');

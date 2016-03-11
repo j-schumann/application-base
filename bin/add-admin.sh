@@ -18,7 +18,7 @@ if (empty($argv[1])) {
 
 $email = $argv[1];
 
-$um = $application->getServiceManager()->get('UserManager');
+$um = $application->getServiceManager()->get(Vrok\Service\UserManager::class);
 if ($um->getUserByIdentity($email)) {
     die("User with that email already exists!\n");
 }

@@ -55,7 +55,7 @@ class ValidationController extends AbstractActionController
             }
         }
 
-        $validationManager = $this->getServiceLocator()->get('ValidationManager');
+        $validationManager = $this->getServiceLocator()->get('Vrok\Service\ValidationManager');
         /* @var $validationManager \Vrok\Service\ValidationManager */
 
         $result = $validationManager->confirmValidation($id, $token);
@@ -71,7 +71,7 @@ class ValidationController extends AbstractActionController
      */
     public function purgeAction()
     {
-        $vm = $this->getServiceLocator()->get('ValidationManager');
+        $vm = $this->getServiceLocator()->get('Vrok\Service\ValidationManager');
         $vm->purgeValidations();
     }
 }
