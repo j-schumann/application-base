@@ -256,7 +256,7 @@ class Module implements
         $metaService   = $sm->get('Vrok\Service\Meta');
         $defaultLocale = $metaService->getValue('defaultLocale') ?: 'de_DE';
         \Locale::setDefault($defaultLocale);
-        $sm->get('Translator')->setLocale($defaultLocale);
+        $sm->get('MvcTranslator')->setLocale($defaultLocale);
 
         $sharedEvents = $eventManager->getSharedManager();
 

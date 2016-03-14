@@ -139,7 +139,7 @@ return [
                 ],
             ],
         ],
-        'unauthorized_strategy' => 'AuthorizeRedirectStrategy',
+        'unauthorized_strategy' => 'Vrok\Mvc\View\Http\AuthorizeRedirectStrategy',
     ],
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="console">
@@ -783,15 +783,7 @@ return [
             'Zend\Log\LoggerAbstractServiceFactory',
         ],
 
-        // add some short names that hopefully don't conflict
         'aliases' => [
-            // @todo ist das notwendig?
-            'AuthorizeRedirectStrategy' => 'Vrok\Mvc\View\Http\AuthorizeRedirectStrategy',
-            'AuthenticationService'     => 'Zend\Authentication\AuthenticationService',
-
-            // @todo warum ist das notwendig?
-            'translator' => 'MvcTranslator',
-
             // BjyAuthorize only searches for zfcuser_user_service -> point to our
             // own service
             'zfcuser_user_service' => 'Vrok\Service\UserManager',
@@ -884,7 +876,7 @@ return [
         ],
         'strategies' => [
             // done by [bjyautorize][unauthorized_strategy]
-            //'AuthorizeRedirectStrategy',
+            //'Vrok\Mvc\View\Http\AuthorizeRedirectStrategy',
         ],
     ],
 // </editor-fold>

@@ -28,7 +28,7 @@ class ValidationController extends AbstractActionController
     public function confirmAction()
     {
         $form = $this->getServiceLocator()->get('FormElementManager')
-            ->get('AppBase\Form\Validation\ConfirmationForm');
+            ->get(\AppBase\Form\Validation\ConfirmationForm::class);
         $viewModel = ['form' => $form];
 
         // the Form was posted, ignore the URL parameters

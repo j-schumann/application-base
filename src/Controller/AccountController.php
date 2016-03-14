@@ -85,7 +85,7 @@ class AccountController extends AbstractActionController
         // to protect against simple CSRF
         if ($this->params()->fromQuery('s') !== session_id()) {
             $form = $this->getServiceLocator()->get('FormElementManager')
-                ->get('Vrok\Form\ConfirmationForm');
+                ->get(\Vrok\Form\ConfirmationForm::class);
             $form->setData($this->request->getPost());
             if (!$this->request->isPost() || !$form->isValid()) {
                 return $this->createViewModel(['form' => $form]);
@@ -106,7 +106,7 @@ class AccountController extends AbstractActionController
     public function changeDisplaynameAction()
     {
         $form = $this->getServiceLocator()->get('FormElementManager')
-                ->get('AppBase\Form\User\DisplayNameChange');
+                ->get(\AppBase\Form\User\DisplayNameChange::class);
 
         $um   = $this->getUserManager();
         $user = $this->identity();
@@ -138,7 +138,7 @@ class AccountController extends AbstractActionController
     public function changePasswordAction()
     {
         $form = $this->getServiceLocator()->get('FormElementManager')
-                ->get('AppBase\Form\User\PasswordChange');
+                ->get(\AppBase\Form\User\PasswordChange::class);
         $form->setData($this->request->getPost());
         $viewModel = $this->createViewModel(['form' => $form]);
 
@@ -173,7 +173,7 @@ class AccountController extends AbstractActionController
     public function requestPasswordAction()
     {
         $form = $this->getServiceLocator()->get('FormElementManager')
-                ->get('AppBase\Form\User\PasswordRequest');
+                ->get(\AppBase\Form\User\PasswordRequest::class);
         $form->setData($this->request->getPost());
         $viewModel = $this->createViewModel(['form' => $form]);
 
@@ -219,7 +219,7 @@ class AccountController extends AbstractActionController
         }
 
         $form = $this->getServiceLocator()->get('FormElementManager')
-                ->get('AppBase\Form\User\PasswordReset');
+                ->get(\AppBase\Form\User\PasswordReset::class);
         $form->setData($this->request->getPost());
         $viewModel = $this->createViewModel(['form' => $form]);
 
