@@ -62,7 +62,7 @@ class PasswordChange extends Form implements InputFilterProviderInterface
         $oldPasswordSpec = $ur->getInputSpecification('password');
 
         $userManager = $this->getServiceLocator()->getServiceLocator()
-                ->get('UserManager');
+                ->get(\Vrok\Service\UserManager::class);
         $thresholds = $userManager->getPasswordStrengthThresholds();
 
         $newPasswordSpec                                   = $oldPasswordSpec;

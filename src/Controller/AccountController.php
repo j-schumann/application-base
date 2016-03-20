@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @copyright   (c) 2014, Vrok
+ * @license     http://customlicense CustomLicense
+ * @author      Jakob Schumann <schumann@vrok.de>
+ */
+
 namespace AppBase\Controller;
 
 use Vrok\Entity\User;
@@ -159,6 +165,10 @@ class AccountController extends AbstractActionController
         $user->setPassword($data['newPassword']);
         $userManager->getEntityManager()->flush();
 
+        // password changed -> logout on other devices
+        // @todo via Event lösen, changePassword.post oder user.change etc
+        $userManager->clearUserLoginKeys($user);
+
         $this->flashMessenger()
                 ->addSuccessMessage('message.user.passwordChanged');
 
@@ -260,7 +270,7 @@ class AccountController extends AbstractActionController
     public function deleteAction()
     {
         $form = $this->getServiceLocator()->get('FormElementManager')
-            ->get('Vrok\Form\ConfirmationForm');
+            ->get(\Vrok\Form\ConfirmationForm::class);
 
         $form->setData($this->request->getPost());
         if (!$this->request->isPost() || !$form->isValid()) {
@@ -278,7 +288,7 @@ class AccountController extends AbstractActionController
 
         // still logged in -> delete failed, show the messages
         if ($this->identity()) {
-            return $this->createViewModel([]);
+            return $this->createViewModel(['form' => $form]);
         }
 
         $this->flashMessenger()->addSuccessMessage('message.account.deleted');
