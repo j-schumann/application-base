@@ -144,7 +144,8 @@ class Module implements
                 },
                 'AppBase\Form\User\UserFieldset' => function ($sm) {
                     $form = new Form\User\UserFieldset();
-                    $form->setServiceLocator($sm);
+                    $form->setEntityManager($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
+                    $form->setTranslator($sm->getServiceLocator()->get('MvcTranslator'));
                     return $form;
                 },
                 'AppBase\Form\User\UserFilter' => function ($sm) {
