@@ -8,35 +8,49 @@
 
 namespace AppBase\Notification;
 
+use Vrok\Service\Email as EmailService;
 use Vrok\Service\UserManager;
 use Zend\EventManager\EventInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 use Zend\EventManager\ListenerAggregateTrait;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Listens to system events and notifies the administrators about them.
+ *
+ * depencies: Vrok\Service\Email vhm, UserManager
  */
 class AdminNotifications implements ListenerAggregateInterface
 {
     use ListenerAggregateTrait;
 
     /**
-     * @var ServiceLocatorInterface
+     * @var EmailService
      */
-    protected $serviceLocator = null;
+    protected $emailService = null;
 
     /**
-     * Class constructor - stores the ServiceLocator instance.
-     * We inject the locator directly as not all services are lazy loaded
-     * but some are only used in rare cases.
-     * @todo lazyload all required services and include them in the factory
-     *
-     * @param ServiceLocatorInterface $serviceLocator
+     * @var UserManager
      */
-    public function __construct(ServiceLocatorInterface $serviceLocator)
+    protected $userManager = null;
+
+    /**
+     * Sets the ES instance to use.
+     *
+     * @param EmailService $es
+     */
+    public function setEmailService(EmailService $es)
     {
-        $this->serviceLocator = $serviceLocator;;
+        $this->emailService = $es;
+    }
+
+    /**
+     * Sets the UM instance to use.
+     *
+     * @param UserManager $um
+     */
+    public function setUserManager(UserManager $um)
+    {
+        $this->userManager = $um;
     }
 
     /**
@@ -93,11 +107,10 @@ class AdminNotifications implements ListenerAggregateInterface
         $queue = $e->getTarget();
         $count = $e->getParam('count');
 
-        $emailService = $this->serviceLocator->get('Vrok\Service\Email');
-        $url          = $this->serviceLocator->get('viewhelpermanager')->get('url');
-        $fullUrl      = $this->serviceLocator->get('viewhelpermanager')->get('FullUrl');
+        $url     = $this->emailService->getViewHelperManager()->get('url');
+        $fullUrl = $this->emailService->getViewHelperManager()->get('FullUrl');
 
-        $mail = $emailService->createMail();
+        $mail = $this->emailService->createMail();
         $mail->setSubject('mail.slmQueue.buriedJobsFound.subject');
 
         $mail->setHtmlBody(['mail.slmQueue.buriedJobsFound.body', [
@@ -108,10 +121,8 @@ class AdminNotifications implements ListenerAggregateInterface
             ]),
         ]]);
 
-        $userManager = $this->serviceLocator->get(UserManager::class);
-        $group       = $userManager->getGroupRepository()
+        $group = $this->userManager->getGroupRepository()
                 ->findOneBy(['name' => 'queueAdmin']);
-
         if (!$group) {
             throw new \RuntimeException(
                 'Group "queueAdmin" not found when buried jobs where found!');
@@ -122,7 +133,7 @@ class AdminNotifications implements ListenerAggregateInterface
             $mail->addTo($user->getEmail(), $user->getDisplayName());
         }
 
-        $emailService->sendMail($mail);
+        $this->emailService->sendMail($mail);
     }
 
     /**
@@ -139,11 +150,10 @@ class AdminNotifications implements ListenerAggregateInterface
         $count     = $e->getParam('count');
         $threshold = $e->getParam('threshold');
 
-        $emailService = $this->serviceLocator->get('Vrok\Service\Email');
-        $url          = $this->serviceLocator->get('viewhelpermanager')->get('url');
-        $fullUrl      = $this->serviceLocator->get('viewhelpermanager')->get('FullUrl');
+        $url     = $this->emailService->getViewHelperManager()->get('url');
+        $fullUrl = $this->emailService->getViewHelperManager()->get('FullUrl');
 
-        $mail = $emailService->createMail();
+        $mail = $this->emailService->createMail();
         $mail->setSubject('mail.slmQueue.longRunningJobsFound.subject');
 
         $mail->setHtmlBody(['mail.slmQueue.longRunningJobsFound.body', [
@@ -155,8 +165,7 @@ class AdminNotifications implements ListenerAggregateInterface
             ]),
         ]]);
 
-        $userManager = $this->serviceLocator->get(UserManager::class);
-        $group       = $userManager->getGroupRepository()
+        $group = $this->userManager->getGroupRepository()
                 ->findOneBy(['name' => 'queueAdmin']);
 
         if (!$group) {
@@ -169,7 +178,7 @@ class AdminNotifications implements ListenerAggregateInterface
             $mail->addTo($user->getEmail(), $user->getDisplayName());
         }
 
-        $emailService->sendMail($mail);
+        $this->emailService->sendMail($mail);
     }
 
     /**
@@ -182,12 +191,11 @@ class AdminNotifications implements ListenerAggregateInterface
         $processName = $e->getParam('processName');
         $processInfo = $e->getParam('info');
 
-        $emailService = $this->serviceLocator->get('Vrok\Service\Email');
-        $url          = $this->serviceLocator->get('viewhelpermanager')->get('url');
-        $fullUrl      = $this->serviceLocator->get('viewhelpermanager')->get('FullUrl');
-        $dateFormat   = $this->serviceLocator->get('viewhelpermanager')->get('DateFormat');
+        $url        = $this->emailService->getViewHelperManager()->get('url');
+        $fullUrl    = $this->emailService->getViewHelperManager()->get('FullUrl');
+        $dateFormat = $this->emailService->getViewHelperManager()->get('DateFormat');
 
-        $mail = $emailService->createMail();
+        $mail = $this->emailService-->createMail();
         $mail->setSubject('mail.supervisor.processNotRunning.subject');
 
         $mail->setHtmlBody(['mail.supervisor.processNotRunning.body', [
@@ -198,10 +206,8 @@ class AdminNotifications implements ListenerAggregateInterface
             'supervisorUrl' => $fullUrl('https').$url('supervisor'),
         ]]);
 
-        $userManager = $this->serviceLocator->get(UserManager::class);
-        $group       = $userManager->getGroupRepository()
+        $group = $this->userManager->getGroupRepository()
                 ->findOneBy(['name' => 'supervisorAdmin']);
-
         if (!$group) {
             throw new \RuntimeException(
                 'Group "supervisorAdmin" not found when a process was not running!');
@@ -212,7 +218,7 @@ class AdminNotifications implements ListenerAggregateInterface
             $mail->addTo($user->getEmail(), $user->getDisplayName());
         }
 
-        $emailService->sendMail($mail);
+        $this->emailService-->sendMail($mail);
     }
 
     /**

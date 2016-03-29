@@ -20,6 +20,21 @@ use Zend\InputFilter\InputFilterProviderInterface;
 class PasswordReset extends Form implements InputFilterProviderInterface
 {
     /**
+     * @var UserManager
+     */
+    protected $userManager = null;
+
+    /**
+     * Sets the UM instance to use.
+     *
+     * @param UserManager $um
+     */
+    public function setUserManager(UserManager $um)
+    {
+        $this->userManager = $um;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function init()
@@ -58,9 +73,7 @@ class PasswordReset extends Form implements InputFilterProviderInterface
         $ur = $this->getEntityManager()
                 ->getRepository('Vrok\Entity\User');
 
-        $userManager = $this->getServiceLocator()->getServiceLocator()
-                ->get(UserManager::class);
-        $thresholds = $userManager->getPasswordStrengthThresholds();
+        $thresholds = $this->userManager->getPasswordStrengthThresholds();
 
         $newPasswordSpec =  $ur->getInputSpecification('password');
         $newPasswordSpec['name']                           = 'newPassword';

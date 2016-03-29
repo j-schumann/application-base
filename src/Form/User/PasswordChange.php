@@ -9,6 +9,7 @@
 namespace AppBase\Form\User;
 
 use Vrok\Form\Form;
+use Vrok\Service\UserManager;
 use Vrok\Validator\PasswordStrength;
 use Zend\InputFilter\InputFilterProviderInterface;
 
@@ -17,6 +18,21 @@ use Zend\InputFilter\InputFilterProviderInterface;
  */
 class PasswordChange extends Form implements InputFilterProviderInterface
 {
+    /**
+     * @var UserManager
+     */
+    protected $userManager = null;
+
+    /**
+     * Sets the UM instance to use.
+     *
+     * @param UserManager $um
+     */
+    public function setUserManager(UserManager $um)
+    {
+        $this->userManager = $um;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -61,9 +77,7 @@ class PasswordChange extends Form implements InputFilterProviderInterface
 
         $oldPasswordSpec = $ur->getInputSpecification('password');
 
-        $userManager = $this->getServiceLocator()->getServiceLocator()
-                ->get(\Vrok\Service\UserManager::class);
-        $thresholds = $userManager->getPasswordStrengthThresholds();
+        $thresholds = $this->userManager->getPasswordStrengthThresholds();
 
         $newPasswordSpec                                   = $oldPasswordSpec;
         $newPasswordSpec['name']                           = 'newPassword';

@@ -88,47 +88,58 @@ class Module implements
             'factories' => [
                 'AppBase\Form\User\DisplayNameChange' => function ($sm) {
                     $form = new Form\User\DisplayNameChange();
-                    $form->setServiceLocator($sm);
+                    $form->setEntityManager($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
+                    $form->setTranslator($sm->getServiceLocator()->get('MvcTranslator'));
                     return $form;
                 },
                 'AppBase\Form\User\Group' => function ($sm) {
                     $form = new Form\User\Group();
-                    $form->setServiceLocator($sm);
+                    $form->setEntityManager($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
+                    $form->setTranslator($sm->getServiceLocator()->get('MvcTranslator'));
                     return $form;
                 },
                 'AppBase\Form\User\GroupFieldset' => function ($sm) {
                     $form = new Form\User\GroupFieldset();
-                    $form->setServiceLocator($sm);
+                    $form->setEntityManager($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
+                    $form->setTranslator($sm->getServiceLocator()->get('MvcTranslator'));
                     return $form;
                 },
                 'AppBase\Form\User\Login' => function ($sm) {
                     $form = new Form\User\Login();
-                    $form->setServiceLocator($sm);
+                    $form->setEntityManager($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
+                    $form->setTranslator($sm->getServiceLocator()->get('MvcTranslator'));
                     return $form;
                 },
                 'AppBase\Form\User\PasswordChange' => function ($sm) {
                     $form = new Form\User\PasswordChange();
-                    $form->setServiceLocator($sm);
+                    $form->setEntityManager($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
+                    $form->setTranslator($sm->getServiceLocator()->get('MvcTranslator'));
+                    $form->setUserManager($sm->getServiceLocator()->get('Vrok\Service\UserManager'));
                     return $form;
                 },
                 'AppBase\Form\User\PasswordRequest' => function ($sm) {
                     $form = new Form\User\PasswordRequest();
-                    $form->setServiceLocator($sm);
+                    $form->setEntityManager($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
+                    $form->setTranslator($sm->getServiceLocator()->get('MvcTranslator'));
                     return $form;
                 },
                 'AppBase\Form\User\PasswordReset' => function ($sm) {
                     $form = new Form\User\PasswordReset();
-                    $form->setServiceLocator($sm);
+                    $form->setEntityManager($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
+                    $form->setTranslator($sm->getServiceLocator()->get('MvcTranslator'));
+                    $form->setUserManager($sm->getServiceLocator()->get('Vrok\Service\UserManager'));
                     return $form;
                 },
                 'AppBase\Form\User\UserCreate' => function ($sm) {
                     $form = new Form\User\UserCreate();
-                    $form->setServiceLocator($sm);
+                    $form->setEntityManager($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
+                    $form->setTranslator($sm->getServiceLocator()->get('MvcTranslator'));
                     return $form;
                 },
                 'AppBase\Form\User\UserEdit' => function ($sm) {
                     $form = new Form\User\UserEdit();
-                    $form->setServiceLocator($sm);
+                    $form->setEntityManager($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
+                    $form->setTranslator($sm->getServiceLocator()->get('MvcTranslator'));
                     return $form;
                 },
                 'AppBase\Form\User\UserFieldset' => function ($sm) {
@@ -138,17 +149,20 @@ class Module implements
                 },
                 'AppBase\Form\User\UserFilter' => function ($sm) {
                     $form = new Form\User\UserFilter();
-                    $form->setServiceLocator($sm);
+                    $form->setEntityManager($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
+                    $form->setTranslator($sm->getServiceLocator()->get('MvcTranslator'));
                     return $form;
                 },
                 'AppBase\Form\Validation\ConfirmationForm' => function ($sm) {
                     $form = new Form\Validation\ConfirmationForm();
-                    $form->setServiceLocator($sm);
+                    $form->setEntityManager($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
+                    $form->setTranslator($sm->getServiceLocator()->get('MvcTranslator'));
                     return $form;
                 },
                 'AppBase\SlmQueue\RecoverForm' => function ($sm) {
                     $form = new SlmQueue\RecoverForm();
-                    $form->setServiceLocator($sm);
+                    $form->setEntityManager($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
+                    $form->setTranslator($sm->getServiceLocator()->get('MvcTranslator'));
                     return $form;
                 },
             ],
@@ -166,7 +180,10 @@ class Module implements
         return [
             'factories' => [
                 'AppBase\Notification\AdminNotifications' => function ($sm) {
-                    return new Notification\AdminNotifications($sm);
+                    $service = new Notification\AdminNotifications();
+                    $service->setEmailService($sm->get('Vrok\Service\Email'));
+                    $service->setUserManager($sm->get('Vrok\Service\UserManager'));
+                    return $service;
                 },
                 'doctrine.cache.zend_storage' => function ($sm) {
                     return new \DoctrineModule\Cache\ZendStorageCache(
