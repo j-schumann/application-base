@@ -9,11 +9,9 @@
     "require": {
         "php": ">=5.5",
         "bjyoungblood/bjy-authorize": "~1.4.0",
-        "doctrine/doctrine-orm-module": "~0.9.0",
-        "gedmo/doctrine-extensions": "~2.4.1",
-        "slm/queue-doctrine": "~0.4.0",
-        "vrok/vrok-lib": "~0.1.0",
-        "vrok/translation-module": "~0.1.0",
+        "slm/queue-doctrine": "~0.5.0",
+        "vrok/vrok-lib": "~0.1.1",
+        "vrok/translation-module": "~0.1.1",
         "vrok/supervisor-control": "~0.1.0"
     },
     "autoload": {
