@@ -53,12 +53,8 @@ class Login extends Form implements InputFilterProviderInterface
         $ur = $this->getEntityManager()
                 ->getRepository('Vrok\Entity\User');
 
-        // do not use the authValidator here as he logs the user in even if the
-        // form is not valid, e.g. the CSRF fails
-        //$userManager = $this->getServiceLocator()->getServiceLocator()
-        //        ->get(UserManager::class);
-        //$passwordSpec = $ur->getInputSpecification('password');
-        //$passwordSpec['validators']['auth'] = $userManager->getAuthValidator();
+        // do not use the authValidator here on the password field as he logs
+        // the user in even if the form is not valid, e.g. the CSRF fails
 
         return [
             $ur->getInputSpecification('username'),
