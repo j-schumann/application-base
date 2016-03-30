@@ -11,6 +11,7 @@ namespace AppBase\Notification;
 use Vrok\Service\Email as EmailService;
 use Vrok\Service\UserManager;
 use Zend\EventManager\EventInterface;
+use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 use Zend\EventManager\ListenerAggregateTrait;
 
@@ -57,22 +58,24 @@ class AdminNotifications implements ListenerAggregateInterface
      * Attaches to the shared eventmanager to listen for all events of interest for this
      * handler.
      *
-     * @param \Zend\EventManager\EventManagerInterface $events
+     * @param EventManagerInterface $events
      */
-    public function attach(\Zend\EventManager\EventManagerInterface $events)
+    public function attach(EventManagerInterface $events, $priority = 1)
     {
         $shared = $events->getSharedManager();
 
         $shared->attach(
             'AppBase\Controller\SlmQueueController',
             \AppBase\Controller\SlmQueueController::EVENT_BURIEDJOBSFOUND,
-            [$this, 'onBuriedJobsFound']
+            [$this, 'onBuriedJobsFound'],
+            $priority
         );
 
         $shared->attach(
             'AppBase\Controller\SlmQueueController',
             \AppBase\Controller\SlmQueueController::EVENT_LONGRUNNINGJOBSFOUND,
-            [$this, 'onLongRunningJobsFound']
+            [$this, 'onLongRunningJobsFound'],
+            $priority
         );
 
         $shared->attach(
@@ -80,8 +83,8 @@ class AdminNotifications implements ListenerAggregateInterface
             // do not use constant to avoid dependency
             // (\SupervisorControl\Controller\ConsoleController::EVENT_PROCESSNOTRUNNING)
             'processNotRunning',
-
-            [$this, 'onProcessNotRunning']
+            [$this, 'onProcessNotRunning'],
+            $priority
         );
 
         /*
@@ -90,7 +93,8 @@ class AdminNotifications implements ListenerAggregateInterface
         $shared->attach(
             'SlmQueue\Worker\WorkerInterface',
             \SlmQueue\Worker\WorkerEvent::EVENT_PROCESS_JOB_POST,
-            [$this, 'onProcessJobPost']
+            [$this, 'onProcessJobPost'],
+            $priority
         );*/
     }
 
