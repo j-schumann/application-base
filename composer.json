@@ -1,7 +1,7 @@
 {
     "name": "vrok/application-base",
     "description": "Basic application sceleton",
-    "license": "private",
+    "license": "MIT",
     "homepage": "http://www.vrok.de/",
     "minimum-stability": "dev",
 
