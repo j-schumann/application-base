@@ -5,13 +5,12 @@
     "license": "MIT",
     "homepage": "http://www.vrok.de/",
     "keywords": ["zf2", "administration", "backend", "slmqueue"],
-    "minimum-stability": "dev",
 
     "require": {
         "php": ">=5.5",
         "bjyoungblood/bjy-authorize": "~1.4.0",
         "slm/queue-doctrine": "~0.5.0",
-        "vrok/vrok-lib": "~0.1.1",
+        "vrok/vrok-lib": "~0.2.0",
         "vrok/translation-module": "~0.1.1",
         "vrok/supervisor-control": "~0.1.0"
     },
