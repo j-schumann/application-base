@@ -8,11 +8,11 @@
 
     "require": {
         "php": ">=5.5",
-        "bjyoungblood/bjy-authorize": "~1.4.0",
-        "slm/queue-doctrine": "~0.5.0",
-        "vrok/vrok-lib": "~0.2.0",
-        "vrok/translation-module": "~0.1.1",
-        "vrok/supervisor-control": "~0.1.0"
+        "bjyoungblood/bjy-authorize": "^1.4.0",
+        "slm/queue-doctrine": "^0.5.0",
+        "vrok/vrok-lib": "^0.2.0",
+        "vrok/translation-module": "^0.1.2",
+        "vrok/supervisor-control": "^0.1.0"
     },
     "autoload": {
         "psr-4": {
