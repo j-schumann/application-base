@@ -18,7 +18,7 @@ use Zend\EventManager\ListenerAggregateTrait;
 /**
  * Listens to system events and notifies the administrators about them.
  *
- * depencies: Vrok\Service\Email vhm, UserManager
+ * dependencies: Vrok\Service\Email vhm, UserManager
  */
 class AdminNotifications implements ListenerAggregateInterface
 {
