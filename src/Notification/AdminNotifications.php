@@ -199,7 +199,7 @@ class AdminNotifications implements ListenerAggregateInterface
         $fullUrl    = $this->emailService->getViewHelperManager()->get('FullUrl');
         $dateFormat = $this->emailService->getViewHelperManager()->get('DateFormat');
 
-        $mail = $this->emailService-->createMail();
+        $mail = $this->emailService->createMail();
         $mail->setSubject('mail.supervisor.processNotRunning.subject');
 
         $mail->setHtmlBody(['mail.supervisor.processNotRunning.body', [
@@ -222,7 +222,7 @@ class AdminNotifications implements ListenerAggregateInterface
             $mail->addTo($user->getEmail(), $user->getDisplayName());
         }
 
-        $this->emailService-->sendMail($mail);
+        $this->emailService->sendMail($mail);
     }
 
     /**
