@@ -50,22 +50,24 @@ class UserController extends AbstractActionController
         }
 
         $userManager = $this->getUserManager();
-        $form        = $this->getServiceLocator()->get('FormElementManager')
+        if ($this->params()->fromQuery('group')) {
+            $group = $userManager->getGroupRepository()->findOneBy([
+                'name' => $this->params()->fromQuery('group'),
+            ]);
+
+            if ($group) {
+                $uf = $sessionContainer['userFilter'];
+                $uf['groupFilter'] = $group->getId();
+                $sessionContainer['userFilter'] = $uf;
+            }
+        }
+
+        $form = $this->getServiceLocator()->get('FormElementManager')
                 ->get('AppBase\Form\User\UserFilter');
         if ($sessionContainer['userFilter']) {
             $form->setData([
                 'userFilter' => $sessionContainer['userFilter'],
             ]);
-        }
-
-        if ($this->params()->fromQuery('group')) {
-            $group = $userManager->getGroupRepository()
-                    ->findOneBy(['name' => $this->params()->fromQuery('group')]);
-
-            if ($group) {
-                $form->get('userFilter')->get('groupFilter')->setValue($group->getId());
-                $sessionContainer['userFilter']['groupFilter'] = $group->getId();
-            }
         }
 
         if ($this->request->isPost()) {
