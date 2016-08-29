@@ -810,6 +810,7 @@ return [
         'remember_me_seconds' => 2419200,
         'use_cookies'         => true,
         'cookie_httponly'     => true,
+        'cookie_secure'       => true,
     ],
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="slm_queue">
