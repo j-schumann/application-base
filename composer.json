@@ -10,7 +10,7 @@
         "php": ">=5.6",
         "bjyoungblood/bjy-authorize": "^1.4.0",
         "slm/queue-doctrine": "^0.5",
-        "vrok/vrok-lib": "^0.2",
+        "vrok/vrok-lib": "^0.3",
         "vrok/translation-module": "^0.1",
         "vrok/supervisor-control": "^0.1"
     },
