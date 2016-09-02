@@ -35,7 +35,7 @@ class AccountController extends AbstractActionController
      */
     public function indexAction()
     {
-        if (!$this->currentUser()) {
+        if (!$this->identity()) {
             return $this->redirect()->toRoute('account/login');
         }
     }
@@ -49,7 +49,7 @@ class AccountController extends AbstractActionController
     {
         $um   = $this->getUserManager();
 
-        if ($this->currentUser()) {
+        if ($this->identity()) {
             return $this->redirect()->toRoute($um->getPostLoginRoute());
         }
 
@@ -83,7 +83,7 @@ class AccountController extends AbstractActionController
      */
     public function logoutAction()
     {
-        if (!$this->currentUser()) {
+        if (!$this->identity()) {
             return $this->redirect()->toRoute('home');
         }
 
@@ -154,7 +154,7 @@ class AccountController extends AbstractActionController
 
         $data        = $form->getData();
         $userManager = $this->getUserManager();
-        $user        = $userManager->getAuthService()->getIdentity();
+        $user        = $this->identity();
 
         if (!$user->checkPassword($data['password'])) {
             $form->setElementMessage('password', 'validate.user.wrongPassword');
@@ -224,7 +224,7 @@ class AccountController extends AbstractActionController
      */
     public function resetPasswordAction()
     {
-        if ($this->currentUser()) {
+        if ($this->identity()) {
             return $this->redirect()->toRoute('account');
         }
 

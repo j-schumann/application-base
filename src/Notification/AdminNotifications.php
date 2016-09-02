@@ -88,8 +88,9 @@ class AdminNotifications implements ListenerAggregateInterface
         );
 
         /*
-         * Currently we can not detect the jobs process result:
-         * @todo https://github.com/juriansluiman/SlmQueue/pull/83
+         * https://github.com/juriansluiman/SlmQueue/pull/104 is merged, we can
+         * now listen for failed jobs
+         * @todo implement listener
         $shared->attach(
             'SlmQueue\Worker\WorkerInterface',
             \SlmQueue\Worker\WorkerEvent::EVENT_PROCESS_JOB_POST,
@@ -156,6 +157,7 @@ class AdminNotifications implements ListenerAggregateInterface
 
         $url     = $this->emailService->getViewHelperManager()->get('url');
         $fullUrl = $this->emailService->getViewHelperManager()->get('FullUrl');
+        $durationFormat = $this->emailService->getViewHelperManager()->get('DurationFormat');
 
         $mail = $this->emailService->createMail();
         $mail->setSubject('mail.slmQueue.longRunningJobsFound.subject');
@@ -163,9 +165,9 @@ class AdminNotifications implements ListenerAggregateInterface
         $mail->setHtmlBody(['mail.slmQueue.longRunningJobsFound.body', [
             'queueName' => $queue->getName(),
             'count'     => $count,
-            'threshold' => $threshold / 60, // @todo implement DateInterval-Viewhelper
+            'threshold' => $durationFormat(['seconds' => $threshold]),
             'queueUrl'  => $fullUrl('https').$url('slm-queue/list-running', [
-                'name'  => $queue->getName(),
+                'name' => $queue->getName(),
             ]),
         ]]);
 
@@ -226,8 +228,7 @@ class AdminNotifications implements ListenerAggregateInterface
     }
 
     /**
-     * @todo https://github.com/juriansluiman/SlmQueue/pull/104
-     * @todo #250
+     * @todo implement
      *
      * @param \Zend\EventManager\EventInterface $e
      */

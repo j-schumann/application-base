@@ -1,6 +1,6 @@
-<h3><?php echo $this->translate(['view.account.changeDisplayName.heading', $this->currentUser()->getDisplayName()]); ?></h3>
+<h3><?php echo $this->translate(['view.account.changeDisplayName.heading', $this->identity()->getDisplayName()]); ?></h3>
 <p>
-    <?php echo $this->translate(['view.account.changeDisplayName.intro', $this->currentUser()->getDisplayName()]); ?>
+    <?php echo $this->translate(['view.account.changeDisplayName.intro', $this->identity()->getDisplayName()]); ?>
 </p>
 <div class="flash-messenger">
     <?php $this->flashMessenger()->renderAll(); ?>

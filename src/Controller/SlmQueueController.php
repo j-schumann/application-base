@@ -343,7 +343,6 @@ class SlmQueueController extends AbstractActionController
     /**
      * Console route, checks for buried jobs and jobs running longer than 60min.
      *
-     * @todo make interval configurable, give interval as param to the event
      * @triggers buriedJobsFound
      * @triggers longRunningJobsFound
      */
