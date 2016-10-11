@@ -10,9 +10,9 @@
         "php": ">=5.6",
         "bjyoungblood/bjy-authorize": "^1.4.0",
         "slm/queue-doctrine": "^0.5",
-        "vrok/vrok-lib": "^2.0.0",
-        "vrok/translation-module": "^1.0.0",
-        "vrok/supervisor-control": "^0.1"
+        "vrok/vrok-lib": "dev-master",
+        "vrok/translation-module": "dev-master",
+        "vrok/supervisor-control": "dev-master"
     },
     "autoload": {
         "psr-4": {
