@@ -493,7 +493,7 @@ return [
                 ],
             ],
             'admin' => [
-                'type'    => 'Zend\Mvc\Router\Http\Segment',
+                'type'    => 'Segment',
                 'options' => [
                     'route'    => '/admin[/]',
                     'defaults' => [
