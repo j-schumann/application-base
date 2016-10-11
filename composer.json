@@ -4,16 +4,16 @@
     "type": "library",
     "license": "MIT",
     "homepage": "http://www.vrok.de/",
-    "keywords": ["zf2", "administration", "backend", "slmqueue"],
+    "keywords": ["zf3", "administration", "backend", "slmqueue"],
 
     "require": {
         "php": ">=5.6",
         "bjyoungblood/bjy-authorize": "^1.4.0",
         "slm/queue-doctrine": "^0.5",
-        "vrok/vrok-lib": "dev-master",
-        "vrok/translation-module": "dev-master",
-        "vrok/supervisor-control": "dev-master"
-        
+        "vrok/vrok-lib": "^3.0.0",
+        "vrok/translation-module": "^2.0.0",
+        "vrok/supervisor-control": "^1.0.0"
+
     },
     "autoload": {
         "psr-4": {
@@ -23,5 +23,11 @@
     "bin": [
         "bin/add-admin.sh",
         "bin/add-group.sh"
-    ]
+    ],
+    "extra": {
+        "branch-alias": {
+            "dev-dev": "3.0.x",
+            "dev-master": "2.0.x"
+        }
+    }
 }
