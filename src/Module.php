@@ -88,83 +88,110 @@ class Module implements
             'factories' => [
                 'AppBase\Form\User\DisplayNameChange' => function ($sm) {
                     $form = new Form\User\DisplayNameChange();
-                    $form->setEntityManager($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
-                    $form->setTranslator($sm->getServiceLocator()->get('MvcTranslator'));
+                    $form->setEntityManager($sm->get('Doctrine\ORM\EntityManager'));
+                    $form->setTranslator($sm->get('MvcTranslator'));
                     return $form;
                 },
                 'AppBase\Form\User\Group' => function ($sm) {
                     $form = new Form\User\Group();
-                    $form->setEntityManager($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
-                    $form->setTranslator($sm->getServiceLocator()->get('MvcTranslator'));
+                    $form->setEntityManager($sm->get('Doctrine\ORM\EntityManager'));
+                    $form->setTranslator($sm->get('MvcTranslator'));
                     return $form;
                 },
                 'AppBase\Form\User\GroupFieldset' => function ($sm) {
                     $form = new Form\User\GroupFieldset();
-                    $form->setEntityManager($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
-                    $form->setTranslator($sm->getServiceLocator()->get('MvcTranslator'));
+                    $form->setEntityManager($sm->get('Doctrine\ORM\EntityManager'));
+                    $form->setTranslator($sm->get('MvcTranslator'));
                     return $form;
                 },
                 'AppBase\Form\User\Login' => function ($sm) {
                     $form = new Form\User\Login();
-                    $form->setEntityManager($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
-                    $form->setTranslator($sm->getServiceLocator()->get('MvcTranslator'));
+                    $form->setEntityManager($sm->get('Doctrine\ORM\EntityManager'));
+                    $form->setTranslator($sm->get('MvcTranslator'));
                     return $form;
                 },
                 'AppBase\Form\User\PasswordChange' => function ($sm) {
                     $form = new Form\User\PasswordChange();
-                    $form->setEntityManager($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
-                    $form->setTranslator($sm->getServiceLocator()->get('MvcTranslator'));
-                    $form->setUserManager($sm->getServiceLocator()->get('Vrok\Service\UserManager'));
+                    $form->setEntityManager($sm->get('Doctrine\ORM\EntityManager'));
+                    $form->setTranslator($sm->get('MvcTranslator'));
+                    $form->setUserManager($sm->get('Vrok\Service\UserManager'));
                     return $form;
                 },
                 'AppBase\Form\User\PasswordRequest' => function ($sm) {
                     $form = new Form\User\PasswordRequest();
-                    $form->setEntityManager($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
-                    $form->setTranslator($sm->getServiceLocator()->get('MvcTranslator'));
+                    $form->setEntityManager($sm->get('Doctrine\ORM\EntityManager'));
+                    $form->setTranslator($sm->get('MvcTranslator'));
                     return $form;
                 },
                 'AppBase\Form\User\PasswordReset' => function ($sm) {
                     $form = new Form\User\PasswordReset();
-                    $form->setEntityManager($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
-                    $form->setTranslator($sm->getServiceLocator()->get('MvcTranslator'));
-                    $form->setUserManager($sm->getServiceLocator()->get('Vrok\Service\UserManager'));
+                    $form->setEntityManager($sm->get('Doctrine\ORM\EntityManager'));
+                    $form->setTranslator($sm->get('MvcTranslator'));
+                    $form->setUserManager($sm->get('Vrok\Service\UserManager'));
                     return $form;
                 },
                 'AppBase\Form\User\UserCreate' => function ($sm) {
                     $form = new Form\User\UserCreate();
-                    $form->setEntityManager($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
-                    $form->setTranslator($sm->getServiceLocator()->get('MvcTranslator'));
+                    $form->setEntityManager($sm->get('Doctrine\ORM\EntityManager'));
+                    $form->setTranslator($sm->get('MvcTranslator'));
                     return $form;
                 },
                 'AppBase\Form\User\UserEdit' => function ($sm) {
                     $form = new Form\User\UserEdit();
-                    $form->setEntityManager($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
-                    $form->setTranslator($sm->getServiceLocator()->get('MvcTranslator'));
+                    $form->setEntityManager($sm->get('Doctrine\ORM\EntityManager'));
+                    $form->setTranslator($sm->get('MvcTranslator'));
                     return $form;
                 },
                 'AppBase\Form\User\UserFieldset' => function ($sm) {
                     $form = new Form\User\UserFieldset();
-                    $form->setEntityManager($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
-                    $form->setTranslator($sm->getServiceLocator()->get('MvcTranslator'));
+                    $form->setEntityManager($sm->get('Doctrine\ORM\EntityManager'));
+                    $form->setTranslator($sm->get('MvcTranslator'));
                     return $form;
                 },
                 'AppBase\Form\User\UserFilter' => function ($sm) {
                     $form = new Form\User\UserFilter();
-                    $form->setEntityManager($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
-                    $form->setTranslator($sm->getServiceLocator()->get('MvcTranslator'));
+                    $form->setEntityManager($sm->get('Doctrine\ORM\EntityManager'));
+                    $form->setTranslator($sm->get('MvcTranslator'));
                     return $form;
                 },
                 'AppBase\Form\Validation\ConfirmationForm' => function ($sm) {
                     $form = new Form\Validation\ConfirmationForm();
-                    $form->setEntityManager($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
-                    $form->setTranslator($sm->getServiceLocator()->get('MvcTranslator'));
+                    $form->setEntityManager($sm->get('Doctrine\ORM\EntityManager'));
+                    $form->setTranslator($sm->get('MvcTranslator'));
                     return $form;
                 },
                 'AppBase\SlmQueue\RecoverForm' => function ($sm) {
                     $form = new SlmQueue\RecoverForm();
-                    $form->setEntityManager($sm->getServiceLocator()->get('Doctrine\ORM\EntityManager'));
-                    $form->setTranslator($sm->getServiceLocator()->get('MvcTranslator'));
+                    $form->setEntityManager($sm->get('Doctrine\ORM\EntityManager'));
+                    $form->setTranslator($sm->get('MvcTranslator'));
                     return $form;
+                },
+            ],
+        ];
+    }
+
+    /**
+     * Retrieve factories for SlmQueue jobs.
+     *
+     * @return array
+     */
+    public function getJobManagerConfig()
+    {
+        return [
+            'factories' => [
+                'AppBase\SlmQueue\Job\SendPasswordRequest' => function ($sl) {
+                    $vm = $sl->get(\Vrok\Service\ValidationManager::class);
+                    $es = $sl->get(\Vrok\Service\Email::class);
+                    $um = $sl->get(\Vrok\Service\UserManager::class);
+                    $ph = $sl->get('ViewHelperManager')->get('partial');
+                    return new SlmQueue\Job\SendPasswordRequest($vm, $es, $um, $ph);
+                },
+                'AppBase\SlmQueue\Job\SendValidationMail' => function ($sl) {
+                    $vm = $sl->get(\Vrok\Service\ValidationManager::class);
+                    $es = $sl->get(\Vrok\Service\Email::class);
+                    $um = $sl->get(\Vrok\Service\UserManager::class);
+                    $ph = $sl->get('ViewHelperManager')->get('partial');
+                    return new SlmQueue\Job\SendValidationMail($vm, $es, $um, $ph);
                 },
             ],
         ];
@@ -234,14 +261,16 @@ class Module implements
     {
         return [
             'factories' => [
-                'navigation' => function ($sm) {
-                    $auth = $sm->getServiceLocator()->get('BjyAuthorize\Service\Authorize');
+                // overwrite default factory to inject ACL
+                'Zend\View\Helper\Navigation' => function ($sl) {
+                    $f = new \Zend\Navigation\View\NavigationHelperFactory();
+                    $helper = $f($sl, 'navigation');
+
+                    $auth = $sl->get('BjyAuthorize\Service\Authorize');
                     $role = $auth->getIdentity();
+                    $helper ->setAcl($auth->getAcl())->setRole($role);
 
-                    $navigation = $sm->get('Zend\View\Helper\Navigation');
-                    $navigation->setAcl($auth->getAcl())->setRole($role);
-
-                    return $navigation;
+                    return $helper;
                 },
             ],
         ];
@@ -285,6 +314,12 @@ class Module implements
         $sharedEvents->attach('AppBase\Controller\CronController', 'cronDaily', function ($e) {
             return \Vrok\SlmQueue\Job\CheckTodos::onCronDaily($e);
         });
+
+        // der SlmQueue JobManager wird nicht wie die andern pluginManager
+        // über den ModuleManager konfiguriert -> manuell triggern
+        // @todo doch selbst Interface + Listener implementieren wie ViewHelperManager usw?
+        $jobManager = $sm->get(\SlmQueue\Job\JobPluginManager::class);
+        $jobManager->configure($this->getJobManagerConfig());
     }
 
     /**

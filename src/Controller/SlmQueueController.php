@@ -40,11 +40,14 @@ class SlmQueueController extends AbstractActionController
     {
         $qm = $this->getQueueManager();
 
+        $sl = $this->getServiceLocator();
+        $conf = $sl->get('Config');
+
         // each queue must have an entry in [slm_queue][queue_manager][factories]
         // -> get those
-        $services = $qm->getRegisteredServices();
+        $names = array_keys($conf['slm_queue']['queue_manager']['factories']);
         $queues   = [];
-        foreach ($services['factories'] as $name) {
+        foreach ($names as $name) {
             $queue = $qm->get($name);
 
             // we support only Doctrine queues as we have no functionality to receive

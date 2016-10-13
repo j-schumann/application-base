@@ -8,10 +8,11 @@
 
 namespace AppBase\SlmQueue\Job;
 
+use SlmQueue\Job\AbstractJob;
 use Vrok\Service\Email;
 use Vrok\Service\UserManager;
 use Vrok\Service\ValidationManager;
-use Vrok\SlmQueue\Job\AbstractJob;
+use Zend\View\Helper\Partial;
 
 /**
  * Executed after a user registered, sends a validation link to the users email
@@ -20,44 +21,82 @@ use Vrok\SlmQueue\Job\AbstractJob;
 class SendValidationMail extends AbstractJob
 {
     /**
+     * @var ValidationManager
+     */
+    protected $validationManager = null;
+
+    /**
+     * @var Email
+     */
+    protected $emailService = null;
+
+    /**
+     * @var UserManager
+     */
+    protected $userManager = null;
+
+    /**
+     * @var Partial
+     */
+    protected $partialHelper = null;
+
+    /**
+     * Class constructor - stores the dependencies.
+     *
+     * @param ValidationManager $validationManager
+     * @param Email $emailService
+     * @param UserManager $userManager
+     * @param Partial $partialHelper
+     */
+    public function __construct(
+        ValidationManager $validationManager,
+        Email $emailService,
+        UserManager $userManager,
+        Partial $partialHelper
+    ) {
+        $this->validationManager = $validationManager;
+        $this->emailService = $emailService;
+        $this->userManager = $userManager;
+        $this->partialHelper = $partialHelper;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function execute()
     {
-        $payload     = $this->getContent();
-        $userManager = $this->getServiceLocator()->get(UserManager::class);
-        $user        = $userManager->getUserRepository()->find($payload['userId']);
+        $payload = $this->getContent();
+        $user = $this->userManager->getUserRepository()->find($payload['userId']);
         if (!$user) {
             throw new \RuntimeException('User '.$payload['userId'].' not found!');
         }
 
-        $vm         = $this->getServiceLocator()->get(ValidationManager::class);
-        $validation = $vm->createValidation(
+        $validation = $this->validationManager->createValidation(
             UserManager::VALIDATION_USER,
             $user
         );
 
         // flush here, we need the validation->id for the confirmation URL
-        $this->getEntityManager()->flush();
+        $this->userManager->getEntityManager()->flush();
 
-        $partial = $this->getServiceLocator()->get('viewhelpermanager')->get('partial');
+        // the helper isn't __invoked but $this is __called -> "dereference"
+        $partial = $this->partialHelper;
         $html    = $partial('app-base/partials/mail/userValidation', [
             'user'              => $user,
             'validation'        => $validation,
-            'confirmationUrl'   => $vm->getConfirmationUrl($validation),
-            'confirmationBase'  => $vm->getConfirmationUrl(),
-            'validationTimeout' => $vm->getTimeout(UserManager::VALIDATION_USER),
+            'confirmationUrl'   => $this->validationManager->getConfirmationUrl($validation),
+            'confirmationBase'  => $this->validationManager->getConfirmationUrl(),
+            'validationTimeout' => $this->validationManager->getTimeout(UserManager::VALIDATION_USER),
         ]);
         $text = $partial('app-base/partials/mail/userValidationText', [
             'user'              => $user,
             'validation'        => $validation,
-            'confirmationUrl'   => $vm->getConfirmationUrl($validation),
-            'confirmationBase'  => $vm->getConfirmationUrl(),
-            'validationTimeout' => $vm->getTimeout(UserManager::VALIDATION_USER),
+            'confirmationUrl'   => $this->validationManager->getConfirmationUrl($validation),
+            'confirmationBase'  => $this->validationManager->getConfirmationUrl(),
+            'validationTimeout' => $this->validationManager->getTimeout(UserManager::VALIDATION_USER),
         ]);
 
-        $emailService = $this->getServiceLocator()->get(Email::class);
-        $mail         = $emailService->createMail();
+        $mail         = $this->emailService->createMail();
         $mail->addTo($user->getEmail());
         $mail->setSubject('mail.userValidation.subject');
 
@@ -65,6 +104,6 @@ class SendValidationMail extends AbstractJob
         $textPart = $mail->getTextPart($text, false, true);
         $mail->setAlternativeBody($textPart, $htmlPart);
 
-        $emailService->sendMail($mail);
+        $this->emailService->sendMail($mail);
     }
 }

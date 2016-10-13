@@ -113,7 +113,7 @@ class AdminNotifications implements ListenerAggregateInterface
         $count = $e->getParam('count');
 
         $url     = $this->emailService->getViewHelperManager()->get('url');
-        $fullUrl = $this->emailService->getViewHelperManager()->get('FullUrl');
+        $fullUrl = $this->emailService->getViewHelperManager()->get('fullUrl');
 
         $mail = $this->emailService->createMail();
         $mail->setSubject('mail.slmQueue.buriedJobsFound.subject');
@@ -156,7 +156,7 @@ class AdminNotifications implements ListenerAggregateInterface
         $threshold = $e->getParam('threshold');
 
         $url     = $this->emailService->getViewHelperManager()->get('url');
-        $fullUrl = $this->emailService->getViewHelperManager()->get('FullUrl');
+        $fullUrl = $this->emailService->getViewHelperManager()->get('fullUrl');
         $durationFormat = $this->emailService->getViewHelperManager()->get('DurationFormat');
 
         $mail = $this->emailService->createMail();
@@ -198,7 +198,7 @@ class AdminNotifications implements ListenerAggregateInterface
         $processInfo = $e->getParam('info');
 
         $url        = $this->emailService->getViewHelperManager()->get('url');
-        $fullUrl    = $this->emailService->getViewHelperManager()->get('FullUrl');
+        $fullUrl    = $this->emailService->getViewHelperManager()->get('fullUrl');
         $dateFormat = $this->emailService->getViewHelperManager()->get('DateFormat');
 
         $mail = $this->emailService->createMail();

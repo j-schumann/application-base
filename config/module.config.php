@@ -112,7 +112,7 @@ return [
                     'roles'      => ['translationAdmin'],
                 ],
                 [
-                    'controller' => 'TranslationModule\Controller\String',
+                    'controller' => 'TranslationModule\Controller\Entry',
                     'roles'      => ['translationAdmin'],
                 ],
                 [
