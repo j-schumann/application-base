@@ -8,6 +8,7 @@
 
 namespace AppBase;
 
+use Vrok\SlmQueue\JobProviderInterface;
 use Zend\EventManager\EventInterface;
 use Zend\ModuleManager\Feature\BootstrapListenerInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
@@ -28,6 +29,7 @@ class Module implements
     ConfigProviderInterface,
     ControllerProviderInterface,
     FormElementProviderInterface,
+    JobProviderInterface,
     ServiceProviderInterface,
     ViewHelperProviderInterface
 {
@@ -314,12 +316,6 @@ class Module implements
         $sharedEvents->attach('AppBase\Controller\CronController', 'cronDaily', function ($e) {
             return \Vrok\SlmQueue\Job\CheckTodos::onCronDaily($e);
         });
-
-        // der SlmQueue JobManager wird nicht wie die andern pluginManager
-        // über den ModuleManager konfiguriert -> manuell triggern
-        // @todo doch selbst Interface + Listener implementieren wie ViewHelperManager usw?
-        $jobManager = $sm->get(\SlmQueue\Job\JobPluginManager::class);
-        $jobManager->configure($this->getJobManagerConfig());
     }
 
     /**
