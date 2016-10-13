@@ -22,5 +22,11 @@
     "bin": [
         "bin/add-admin.sh",
         "bin/add-group.sh"
-    ]
+    ],
+    "extra": {
+        "branch-alias": {
+            "dev-dev": "3.0.x",
+            "dev-master": "2.0.x"
+        }
+    }
 }
