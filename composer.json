@@ -7,7 +7,7 @@
     "keywords": ["zf3", "administration", "backend", "slmqueue"],
 
     "require": {
-        "php": ">=5.6",
+        "php": ">=7.0",
         "kokspflanze/bjy-authorize": "~1.6",
         "slm/queue-doctrine": "^0.6.1",
         "vrok/vrok-lib": "dev-dev as 3.0.0",
