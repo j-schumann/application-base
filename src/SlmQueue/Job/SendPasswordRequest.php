@@ -72,7 +72,7 @@ class SendPasswordRequest extends AbstractJob
         }
 
         // a user can only have one active password request at a time, else
-        // brute force would get easier
+        // brute force on the validation tokens would get easier
         $old = $this->validationManager->getValidations($user, UserManager::VALIDATION_PASSWORD);
         foreach($old as $oldValidation) {
             $this->userManager->getEntityManager()->remove($oldValidation);

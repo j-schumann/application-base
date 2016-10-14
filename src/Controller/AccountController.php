@@ -201,16 +201,12 @@ class AccountController extends AbstractActionController
             return $viewModel;
         }
 
+        // do not directly change the password but send a validation and then
+        // show a form for the new password (+confirmation).
         $this->queue('jobs')->push('AppBase\SlmQueue\Job\SendPasswordRequest', [
             'userId' => $user->getId(),
         ]);
 
-        // @todo do not directly change the password but send a validation and then
-        // show a form for the new password (+confirmation).
-        //$validationManager = $this->getServiceLocator()->get('Vrok\Service\ValidationManager');
-        //$validations = $validationManager->getValidations($user, 'confirmPasswordRequest');
-
-        //$userManager->sendRandomPassword($user);
         $this->flashMessenger()
                 ->addSuccessMessage('message.user.passwordRequested');
 
