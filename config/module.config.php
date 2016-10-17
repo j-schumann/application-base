@@ -775,14 +775,6 @@ return [
     ],
 // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="service_manager">
-    'lazy_services' => [
-        'class_map' => [
-        ],
-
-        'proxies_target_dir' =>  __DIR__.'/../../../../data/LazyServices/',
-        'write_proxy_files'  => true,
-    ],
-
     'service_manager' => [
         'allow_override' => true,
 
@@ -802,6 +794,14 @@ return [
 
             // replace the default translator with our custom extension
             'Zend\I18n\Translator\TranslatorInterface' => 'Vrok\I18n\Translator\TranslatorServiceFactory',
+        ],
+
+        'lazy_services' => [
+            'class_map' => [
+            ],
+
+            'proxies_target_dir' =>  __DIR__.'/../../../../data/LazyServices/',
+            'write_proxy_files'  => true,
         ],
     ],
 // </editor-fold>
