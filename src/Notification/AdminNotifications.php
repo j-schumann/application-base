@@ -157,7 +157,7 @@ class AdminNotifications implements ListenerAggregateInterface
 
         $url     = $this->emailService->getViewHelperManager()->get('url');
         $fullUrl = $this->emailService->getViewHelperManager()->get('fullUrl');
-        $durationFormat = $this->emailService->getViewHelperManager()->get('DurationFormat');
+        $durationFormat = $this->emailService->getViewHelperManager()->get('durationFormat');
 
         $mail = $this->emailService->createMail();
         $mail->setSubject('mail.slmQueue.longRunningJobsFound.subject');
