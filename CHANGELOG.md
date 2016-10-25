@@ -2,6 +2,11 @@
 
 The project follows Semantic Versioning (http://semver.org/)
 
+## 3.0.1 - 2016-10-24
+### Fixed
+- lazy service config
+- vier helper case sensitive since ZF3
+
 ## 3.0.0 - 2016-10-13
 ### Changed
 - require PHP 7.0+
