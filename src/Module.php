@@ -8,6 +8,7 @@
 
 namespace AppBase;
 
+use Vrok\Mvc\View\Http\ErrorLoggingStrategy;
 use Vrok\SlmQueue\JobProviderInterface;
 use Zend\EventManager\EventInterface;
 use Zend\ModuleManager\Feature\BootstrapListenerInterface;
@@ -289,12 +290,16 @@ class Module implements
         /* @var $application ApplicationInterface */
         $eventManager = $application->getEventManager();
         $config       = $application->getServiceManager()->get('config');
+        $sm           = $application->getServiceManager();
+
+        // log errors on DispatchError / RenderError
+        $logStrategy = $sm->get(ErrorLoggingStrategy::class);
+        $logStrategy->attach($application->getEventManager());
 
         $this->initSession($config);
 
         // Allow caching of assertions by not using dependencies via constructor
         // but retrieving them from the static helper.
-        $sm = $application->getServiceManager();
         \Vrok\Acl\Assertion\AssertionHelper::setServiceLocator($sm);
 
         // @todo konfigurierbar machen

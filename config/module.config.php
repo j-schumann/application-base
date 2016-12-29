@@ -886,6 +886,8 @@ return [
         'strategies' => [
             // done by [bjyautorize][unauthorized_strategy]
             //'Vrok\Mvc\View\Http\AuthorizeRedirectStrategy',
+
+            'Vrok\Mvc\View\Http\ErrorLoggingStrategy',
         ],
     ],
 // </editor-fold>
