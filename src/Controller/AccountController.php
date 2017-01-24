@@ -293,4 +293,35 @@ class AccountController extends AbstractActionController
         // messages are shown
         return $this->redirect()->toRoute('account/login');
     }
+
+    /**
+     * Allows the user to make some general settings.
+     *
+     * @return ViewModel
+     */
+    public function settingsAction()
+    {
+        $form = $this->getServiceLocator()->get('FormElementManager')
+                ->get('AppBase\Form\User\Settings');
+        $form->bind($this->identity());
+
+        $viewModel = $this->createViewModel([
+            'form' => $form,
+        ]);
+
+        if (!$this->request->isPost()) {
+            return $viewModel;
+        }
+
+        $isValid = $form->setData($this->request->getPost())->isValid();
+        if (!$isValid) {
+            return $viewModel;
+        }
+
+        $this->getUserManager()->getEntityManager()->flush();
+        $this->flashMessenger()
+                ->addSuccessMessage('message.account.settings.edited');
+
+        return $this->redirect()->toRoute('account');
+    }
 }

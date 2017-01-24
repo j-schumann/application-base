@@ -157,6 +157,18 @@ class Module implements
                     $form->setTranslator($sm->get('MvcTranslator'));
                     return $form;
                 },
+                'AppBase\Form\User\Settings' => function ($sm) {
+                    $form = new Form\User\Settings();
+                    $form->setEntityManager($sm->get('Doctrine\ORM\EntityManager'));
+                    $form->setTranslator($sm->get('MvcTranslator'));
+                    return $form;
+                },
+                'AppBase\Form\User\SettingsFieldset' => function ($sm) {
+                    $form = new Form\User\SettingsFieldset();
+                    $form->setEntityManager($sm->get('Doctrine\ORM\EntityManager'));
+                    $form->setTranslator($sm->get('MvcTranslator'));
+                    return $form;
+                },
                 'AppBase\Form\Validation\ConfirmationForm' => function ($sm) {
                     $form = new Form\Validation\ConfirmationForm();
                     $form->setEntityManager($sm->get('Doctrine\ORM\EntityManager'));

@@ -62,7 +62,6 @@ return [
                 ],
                 [
                     'controller' => 'AppBase\Controller\Account',
-                    'action'     => ['change-displayname', 'change-password', 'logout', 'delete'],
                     'roles'      => ['user'],
                 ],
                 [
@@ -272,6 +271,11 @@ return [
                         'route'    => 'account',
                         'resource' => 'user',
                     ],
+                    'account/settings' => [
+                        'label'    => 'navigation.account.settings',
+                        'route'    => 'account/settings',
+                        'resource' => 'user',
+                    ],
                     'account/logout' => [
                         'label'    => 'navigation.account.logout',
                         'route'    => 'account/logout',
@@ -463,6 +467,15 @@ return [
                             ],
                         ],
                     ],
+                    'delete' => [
+                        'type'    => 'Segment',
+                        'options' => [
+                            'route'    => 'delete[/]',
+                            'defaults' => [
+                                'action' => 'delete',
+                            ],
+                        ],
+                    ],
                     'request-password' => [
                         'type'    => 'Segment',
                         'options' => [
@@ -481,12 +494,12 @@ return [
                             ],
                         ],
                     ],
-                    'delete' => [
+                    'settings' => [
                         'type'    => 'Segment',
                         'options' => [
-                            'route'    => 'delete[/]',
+                            'route'    => 'settings[/]',
                             'defaults' => [
-                                'action' => 'delete',
+                                'action' => 'settings',
                             ],
                         ],
                     ],

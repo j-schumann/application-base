@@ -2,6 +2,14 @@
 
 The project follows Semantic Versioning (http://semver.org/)
 
+## 4.0.0 - @todo
+### Added
+- route/navigation/action/form to support the new notification settings
+  in Vrok\Entity\User
+### Changed
+- DB schema update is required through changes in VrokLib 4.0.0
+- require PHP 7.1+
+
 ## 3.1.0 - 2016-12-29
 ### Changed
 - enabled Vrok\Mvc\View\Http\ErrorLoggingStrategy by default to also log
