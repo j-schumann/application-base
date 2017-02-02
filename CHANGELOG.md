@@ -2,6 +2,10 @@
 
 The project follows Semantic Versioning (http://semver.org/)
 
+## 4.0.1 - 2017-02-02
+### Fixed
+- dependencies
+
 ## 4.0.0 - 2017-02-02
 ### Added
 - route/navigation/action/form to support the new notification settings
