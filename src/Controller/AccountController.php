@@ -301,6 +301,9 @@ class AccountController extends AbstractActionController
      */
     public function settingsAction()
     {
+        $user = $this->identity();
+        /* @var $user \Vrok\Entity\User */
+
         $form = $this->getServiceLocator()->get('FormElementManager')
                 ->get('AppBase\Form\User\Settings');
         $form->bind($this->identity());
@@ -315,6 +318,16 @@ class AccountController extends AbstractActionController
 
         $isValid = $form->setData($this->request->getPost())->isValid();
         if (!$isValid) {
+            return $viewModel;
+        }
+
+        // we can not use a callback validator, it won't be called when
+        // allowEmpty == true
+        if (empty($user->getHttpNotificationUser())
+                xor empty($user->getHttpNotificationPw())
+        ) {
+            $form->get('user')->setElementMessage('httpNotificationUser',
+                        'validate.user.httpNotificationAuth.incomplete');
             return $viewModel;
         }
 

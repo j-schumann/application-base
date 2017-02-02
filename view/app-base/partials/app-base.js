@@ -7,7 +7,6 @@
      * it is.
      *
      * @param {Node} element   password input
-     * @return {void}
      */
     Vrok.ratePassword = function(element) {
         var data = {
@@ -48,6 +47,39 @@
         $.ajax(request);
     };
 
+    /**
+     * Set the initial form state and add listeners to hide/show elements when
+     * the settings change.
+     */
+    Vrok.initSettingsForm = function() {
+        $('#account-settings').on(
+            'change',
+            'input[name="user[httpNotificationsEnabled]"]',
+            Vrok.toggleHttpNotificationSettings
+        );
+
+        Vrok.toggleHttpNotificationSettings();
+    };
+
+    /**
+     * Depending on the state of the "enabled" checkbox hide or show the
+     * additional form fields.
+     */
+    Vrok.toggleHttpNotificationSettings = function() {
+        if ($('input[name="user[httpNotificationsEnabled]"]:checked').val() === '1') {
+            $('#container-user-httpNotificationUrl').fadeIn(300);
+            $('#container-user-httpNotificationUser').fadeIn(300);
+            $('#container-user-httpNotificationPw').fadeIn(300);
+            $('#container-user-httpNotificationCertCheck').fadeIn(300);
+        }
+        else {
+            $('#container-user-httpNotificationUrl').fadeOut(300);
+            $('#container-user-httpNotificationUser').fadeOut(300);
+            $('#container-user-httpNotificationPw').fadeOut(300);
+            $('#container-user-httpNotificationCertCheck').fadeOut(300);
+        }
+    };
+
     // initialize forms on page load
     $(document).ready(function() {
         $("body").on('keyup', 'input.rate-password', function(e) {
@@ -69,5 +101,7 @@
             policyText: "<?php echo $this->translate('cookiebar.policyText'); ?>",
             policyURL: "<?php echo $this->url('privacy'); ?>#cookies"
         });
+
+        Vrok.initSettingsForm();
     });
 }(jQuery));
