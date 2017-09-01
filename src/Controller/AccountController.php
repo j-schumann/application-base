@@ -11,6 +11,9 @@ namespace AppBase\Controller;
 use Vrok\Entity\User;
 use Vrok\Service\UserManager;
 use Vrok\Mvc\Controller\AbstractActionController;
+use Zend\Http\Client;
+use Zend\Http\Client\Adapter\Curl;
+use Zend\Http\Request;
 use Zend\Session\Container as SessionContainer;
 
 /**
@@ -336,5 +339,82 @@ class AccountController extends AbstractActionController
                 ->addSuccessMessage('message.account.settings.edited');
 
         return $this->redirect()->toRoute('account');
+    }
+
+    /**
+     * Tests the configured push notification endpoint and redirects back
+     * to the settings.
+     *
+     * @todo refactor - gleicher code wie im SendNotificationJob -> in den
+     * NotificationService verschieben?
+     * @return Response
+     */
+    public function testPushNotificationAction()
+    {
+        $ns = $this->getServiceLocator()->get(\Vrok\Service\NotificationService::class);
+        if (!$ns->getHttpNotificationsEnabled()) {
+            return $this->redirect()->toRoute('account/settings');
+        }
+
+        $user = $this->getUserManager()->getCurrentUser();
+        if (!$user->getHttpNotificationsEnabled()) {
+            return $this->redirect()->toRoute('account/settings');
+        }
+
+        $options = [
+            'adapter'     => Curl::class,
+            'curloptions' => [
+                \CURLOPT_FOLLOWLOCATION => true,
+                \CURLOPT_MAXREDIRS      => 3,
+                // deactivated, causes "Error occurred during gzip inflation"
+                // when reading the response body. Unicode character work anyways
+                //\CURLOPT_ENCODING       => 'UTF-8',
+            ],
+        ];
+
+        if (!$user->getHttpNotificationCertCheck()) {
+            $options['curloptions'][\CURLOPT_SSL_VERIFYPEER] = false;
+            $options['curloptions'][\CURLOPT_SSL_VERIFYHOST] = false;
+        }
+
+        $notification = new \Vrok\Entity\Notification();
+        $notification->setTextShort('A simple notification test');
+        $notification->setTitle('Test');
+        $notification->setCreatedAt(new \DateTime());
+
+        $client  = new Client($user->getHttpNotificationUrl(), $options);
+
+        if ($user->getHttpNotificationUser() && $user->getHttpNotificationPw()) {
+            $client->setAuth(
+                $user->getHttpNotificationUser(),
+                $user->getHttpNotificationPw(),
+                Client::AUTH_BASIC
+            );
+        }
+
+        $client->setMethod(Request::METHOD_POST);
+        $client->setRawBody(json_encode([
+            // when pushing we don't know which format the user needs so we sent
+            // him all text&html versions
+            'notification' => $notification->toArray(),
+        ]));
+
+        try {
+            $response = $client->send();
+        }
+        catch (\Exception $e) {
+            $this->flashMessenger()->addErrorMessage('Exception: '
+                    .$e->getMessage());
+            return $this->redirect()->toRoute('account/settings');
+        }
+
+        $body = trim(strip_tags($response->getBody()), " \r\n");
+        $msg = 'HTTP status '.$response->getStatusCode()
+            .', response: "'.substr($body, 0, 50).'"';
+
+        $response->getStatusCode() == 200
+            ? $this->flashMessenger()->addSuccessMessage($msg)
+            : $this->flashMessenger()->addErrorMessage($msg);
+        return $this->redirect()->toRoute('account/settings');
     }
 }

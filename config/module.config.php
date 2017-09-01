@@ -503,6 +503,15 @@ return [
                             ],
                         ],
                     ],
+                    'test-push-notification' => [
+                        'type'    => 'Segment',
+                        'options' => [
+                            'route'    => 'test-push-notification[/]',
+                            'defaults' => [
+                                'action' => 'test-push-notification',
+                            ],
+                        ],
+                    ],
                 ],
             ],
             'admin' => [

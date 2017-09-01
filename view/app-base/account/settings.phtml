@@ -11,3 +11,12 @@
         echo $this->formDecorator($this->form);
     ?>
 </div>
+<?php
+/* @todo: auch prüfen ob pushNotifications generell im NotiService erlaubt sind */
+if ($this->identity()->getHttpNotificationsEnabled()) : ?>
+    <div class="col-md-5">
+        <a class="button btn btn-primary btn-sm"href="<?php echo $this->url('account/test-push-notification'); ?>" title="<?php echo $this->translate('view.account.testPushNotification'); ?>">
+            <?php echo $this->translate('view.account.testPushNotification'); ?>
+        </a>
+    </div>
+<?php endif;
