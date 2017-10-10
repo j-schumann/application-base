@@ -2,6 +2,14 @@
 
 The project follows Semantic Versioning (http://semver.org/)
 
+## 4.1.0 - 2017-10-10
+### Added
+- test & cs config
+
+### Changed
+- updated dependencies
+- applied code styling
+
 ## 4.0.1 - 2017-02-02
 ### Fixed
 - dependencies

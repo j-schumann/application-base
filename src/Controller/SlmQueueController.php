@@ -104,7 +104,7 @@ class SlmQueueController extends AbstractActionController
     {
         $name = $this->params('name');
         $qm   = $this->getQueueManager();
-        if (!$qm->has($name)) {
+        if (! $qm->has($name)) {
             $this->flashMessenger()->addErrorMessage('message.slmQueue.queueNotFound');
 
             return $this->redirect()->toRoute('slm-queue');
@@ -117,12 +117,12 @@ class SlmQueueController extends AbstractActionController
             'name'           => $name,
         ];
 
-        if (!$this->request->isPost()) {
+        if (! $this->request->isPost()) {
             return $viewModel;
         }
 
         $isValid = $form->setData($this->request->getPost())->isValid();
-        if (!$isValid) {
+        if (! $isValid) {
             return $viewModel;
         }
 
@@ -143,7 +143,7 @@ class SlmQueueController extends AbstractActionController
     {
         $name = $this->params('name');
         $qm   = $this->getQueueManager();
-        if (!$qm->has($name)) {
+        if (! $qm->has($name)) {
             $this->flashMessenger()->addErrorMessage('message.slmQueue.queueNotFound');
 
             return $this->redirect()->toRoute('slm-queue');
@@ -170,7 +170,7 @@ class SlmQueueController extends AbstractActionController
     {
         $name = $this->params('name');
         $qm   = $this->getQueueManager();
-        if (!$qm->has($name)) {
+        if (! $qm->has($name)) {
             $this->flashMessenger()->addErrorMessage('message.slmQueue.queueNotFound');
 
             return $this->redirect()->toRoute('slm-queue');
@@ -197,7 +197,7 @@ class SlmQueueController extends AbstractActionController
     {
         $name = $this->params('name');
         $qm   = $this->getQueueManager();
-        if (!$qm->has($name)) {
+        if (! $qm->has($name)) {
             $this->flashMessenger()->addErrorMessage('message.slmQueue.queueNotFound');
 
             return $this->redirect()->toRoute('slm-queue');
@@ -206,7 +206,7 @@ class SlmQueueController extends AbstractActionController
         $id    = $this->params('id');
         $queue = $qm->get($name);
         $job   = $queue->peek($id);
-        if (!$job) {
+        if (! $job) {
             $this->flashMessenger()->addErrorMessage('message.slmQueue.jobNotFound');
 
             return $this->redirect()->toRoute('slm-queue');
@@ -224,7 +224,7 @@ class SlmQueueController extends AbstractActionController
 
         $form->setData($this->request->getPost());
 
-        if (!$this->request->isPost() || !$form->isValid()) {
+        if (! $this->request->isPost() || ! $form->isValid()) {
             $this->flashMessenger()
                     ->addInfoMessage('message.slmQueue.confirmRelease');
 
@@ -248,7 +248,7 @@ class SlmQueueController extends AbstractActionController
     {
         $name = $this->params('name');
         $qm   = $this->getQueueManager();
-        if (!$qm->has($name)) {
+        if (! $qm->has($name)) {
             $this->flashMessenger()->addErrorMessage('message.slmQueue.queueNotFound');
 
             return $this->redirect()->toRoute('slm-queue');
@@ -257,7 +257,7 @@ class SlmQueueController extends AbstractActionController
         $id    = $this->params('id');
         $queue = $qm->get($name);
         $job   = $queue->peek($id);
-        if (!$job) {
+        if (! $job) {
             $this->flashMessenger()->addErrorMessage('message.slmQueue.jobNotFound');
 
             return $this->redirect()->toRoute('slm-queue');
@@ -275,7 +275,7 @@ class SlmQueueController extends AbstractActionController
 
         $form->setData($this->request->getPost());
 
-        if (!$this->request->isPost() || !$form->isValid()) {
+        if (! $this->request->isPost() || ! $form->isValid()) {
             $this->flashMessenger()
                     ->addInfoMessage('message.slmQueue.confirmUnbury');
 
@@ -300,7 +300,7 @@ class SlmQueueController extends AbstractActionController
     {
         $name = $this->params('name');
         $qm   = $this->getQueueManager();
-        if (!$qm->has($name)) {
+        if (! $qm->has($name)) {
             $this->flashMessenger()->addErrorMessage('message.slmQueue.queueNotFound');
 
             return $this->redirect()->toRoute('slm-queue');
@@ -309,7 +309,7 @@ class SlmQueueController extends AbstractActionController
         $id    = $this->params('id');
         $queue = $qm->get($name);
         $job   = $queue->peek($id);
-        if (!$job) {
+        if (! $job) {
             $this->flashMessenger()->addErrorMessage('message.slmQueue.jobNotFound');
 
             return $this->redirect()->toRoute('slm-queue');
@@ -327,7 +327,7 @@ class SlmQueueController extends AbstractActionController
 
         $form->setData($this->request->getPost());
 
-        if (!$this->request->isPost() || !$form->isValid()) {
+        if (! $this->request->isPost() || ! $form->isValid()) {
             $this->flashMessenger()
                     ->addInfoMessage('message.slmQueue.confirmDelete');
 

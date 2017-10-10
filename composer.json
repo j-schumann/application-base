@@ -5,15 +5,20 @@
     "license": "MIT",
     "homepage": "http://www.vrok.de/",
     "keywords": ["zf3", "administration", "backend", "slmqueue"],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
 
     "require": {
         "php": ">=7.1",
         "kokspflanze/bjy-authorize": "~1.6",
         "slm/queue-doctrine": "^0.6.1",
-        "vrok/vrok-lib": "^4.0.1",
-        "vrok/translation-module": "^3.0.0",
-        "vrok/supervisor-control": "^2.0.0"
-
+        "vrok/vrok-lib": "^4.1.0",
+        "vrok/translation-module": "^3.1.0",
+        "vrok/supervisor-control": "^2.1.0"
+    },
+    "require-dev": {
+        "phpunit/PHPUnit": "^6.4.1",
+        "zendframework/zend-coding-standard": "~1.0.0"
     },
     "autoload": {
         "psr-4": {
@@ -26,8 +31,8 @@
     ],
     "extra": {
         "branch-alias": {
-            "dev-dev": "4.1.x-dev",
-            "dev-master": "4.0.x-dev"
+            "dev-dev": "5.0.x-dev",
+            "dev-master": "4.1.x-dev"
         }
     }
 }

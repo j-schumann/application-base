@@ -67,14 +67,14 @@ class SendPasswordRequest extends AbstractJob
     {
         $payload = $this->getContent();
         $user = $this->userManager->getUserRepository()->find($payload['userId']);
-        if (!$user) {
+        if (! $user) {
             throw new \RuntimeException('User '.$payload['userId'].' not found!');
         }
 
         // a user can only have one active password request at a time, else
         // brute force on the validation tokens would get easier
         $old = $this->validationManager->getValidations($user, UserManager::VALIDATION_PASSWORD);
-        foreach($old as $oldValidation) {
+        foreach ($old as $oldValidation) {
             $this->userManager->getEntityManager()->remove($oldValidation);
         }
 

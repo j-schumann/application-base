@@ -67,7 +67,7 @@ class SendValidationMail extends AbstractJob
     {
         $payload = $this->getContent();
         $user = $this->userManager->getUserRepository()->find($payload['userId']);
-        if (!$user) {
+        if (! $user) {
             throw new \RuntimeException('User '.$payload['userId'].' not found!');
         }
 

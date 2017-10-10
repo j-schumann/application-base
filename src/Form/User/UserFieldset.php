@@ -8,6 +8,7 @@
 
 namespace AppBase\Form\User;
 
+use DoctrineModule\Validator\UniqueObject;
 use Vrok\Form\Fieldset;
 use Zend\InputFilter\InputFilterProviderInterface;
 
@@ -32,15 +33,19 @@ class UserFieldset extends Fieldset implements InputFilterProviderInterface
         $username = $ur->getFormElementDefinition('username');
         unset($username['attributes']['required']);
         $username['options']['description'] =
-                \Vrok\Doctrine\Common::getEntityTranslationString('Vrok\Entity\User',
-                        'username').'.description';
+                \Vrok\Doctrine\Common::getEntityTranslationString(
+                    'Vrok\Entity\User',
+                    'username'
+                ).'.description';
         $this->add($username);
 
         // the displayName is not required for admins, it defaults to the username if empty
         $displayName                           = $ur->getFormElementDefinition('displayName');
         $displayName['options']['description'] =
-                \Vrok\Doctrine\Common::getEntityTranslationString('Vrok\Entity\User',
-                        'displayName').'.description';
+                \Vrok\Doctrine\Common::getEntityTranslationString(
+                    'Vrok\Entity\User',
+                    'displayName'
+                ).'.description';
         $this->add($displayName);
 
         // Admin sees the password he enters for the user,
@@ -98,7 +103,8 @@ class UserFieldset extends Fieldset implements InputFilterProviderInterface
                 'fields'            => 'email',
                 'object_manager'    => $this->getEntityManager(),
                 'messages'          => [
-                    \DoctrineModule\Validator\UniqueObject::ERROR_OBJECT_NOT_UNIQUE => \Vrok\Doctrine\Common::getEntityTranslationString('Vrok\User\Entity', 'email').'.notUnique',
+                    UniqueObject::ERROR_OBJECT_NOT_UNIQUE =>
+                        \Vrok\Doctrine\Common::getEntityTranslationString('Vrok\User\Entity', 'email').'.notUnique',
                 ],
             ],
         ];
@@ -113,7 +119,8 @@ class UserFieldset extends Fieldset implements InputFilterProviderInterface
                 'fields'            => 'username',
                 'object_manager'    => $this->getEntityManager(),
                 'messages'          => [
-                    \DoctrineModule\Validator\UniqueObject::ERROR_OBJECT_NOT_UNIQUE => \Vrok\Doctrine\Common::getEntityTranslationString('Vrok\User\Entity', 'username').'.notUnique',
+                    UniqueObject::ERROR_OBJECT_NOT_UNIQUE =>
+                        \Vrok\Doctrine\Common::getEntityTranslationString('Vrok\User\Entity', 'username').'.notUnique',
                 ],
             ],
         ];

@@ -34,7 +34,7 @@ class ValidationController extends AbstractActionController
         // the Form was posted, ignore the URL parameters
         if ($this->request->isPost()) {
             $isValid = $form->setData($this->request->getPost())->isValid();
-            if (!$isValid) {
+            if (! $isValid) {
                 return $viewModel;
             }
 
@@ -45,7 +45,7 @@ class ValidationController extends AbstractActionController
             $token = $this->params('token');
             $form->setData(['id' => $id, 'token' => $token]);
 
-            if (!$id || !$token) {
+            if (! $id || ! $token) {
                 if ($id xor $token) {
                     $this->flashMessenger()
                             ->addErrorMessage('message.validation.paramMissing');

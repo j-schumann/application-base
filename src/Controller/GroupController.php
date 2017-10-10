@@ -44,12 +44,12 @@ class GroupController extends AbstractActionController
             'form' => $form,
         ];
 
-        if (!$this->request->isPost()) {
+        if (! $this->request->isPost()) {
             return $viewModel;
         }
 
         $isValid = $form->setData($this->request->getPost())->isValid();
-        if (!$isValid) {
+        if (! $isValid) {
             return $viewModel;
         }
 
@@ -71,7 +71,7 @@ class GroupController extends AbstractActionController
     public function editAction()
     {
         $group = $this->getEntityFromParam('Vrok\Entity\Group');
-        if (!$group instanceof Group) {
+        if (! $group instanceof Group) {
             $this->getResponse()->setStatusCode(404);
 
             return $this->createViewModel(['message' => $group]);
@@ -89,12 +89,12 @@ class GroupController extends AbstractActionController
             'group' => $group,
         ];
 
-        if (!$this->request->isPost()) {
+        if (! $this->request->isPost()) {
             return $viewModel;
         }
 
         $isValid = $form->setData($this->request->getPost())->isValid();
-        if (!$isValid) {
+        if (! $isValid) {
             return $viewModel;
         }
 
@@ -116,7 +116,7 @@ class GroupController extends AbstractActionController
     public function deleteAction()
     {
         $group = $this->getEntityFromParam('Vrok\Entity\Group');
-        if (!$group instanceof Group) {
+        if (! $group instanceof Group) {
             $this->getResponse()->setStatusCode(404);
 
             return $this->createViewModel(['message' => $group]);
@@ -139,12 +139,12 @@ class GroupController extends AbstractActionController
             'group' => $group,
         ];
 
-        if (!$this->request->isPost()) {
+        if (! $this->request->isPost()) {
             return $viewModel;
         }
 
         $isValid = $form->setData($this->request->getPost())->isValid();
-        if (!$isValid) {
+        if (! $isValid) {
             return $viewModel;
         }
 

@@ -34,10 +34,10 @@ class UserController extends AbstractActionController
     public function indexAction()
     {
         $sessionContainer = new SessionContainer(__CLASS__);
-        if (!$sessionContainer['orderBy']) {
+        if (! $sessionContainer['orderBy']) {
             $sessionContainer['orderBy'] = 'username';
         }
-        if (!$sessionContainer['order']) {
+        if (! $sessionContainer['order']) {
             $sessionContainer['order'] = 'asc';
         }
         $orderBy = $this->params()->fromQuery('orderBy');
@@ -81,13 +81,13 @@ class UserController extends AbstractActionController
         $filter = $userManager->getUserFilter()->areNotDeleted();
 
         if ($sessionContainer['userFilter']
-            && !empty($sessionContainer['userFilter']['nameSearch'])
+            && ! empty($sessionContainer['userFilter']['nameSearch'])
         ) {
             $filter->byName($sessionContainer['userFilter']['nameSearch']);
         }
 
         if ($sessionContainer['userFilter']
-            && !empty($sessionContainer['userFilter']['groupFilter'])
+            && ! empty($sessionContainer['userFilter']['groupFilter'])
         ) {
             $filter->joinGroups()->byGroupId($sessionContainer['userFilter']['groupFilter']);
         }
@@ -118,7 +118,7 @@ class UserController extends AbstractActionController
         $form->setData($this->request->getPost());
         $viewModel = ['form' => $form];
 
-        if (!$this->request->isPost() || !$form->isValid()) {
+        if (! $this->request->isPost() || ! $form->isValid()) {
             return $viewModel;
         }
 
@@ -127,7 +127,7 @@ class UserController extends AbstractActionController
         $setRandomPassword = (bool) $data['user']['setRandomPassword'];
         unset($data['user']['setRandomPassword']);
 
-        if (!$setRandomPassword && !$data['user']['password']) {
+        if (! $setRandomPassword && ! $data['user']['password']) {
             $form->get('user')
                     ->setElementMessage('password', 'validate.user.password.notSet');
 
@@ -136,7 +136,7 @@ class UserController extends AbstractActionController
 
         $userManager = $this->getUserManager();
         $user        = $userManager->createUser($data['user']);
-        if (!$user instanceof User) {
+        if (! $user instanceof User) {
             $form->get('user')->setUntranslatedMessages($user);
 
             return $viewModel;
@@ -160,7 +160,7 @@ class UserController extends AbstractActionController
     public function editAction()
     {
         $user = $this->getEntityFromParam('Vrok\Entity\User');
-        if (!$user instanceof User) {
+        if (! $user instanceof User) {
             $this->getResponse()->setStatusCode(404);
 
             return $this->createViewModel(['message' => $user]);
@@ -188,12 +188,12 @@ class UserController extends AbstractActionController
             'user' => $user,
         ];
 
-        if (!$this->request->isPost()) {
+        if (! $this->request->isPost()) {
             return $viewModel;
         }
 
         $isValid = $form->setData($this->request->getPost())->isValid();
-        if (!$isValid) {
+        if (! $isValid) {
             return $viewModel;
         }
 
@@ -234,7 +234,7 @@ class UserController extends AbstractActionController
     public function deleteAction()
     {
         $user = $this->getEntityFromParam('Vrok\Entity\User');
-        if (!$user instanceof \Vrok\Entity\User) {
+        if (! $user instanceof \Vrok\Entity\User) {
             $this->getResponse()->setStatusCode(404);
 
             return $this->createViewModel(['message' => $user]);
@@ -250,12 +250,12 @@ class UserController extends AbstractActionController
             'user' => $user,
         ];
 
-        if (!$this->request->isPost()) {
+        if (! $this->request->isPost()) {
             return $viewModel;
         }
 
         $isValid = $form->setData($this->request->getPost())->isValid();
-        if (!$isValid) {
+        if (! $isValid) {
             return $viewModel;
         }
 

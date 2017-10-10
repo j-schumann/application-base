@@ -51,7 +51,7 @@ class AdminController extends AbstractActionController
     {
         $name   = $this->params('name');
         $config = $this->getServiceLocator()->get('config');
-        if (!isset($config['caches'][$name])) {
+        if (! isset($config['caches'][$name])) {
             $this->flashMessenger()
                 ->addErrorMessage('message.cache.notFound');
 
@@ -59,7 +59,7 @@ class AdminController extends AbstractActionController
         }
 
         $cache = $this->getServiceLocator()->get($name);
-        if (!$cache instanceof \Zend\Cache\Storage\FlushableInterface) {
+        if (! $cache instanceof \Zend\Cache\Storage\FlushableInterface) {
             $this->flashMessenger()
                 ->addErrorMessage('message.cache.notFlushable');
 
@@ -77,12 +77,12 @@ class AdminController extends AbstractActionController
             'form' => $form,
         ];
 
-        if (!$this->request->isPost()) {
+        if (! $this->request->isPost()) {
             return $viewModel;
         }
 
         $isValid = $form->setData($this->request->getPost())->isValid();
-        if (!$isValid) {
+        if (! $isValid) {
             return $viewModel;
         }
 
