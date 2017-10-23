@@ -122,7 +122,7 @@ class AdminNotifications implements ListenerAggregateInterface
             'queueName' => $queue->getName(),
             'count'     => $count,
             'queueUrl'  => $fullUrl('https').$url('slm-queue/list-buried', [
-                'name'  => $queue->getName(),
+                'name' => $queue->getName(),
             ]),
         ]]);
 
@@ -177,7 +177,7 @@ class AdminNotifications implements ListenerAggregateInterface
 
         if (! $group) {
             throw new \RuntimeException(
-                'Group "queueAdmin" not found when buried jobs where found!'
+                'Group "queueAdmin" not found when long running jobs where found!'
             );
         }
 
