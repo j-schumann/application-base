@@ -341,13 +341,19 @@ class Module implements
         // We could locally open a new entityManager but can not easily replace
         // the closed instance in the serviceLocator, it's best to simply
         // restart the queue processor (done by supervisor)
-        $sharedEvents->attach('SlmQueue\Worker\WorkerInterface', WorkerEventInterface::EVENT_PROCESS_QUEUE, function() use ($sm) {
-            $em = $sm->get('Doctrine\ORM\EntityManager');
-            if (! $em->isOpen()) {
-                return ExitWorkerLoopResult::withReason(
-                    'EntityManager is closed, restart queue process...');
-            }
-        }, 1000);
+        $sharedEvents->attach(
+            'SlmQueue\Worker\WorkerInterface',
+            WorkerEventInterface::EVENT_PROCESS_QUEUE,
+            function () use ($sm) {
+                $em = $sm->get('Doctrine\ORM\EntityManager');
+                if (! $em->isOpen()) {
+                    return ExitWorkerLoopResult::withReason(
+                        'EntityManager is closed, restart queue process...'
+                    );
+                }
+            },
+            1000
+        );
     }
 
     /**
