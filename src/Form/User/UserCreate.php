@@ -31,8 +31,10 @@ class UserCreate extends Form
         ]);
 
         // Description for this use case
-        $this->get('user')->get('setRandomPassword')->setOption('description',
-            'form.user.createRandomPassword.description');
+        $this->get('user')->get('setRandomPassword')->setOption(
+            'description',
+            'form.user.createRandomPassword.description'
+        );
 
         // random password is the default selection for new users, the admin should
         // probably not know the password

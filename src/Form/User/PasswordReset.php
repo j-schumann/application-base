@@ -75,7 +75,7 @@ class PasswordReset extends Form implements InputFilterProviderInterface
 
         $thresholds = $this->userManager->getPasswordStrengthThresholds();
 
-        $newPasswordSpec =  $ur->getInputSpecification('password');
+        $newPasswordSpec = $ur->getInputSpecification('password');
         $newPasswordSpec['name']                           = 'newPassword';
         $newPasswordSpec['validators']['passwordStrength'] = [
             'name'    => PasswordStrength::class,

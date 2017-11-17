@@ -38,7 +38,7 @@ class AccountController extends AbstractActionController
      */
     public function indexAction()
     {
-        if (!$this->identity()) {
+        if (! $this->identity()) {
             return $this->redirect()->toRoute('account/login');
         }
     }
@@ -61,7 +61,7 @@ class AccountController extends AbstractActionController
         $form->setData($this->request->getPost());
         $viewModel = ['form' => $form];
 
-        if (!$this->request->isPost() || !$form->isValid()) {
+        if (! $this->request->isPost() || ! $form->isValid()) {
             return $this->createViewModel($viewModel);
         }
 
@@ -70,7 +70,7 @@ class AccountController extends AbstractActionController
         // we do not use the Zend\Authentication\Validator directly in the form
         // as this would lead to a successful login even when the CSRF failed
         $result = $um->login($data['username'], $data['password']);
-        if (!$result instanceof User) {
+        if (! $result instanceof User) {
             $form->get('password')->setMessages($result);
             return $this->createViewModel($viewModel);
         }
@@ -86,7 +86,7 @@ class AccountController extends AbstractActionController
      */
     public function logoutAction()
     {
-        if (!$this->identity()) {
+        if (! $this->identity()) {
             return $this->redirect()->toRoute('home');
         }
 
@@ -96,7 +96,7 @@ class AccountController extends AbstractActionController
             $form = $this->getServiceLocator()->get('FormElementManager')
                 ->get(\Vrok\Form\ConfirmationForm::class);
             $form->setData($this->request->getPost());
-            if (!$this->request->isPost() || !$form->isValid()) {
+            if (! $this->request->isPost() || ! $form->isValid()) {
                 return $this->createViewModel(['form' => $form]);
             }
         }
@@ -124,7 +124,7 @@ class AccountController extends AbstractActionController
         $form->setData($this->request->getPost());
         $viewModel = $this->createViewModel(['form' => $form]);
 
-        if (!$this->request->isPost() || !$form->isValid()) {
+        if (! $this->request->isPost() || ! $form->isValid()) {
             return $viewModel;
         }
 
@@ -151,7 +151,7 @@ class AccountController extends AbstractActionController
         $form->setData($this->request->getPost());
         $viewModel = $this->createViewModel(['form' => $form]);
 
-        if (!$this->request->isPost() || !$form->isValid()) {
+        if (! $this->request->isPost() || ! $form->isValid()) {
             return $viewModel;
         }
 
@@ -159,7 +159,7 @@ class AccountController extends AbstractActionController
         $userManager = $this->getUserManager();
         $user        = $this->identity();
 
-        if (!$user->checkPassword($data['password'])) {
+        if (! $user->checkPassword($data['password'])) {
             $form->setElementMessage('password', 'validate.user.wrongPassword');
 
             return $viewModel;
@@ -190,7 +190,7 @@ class AccountController extends AbstractActionController
         $form->setData($this->request->getPost());
         $viewModel = $this->createViewModel(['form' => $form]);
 
-        if (!$this->request->isPost() || !$form->isValid()) {
+        if (! $this->request->isPost() || ! $form->isValid()) {
             return $viewModel;
         }
 
@@ -198,7 +198,7 @@ class AccountController extends AbstractActionController
         $userManager = $this->getUserManager();
 
         $user = $userManager->getUserByIdentity($data['username']);
-        if (!$user) {
+        if (! $user) {
             $form->setElementMessage('username', 'validate.user.identityNotFound');
 
             return $viewModel;
@@ -233,7 +233,7 @@ class AccountController extends AbstractActionController
         $viewModel = $this->createViewModel(['form' => $form]);
 
         $sessionContainer = new SessionContainer(UserManager::class);
-        if (!$sessionContainer['passwordRequestIdentity']) {
+        if (! $sessionContainer['passwordRequestIdentity']) {
             return $this->redirect()->toRoute('account/login');
         }
 
@@ -241,14 +241,14 @@ class AccountController extends AbstractActionController
 
         /* @var $user User */
         $user = $userManager->getUserByIdentity($sessionContainer['passwordRequestIdentity']);
-        if (!$user) {
+        if (! $user) {
             $this->flashMessenger()
                     ->addErrorMessage('validate.user.identityNotFound');
 
             return $this->redirect()->toRoute('account/login');
         }
 
-        if (!$this->request->isPost() || !$form->isValid()) {
+        if (! $this->request->isPost() || ! $form->isValid()) {
             return $viewModel;
         }
 
@@ -272,7 +272,7 @@ class AccountController extends AbstractActionController
             ->get(\Vrok\Form\ConfirmationForm::class);
 
         $form->setData($this->request->getPost());
-        if (!$this->request->isPost() || !$form->isValid()) {
+        if (! $this->request->isPost() || ! $form->isValid()) {
             return $this->createViewModel(['form' => $form]);
         }
 
@@ -315,12 +315,12 @@ class AccountController extends AbstractActionController
             'form' => $form,
         ]);
 
-        if (!$this->request->isPost()) {
+        if (! $this->request->isPost()) {
             return $viewModel;
         }
 
         $isValid = $form->setData($this->request->getPost())->isValid();
-        if (!$isValid) {
+        if (! $isValid) {
             return $viewModel;
         }
 
@@ -329,8 +329,10 @@ class AccountController extends AbstractActionController
         if (empty($user->getHttpNotificationUser())
                 xor empty($user->getHttpNotificationPw())
         ) {
-            $form->get('user')->setElementMessage('httpNotificationUser',
-                        'validate.user.httpNotificationAuth.incomplete');
+            $form->get('user')->setElementMessage(
+                'httpNotificationUser',
+                'validate.user.httpNotificationAuth.incomplete'
+            );
             return $viewModel;
         }
 
@@ -352,12 +354,12 @@ class AccountController extends AbstractActionController
     public function testPushNotificationAction()
     {
         $ns = $this->getServiceLocator()->get(\Vrok\Service\NotificationService::class);
-        if (!$ns->getHttpNotificationsEnabled()) {
+        if (! $ns->getHttpNotificationsEnabled()) {
             return $this->redirect()->toRoute('account/settings');
         }
 
         $user = $this->getUserManager()->getCurrentUser();
-        if (!$user->getHttpNotificationsEnabled()) {
+        if (! $user->getHttpNotificationsEnabled()) {
             return $this->redirect()->toRoute('account/settings');
         }
 
@@ -372,7 +374,7 @@ class AccountController extends AbstractActionController
             ],
         ];
 
-        if (!$user->getHttpNotificationCertCheck()) {
+        if (! $user->getHttpNotificationCertCheck()) {
             $options['curloptions'][\CURLOPT_SSL_VERIFYPEER] = false;
             $options['curloptions'][\CURLOPT_SSL_VERIFYHOST] = false;
         }
@@ -401,8 +403,7 @@ class AccountController extends AbstractActionController
 
         try {
             $response = $client->send();
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             $this->flashMessenger()->addErrorMessage('Exception: '
                     .$e->getMessage());
             return $this->redirect()->toRoute('account/settings');

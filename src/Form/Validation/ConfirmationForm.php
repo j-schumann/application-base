@@ -56,7 +56,8 @@ class ConfirmationForm extends Form implements InputFilterProviderInterface
         $id             = $vr->getInputSpecification('id');
         $id['required'] = true;
         \Vrok\Stdlib\ArrayUtils::array_unshift_assoc(
-            $id['validators'], 'notEmpty',
+            $id['validators'],
+            'notEmpty',
             $vr->getFormHelper()->getNotEmptyValidatorSpecification()
         );
 

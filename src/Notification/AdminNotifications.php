@@ -122,15 +122,16 @@ class AdminNotifications implements ListenerAggregateInterface
             'queueName' => $queue->getName(),
             'count'     => $count,
             'queueUrl'  => $fullUrl('https').$url('slm-queue/list-buried', [
-                'name'  => $queue->getName(),
+                'name' => $queue->getName(),
             ]),
         ]]);
 
         $group = $this->userManager->getGroupRepository()
                 ->findOneBy(['name' => 'queueAdmin']);
-        if (!$group) {
+        if (! $group) {
             throw new \RuntimeException(
-                'Group "queueAdmin" not found when buried jobs where found!');
+                'Group "queueAdmin" not found when buried jobs where found!'
+            );
         }
 
         $admins = $group->getMembers();
@@ -174,9 +175,10 @@ class AdminNotifications implements ListenerAggregateInterface
         $group = $this->userManager->getGroupRepository()
                 ->findOneBy(['name' => 'queueAdmin']);
 
-        if (!$group) {
+        if (! $group) {
             throw new \RuntimeException(
-                'Group "queueAdmin" not found when buried jobs where found!');
+                'Group "queueAdmin" not found when long running jobs where found!'
+            );
         }
 
         $admins = $group->getMembers();
@@ -214,9 +216,10 @@ class AdminNotifications implements ListenerAggregateInterface
 
         $group = $this->userManager->getGroupRepository()
                 ->findOneBy(['name' => 'supervisorAdmin']);
-        if (!$group) {
+        if (! $group) {
             throw new \RuntimeException(
-                'Group "supervisorAdmin" not found when a process was not running!');
+                'Group "supervisorAdmin" not found when a process was not running!'
+            );
         }
 
         $admins = $group->getMembers();

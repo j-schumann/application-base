@@ -32,10 +32,14 @@ class UserEdit extends Form
 
         // Description & labels for this use case
         $this->get('user')->get('password')->setLabel('form.user.newPassword.label');
-        $this->get('user')->get('password')->setOption('description',
-            'form.user.newPassword.description');
-        $this->get('user')->get('setRandomPassword')->setOption('description',
-            'form.user.setRandomPassword.description');
+        $this->get('user')->get('password')->setOption(
+            'description',
+            'form.user.newPassword.description'
+        );
+        $this->get('user')->get('setRandomPassword')->setOption(
+            'description',
+            'form.user.setRandomPassword.description'
+        );
 
         $this->add([
             'name'       => 'submit',

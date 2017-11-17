@@ -822,7 +822,7 @@ return [
             'class_map' => [
             ],
 
-            'proxies_target_dir' =>  __DIR__.'/../../../../data/LazyServices/',
+            'proxies_target_dir' => __DIR__.'/../../../../data/LazyServices/',
             'write_proxy_files'  => true,
         ],
     ],

@@ -232,7 +232,8 @@ class Module implements
                 },
                 'doctrine.cache.zend_storage' => function ($sm) {
                     return new \DoctrineModule\Cache\ZendStorageCache(
-                            $sm->get('defaultCache'));
+                        $sm->get('defaultCache')
+                    );
                 },
 
                 'ZendLog' => function ($sm) {
@@ -247,7 +248,7 @@ class Module implements
                 'Zend\Mail\Transport' => function ($sm) {
                     $spec = [];
                     $config = $sm->get('Config');
-                    if (!empty($config['email_service']['transport'])) {
+                    if (! empty($config['email_service']['transport'])) {
                         $spec = $config['email_service']['transport'];
                     }
 
@@ -259,7 +260,6 @@ class Module implements
                         // stores the user ID in the session and retrieves the object
                         // from the DB
                         $sm->get('Vrok\Authentication\Storage\Doctrine'),
-
                         // checks for username or email as identity, checks if the
                         // user is active & validated
                         $sm->get('Vrok\Authentication\Adapter\Doctrine')
