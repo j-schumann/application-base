@@ -2,6 +2,11 @@
 
 The project follows Semantic Versioning (http://semver.org/)
 
+## 4.2.0 - 2017-11-17
+### Added
+- shutdown the slmQueue worker when the entityManager was closed (due to an
+  exception) so it can be restarted by supervisor with a fresh instance
+
 ## 4.1.0 - 2017-10-10
 ### Added
 - test & cs config
