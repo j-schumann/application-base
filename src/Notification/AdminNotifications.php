@@ -8,6 +8,11 @@
 
 namespace AppBase\Notification;
 
+use DateTime;
+use IntlDateFormatter;
+use RuntimeException;
+use SlmQueue\Worker\Event\ProcessJobEvent;
+use SlmQueue\Worker\Event\WorkerEventInterface;
 use Vrok\Service\Email as EmailService;
 use Vrok\Service\UserManager;
 use Zend\EventManager\EventInterface;
@@ -87,16 +92,12 @@ class AdminNotifications implements ListenerAggregateInterface
             $priority
         );
 
-        /*
-         * https://github.com/juriansluiman/SlmQueue/pull/104 is merged, we can
-         * now listen for failed jobs
-         * @todo implement listener
         $shared->attach(
             'SlmQueue\Worker\WorkerInterface',
-            \SlmQueue\Worker\WorkerEvent::EVENT_PROCESS_JOB_POST,
+            WorkerEventInterface::EVENT_PROCESS_JOB,
             [$this, 'onProcessJobPost'],
-            $priority
-        );*/
+            -100 // 100 = preProcess, -100 = postProcess
+        );
     }
 
     /**
@@ -105,7 +106,7 @@ class AdminNotifications implements ListenerAggregateInterface
      *
      * @param \Zend\EventManager\EventInterface $e
      *
-     * @throws \RuntimeException when the queueAdmin group does not exist
+     * @throws RuntimeException when the queueAdmin group does not exist
      */
     public function onBuriedJobsFound(EventInterface $e)
     {
@@ -129,7 +130,7 @@ class AdminNotifications implements ListenerAggregateInterface
         $group = $this->userManager->getGroupRepository()
                 ->findOneBy(['name' => 'queueAdmin']);
         if (! $group) {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 'Group "queueAdmin" not found when buried jobs where found!'
             );
         }
@@ -176,7 +177,7 @@ class AdminNotifications implements ListenerAggregateInterface
                 ->findOneBy(['name' => 'queueAdmin']);
 
         if (! $group) {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 'Group "queueAdmin" not found when long running jobs where found!'
             );
         }
@@ -209,15 +210,15 @@ class AdminNotifications implements ListenerAggregateInterface
         $mail->setHtmlBody(['mail.supervisor.processNotRunning.body', [
             'processName'  => $processName,
             'processState' => $processInfo ? $processInfo['statename'] : 'NOT_FOUND',
-            'now'          => $dateFormat(new \DateTime(),
-                    \IntlDateFormatter::LONG, \IntlDateFormatter::MEDIUM),
+            'now'          => $dateFormat(new DateTime(),
+                    IntlDateFormatter::LONG, IntlDateFormatter::MEDIUM),
             'supervisorUrl' => $fullUrl('https').$url('supervisor'),
         ]]);
 
         $group = $this->userManager->getGroupRepository()
                 ->findOneBy(['name' => 'supervisorAdmin']);
         if (! $group) {
-            throw new \RuntimeException(
+            throw new RuntimeException(
                 'Group "supervisorAdmin" not found when a process was not running!'
             );
         }
@@ -231,19 +232,57 @@ class AdminNotifications implements ListenerAggregateInterface
     }
 
     /**
-     * @todo implement
+     * Checks the result of each processed job. If it failed an email with
+     * the saved message is sent to all queue admins.
      *
-     * @param \Zend\EventManager\EventInterface $e
+     * @param ProcessJobEvent $e
      */
-    public function onProcessJobPost(EventInterface $e)
+    public function onProcessJobPost(ProcessJobEvent $e)
     {
-        //  \Doctrine\Common\Util\Debug::dump($e, 4);
-      //  \Doctrine\Common\Util\Debug::dump($e->getJob(), 4);
-      //  $log = $this->serviceLocator->get('ZendLog');
-        /* @var $log \Zend\Log\Logger */
+        $result = $e->getResult();
+        if ($result != ProcessJobEvent::JOB_STATUS_FAILURE) {
+            return;
+        }
 
-      //  $log->debug(get_class($e));
-      //  $log->debug(get_class($e->getTarget()));
-      //  $log->debug(get_class($e->getParam('job')));
+        $queue = $e->getQueue();
+        // There is no way to retrieve the message given to $queue->bury(),
+        // not even with $queue->peek()
+        $sql   = 'SELECT * FROM '.$queue->getOptions()->getTableName()
+                .' WHERE id = ?';
+        $jobs = $queue->connection->fetchAll($sql, [$e->getJob()->getId()]);
+        $job = $jobs[0];
+        $data = json_decode($job['data'], true);
+
+        $url        = $this->emailService->getViewHelperManager()->get('url');
+        $fullUrl    = $this->emailService->getViewHelperManager()->get('fullUrl');
+        $dateFormat = $this->emailService->getViewHelperManager()->get('DateFormat');
+
+        $mail = $this->emailService->createMail();
+        $mail->setSubject('mail.slmQueue.jobFailed.subject');
+
+        $mail->setHtmlBody(['mail.slmQueue.jobFailed.body', [
+            'jobName'  => $data['metadata']['__name__'],
+            'message'  => $job['message'],
+            'now'      => $dateFormat(new DateTime(),
+                            IntlDateFormatter::LONG, IntlDateFormatter::MEDIUM),
+            'queueUrl' => $fullUrl('https').$url('slm-queue/list-buried', [
+                'name' => $queue->getName(),
+            ]),
+        ]]);
+
+        $group = $this->userManager->getGroupRepository()
+                ->findOneBy(['name' => 'queueAdmin']);
+        if (! $group) {
+            throw new RuntimeException(
+                'Group "queueAdmin" not found when a job failed!'
+            );
+        }
+
+        $admins = $group->getMembers();
+        foreach ($admins as $user) {
+            $mail->addTo($user->getEmail(), $user->getDisplayName());
+        }
+
+        $this->emailService->sendMail($mail);
     }
 }

@@ -2,6 +2,10 @@
 
 The project follows Semantic Versioning (http://semver.org/)
 
+## 4.3.0 - tbd
+### Added
+- event listener for failed slmQueue jobs that send an email to all queue admins
+
 ## 4.2.0 - 2017-11-17
 ### Added
 - shutdown the slmQueue worker when the entityManager was closed (due to an
