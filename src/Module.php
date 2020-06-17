@@ -8,6 +8,8 @@
 
 namespace AppBase;
 
+use SlmQueue\Worker\Event\WorkerEventInterface;
+use SlmQueue\Worker\Result\ExitWorkerLoopResult;
 use Vrok\Mvc\View\Http\ErrorLoggingStrategy;
 use Vrok\SlmQueue\JobProviderInterface;
 use Zend\EventManager\EventInterface;
@@ -333,6 +335,25 @@ class Module implements
         $sharedEvents->attach('AppBase\Controller\CronController', 'cronDaily', function ($e) {
             return \Vrok\SlmQueue\Job\CheckTodos::onCronDaily($e);
         });
+
+        // When an exception occured that closed the entityManager the queue
+        // process catches that exception but keeps running.
+        // We could locally open a new entityManager but can not easily replace
+        // the closed instance in the serviceLocator, it's best to simply
+        // restart the queue processor (done by supervisor)
+        $sharedEvents->attach(
+            'SlmQueue\Worker\WorkerInterface',
+            WorkerEventInterface::EVENT_PROCESS_QUEUE,
+            function () use ($sm) {
+                $em = $sm->get('Doctrine\ORM\EntityManager');
+                if (! $em->isOpen()) {
+                    return ExitWorkerLoopResult::withReason(
+                        'EntityManager is closed, restart queue process...'
+                    );
+                }
+            },
+            1000
+        );
     }
 
     /**
